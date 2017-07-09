@@ -1,0 +1,133 @@
+plugins {
+    id 'groovy'
+    id 'maven-publish'
+    id 'jacoco'
+    id 'nebula.optional-base' version '3.2.0'
+    id 'com.github.kt3k.coveralls' version '2.8.1'
+    id 'maven'
+    id 'signing'
+    id 'pl.allegro.tech.build.axion-release' version '1.7.1'
+    id 'io.codearte.nexus-staging' version '0.9.0'
+}
+
+scmVersion {
+    tag {
+        prefix = ''
+    }
+}
+
+group 'com.github.mkopylec'
+archivesBaseName = name
+version scmVersion.version
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+ext.springBootVersion = '1.5.4.RELEASE'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.springframework', name: 'spring-web', version: '4.3.6.RELEASE'
+    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: springBootVersion, optional
+    compile group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: springBootVersion, optional
+
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion
+    testCompile group: 'org.spockframework', name: 'spock-spring', version: '1.1-groovy-2.4'
+}
+
+configurations {
+    all*.exclude group: 'org.mortbay.jetty', module: 'servlet-api'
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourceJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourceJar
+}
+
+signing {
+    if (project.ext.has('signArtifacts')) {
+        sign configurations.archives
+    }
+}
+
+ext {
+    ossrhUsername = project.ext.has('ossrhUsername') ? project.ext.ossrhUsername : ''
+    ossrhPassword = project.ext.has('ossrhPassword') ? project.ext.ossrhPassword : ''
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+            pom.project {
+                name 'Smart Errors Spring Boot Starter'
+                packaging 'jar'
+                description 'Complete, ready to use Spring Boot starter for handling errors in Spring web applications'
+                url 'https://github.com/mkopylec/smart-errors-spring-boot-starter'
+                scm {
+                    connection 'scm:git:https://github.com/mkopylec/smart-errors-spring-boot-starter.git'
+                    developerConnection 'scm:git:https://github.com/mkopylec/smart-errors-spring-boot-starter.git'
+                    url 'https://github.com/mkopylec/smart-errors-spring-boot-starter'
+                }
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'mkopylec'
+                        name 'Mariusz Kopylec'
+                        email 'mariusz.kopylec@o2.pl'
+                    }
+                }
+            }
+        }
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact sourceJar
+        }
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+
+nexusStaging {
+    numberOfRetries = 20
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '4.0.1'
+}
