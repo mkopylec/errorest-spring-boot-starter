@@ -81,14 +81,14 @@ uploadArchives {
                 authentication(userName: ossrhUsername, password: ossrhPassword)
             }
             pom.project {
-                name 'Smart Errors Spring Boot Starter'
+                name 'ErroREST Spring Boot Starter'
                 packaging 'jar'
-                description 'Complete, ready to use Spring Boot starter for handling errors in Spring web applications'
-                url 'https://github.com/mkopylec/smart-errors-spring-boot-starter'
+                description 'Complete, ready to use error handling for Spring Boot REST services'
+                url 'https://github.com/mkopylec/errorest-spring-boot-starter'
                 scm {
-                    connection 'scm:git:https://github.com/mkopylec/smart-errors-spring-boot-starter.git'
-                    developerConnection 'scm:git:https://github.com/mkopylec/smart-errors-spring-boot-starter.git'
-                    url 'https://github.com/mkopylec/smart-errors-spring-boot-starter'
+                    connection 'scm:git:https://github.com/mkopylec/errorest-spring-boot-starter.git'
+                    developerConnection 'scm:git:https://github.com/mkopylec/errorest-spring-boot-starter.git'
+                    url 'https://github.com/mkopylec/errorest-spring-boot-starter'
                 }
                 licenses {
                     license {
