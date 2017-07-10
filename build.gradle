@@ -30,11 +30,10 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.springframework', name: 'spring-web', version: '4.3.6.RELEASE'
-    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
 
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: springBootVersion, optional
+//    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: springBootVersion, optional
     compile group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: springBootVersion, optional
 
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion
