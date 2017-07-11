@@ -1,5 +1,7 @@
 package com.github.mkopylec.errorest.configuration;
 
+import com.github.mkopylec.errorest.ExceptionLogger;
+import com.github.mkopylec.errorest.handlers.ControllerErrorHandler;
 import com.github.mkopylec.errorest.handlers.RequestMethodAttributeSettingFilter;
 import com.github.mkopylec.errorest.handlers.ServletFilterErrorHandler;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -13,24 +15,30 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @AutoConfigureBefore(ErrorMvcAutoConfiguration.class)
-@EnableConfigurationProperties(ServerProperties.class)
+@EnableConfigurationProperties({ErrorestProperties.class, ServerProperties.class})
 public class ErrorestConfiguration {
-
-//    @Bean
-//    @ConditionalOnMissingBean
-//    public ControllerErrorHandler controllerErrorHandler() {
-//        return new ControllerErrorHandler();
-//    }
 
     @Bean
     @ConditionalOnMissingBean
-    public ServletFilterErrorHandler servletFilterErrorHandler(ErrorAttributes errorAttributes, ServerProperties serverProperties) {
-        return new ServletFilterErrorHandler(errorAttributes, serverProperties);
+    public ControllerErrorHandler controllerErrorHandler(ExceptionLogger exceptionLogger) {
+        return new ControllerErrorHandler(exceptionLogger);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ServletFilterErrorHandler servletFilterErrorHandler(ErrorAttributes errorAttributes, ServerProperties serverProperties, ErrorestProperties errorestProperties, ExceptionLogger logger) {
+        return new ServletFilterErrorHandler(errorAttributes, serverProperties, errorestProperties, logger);
     }
 
     @Bean
     @ConditionalOnMissingBean
     public RequestMethodAttributeSettingFilter requestMethodAttributeSettingFilter() {
         return new RequestMethodAttributeSettingFilter();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ExceptionLogger exceptionLogger() {
+        return new ExceptionLogger();
     }
 }

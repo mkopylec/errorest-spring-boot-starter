@@ -1,6 +1,8 @@
 package com.github.mkopylec.errorest;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Collections.unmodifiableList;
 
@@ -14,5 +16,11 @@ public class Errors {
 
     public List<Error> getErrors() {
         return unmodifiableList(errors);
+    }
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("errors", errors);
+        return map;
     }
 }

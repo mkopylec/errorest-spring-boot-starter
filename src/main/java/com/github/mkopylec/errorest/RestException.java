@@ -1,20 +1,25 @@
 package com.github.mkopylec.errorest;
 
-import org.springframework.boot.logging.LogLevel;
 import org.springframework.http.HttpStatus;
+
+import static org.springframework.util.Assert.hasText;
+import static org.springframework.util.Assert.notNull;
 
 public abstract class RestException extends RuntimeException {
 
     protected final String errorCode;
-    protected final HttpStatus httpStatus;
-    protected final LogLevel logLevel;
+    protected final HttpStatus responseHttpStatus;
+    protected final LoggingLevel loggingLevel;
     protected final boolean logStackTrace;
 
-    protected RestException(String errorCode, String errorDescription, HttpStatus httpStatus, LogLevel logLevel, boolean logStackTrace) {
+    protected RestException(String errorCode, String errorDescription, HttpStatus responseHttpStatus, LoggingLevel loggingLevel, boolean logStackTrace) {
         super(errorDescription);
+        hasText(errorCode, "Empty exception error code");
+        notNull(responseHttpStatus, "Empty exception response HTTP status");
+        notNull(loggingLevel, "Empty exception logging level");
         this.errorCode = errorCode;
-        this.httpStatus = httpStatus;
-        this.logLevel = logLevel;
+        this.responseHttpStatus = responseHttpStatus;
+        this.loggingLevel = loggingLevel;
         this.logStackTrace = logStackTrace;
     }
 
@@ -26,12 +31,12 @@ public abstract class RestException extends RuntimeException {
         return getMessage();
     }
 
-    public HttpStatus getHttpStatus() {
-        return httpStatus;
+    public HttpStatus getResponseHttpStatus() {
+        return responseHttpStatus;
     }
 
-    public LogLevel getLogLevel() {
-        return logLevel;
+    public LoggingLevel getLoggingLevel() {
+        return loggingLevel;
     }
 
     public boolean isLogStackTrace() {
