@@ -29,8 +29,8 @@ public class ErrorestConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ControllerErrorHandler controllerErrorHandler(ExceptionLogger exceptionLogger) {
-        return new ControllerErrorHandler(exceptionLogger);
+    public ControllerErrorHandler controllerErrorHandler(ExceptionLogger exceptionLogger, ErrorDataProviderContext providerContext) {
+        return new ControllerErrorHandler(exceptionLogger, providerContext);
     }
 
     @Bean
