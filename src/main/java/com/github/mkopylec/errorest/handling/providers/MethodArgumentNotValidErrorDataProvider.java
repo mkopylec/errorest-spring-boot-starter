@@ -4,19 +4,19 @@ import com.github.mkopylec.errorest.configuration.ErrorestProperties;
 import com.github.mkopylec.errorest.handling.ErrorData;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.context.request.RequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class BindExceptionErrorDataProvider extends BeanValidationErrorDataProvider<BindException> {
+public class MethodArgumentNotValidErrorDataProvider extends BeanValidationErrorDataProvider<MethodArgumentNotValidException> {
 
-    public BindExceptionErrorDataProvider(ErrorestProperties errorestProperties) {
+    public MethodArgumentNotValidErrorDataProvider(ErrorestProperties errorestProperties) {
         super(errorestProperties);
     }
 
     @Override
-    public ErrorData getErrorData(BindException ex, HttpServletRequest request) {
+    public ErrorData getErrorData(MethodArgumentNotValidException ex, HttpServletRequest request) {
         return buildErrorData(ex.getBindingResult())
                 .withRequestMethod(request.getMethod())
                 .withRequestUri(request.getRequestURI())
@@ -25,7 +25,7 @@ public class BindExceptionErrorDataProvider extends BeanValidationErrorDataProvi
     }
 
     @Override
-    public ErrorData getErrorData(BindException ex, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
+    public ErrorData getErrorData(MethodArgumentNotValidException ex, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
         String requestMethod = getRequestMethod(requestAttributes);
         String requestUri = getRequestUri(errorAttributes, requestAttributes);
         return buildErrorData(ex.getBindingResult())

@@ -54,7 +54,7 @@ public class ThrowableErrorDataProvider extends ErrorDataProvider<Throwable> {
     }
 
     protected boolean isLogStackTrace(HttpStatus responseHttpStatus) {
-        return !responseHttpStatus.is4xxClientError() && errorestProperties.getUnexpectedError().isLogStackTrace();
+        return responseHttpStatus.is4xxClientError() ? errorestProperties.getHttpClientError().isLogStackTrace() : errorestProperties.getUnexpectedError().isLogStackTrace();
     }
 
     protected String getErrorCode(HttpStatus responseHttpStatus) {

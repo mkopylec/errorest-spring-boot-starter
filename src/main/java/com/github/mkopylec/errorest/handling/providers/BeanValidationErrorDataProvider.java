@@ -1,15 +1,31 @@
 package com.github.mkopylec.errorest.handling.providers;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
+import com.github.mkopylec.errorest.handling.ErrorData.ErrorDataBuilder;
 import com.github.mkopylec.errorest.response.Error;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
+import static com.github.mkopylec.errorest.handling.ErrorData.ErrorDataBuilder.newErrorData;
+
 public abstract class BeanValidationErrorDataProvider<T extends Throwable> extends ErrorDataProvider<T> {
 
     public BeanValidationErrorDataProvider(ErrorestProperties errorestProperties) {
         super(errorestProperties);
+    }
+
+    protected ErrorDataBuilder buildErrorData(BindingResult result) {
+        ErrorestProperties.BeanValidationError validationError = errorestProperties.getBeanValidationError();
+        ErrorDataBuilder builder = newErrorData()
+                .withLoggingLevel(validationError.getLoggingLevel())
+                .withResponseStatus(validationError.getResponseHttpStatus())
+                .withLogStackTrace(validationError.isLogStackTrace());
+        result.getAllErrors().forEach(objectError -> {
+            Error error = createError(objectError);
+            builder.addError(error);
+        });
+        return builder;
     }
 
     protected Error createError(ObjectError error) {

@@ -74,6 +74,7 @@ public class ErrorestProperties {
 
         private String code = "HTTP_ERROR";
         private LoggingLevel loggingLevel = WARN;
+        private boolean logStackTrace = false;
 
         public String getCode() {
             return code;
@@ -89,6 +90,14 @@ public class ErrorestProperties {
 
         public void setLoggingLevel(LoggingLevel loggingLevel) {
             this.loggingLevel = loggingLevel;
+        }
+
+        public boolean isLogStackTrace() {
+            return logStackTrace;
+        }
+
+        public void setLogStackTrace(boolean logStackTrace) {
+            this.logStackTrace = logStackTrace;
         }
     }
 
