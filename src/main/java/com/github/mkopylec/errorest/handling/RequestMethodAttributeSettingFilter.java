@@ -1,6 +1,6 @@
 package com.github.mkopylec.errorest.handling;
 
-import org.springframework.core.annotation.Order;
+import org.springframework.core.Ordered;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -9,10 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
-
-@Order(HIGHEST_PRECEDENCE)
-public class RequestMethodAttributeSettingFilter extends OncePerRequestFilter {
+public class RequestMethodAttributeSettingFilter extends OncePerRequestFilter implements Ordered {
 
     public static final String REQUEST_METHOD_ERROR_ATTRIBUTE = RequestMethodAttributeSettingFilter.class.getName() + ".method";
 
@@ -24,5 +21,10 @@ public class RequestMethodAttributeSettingFilter extends OncePerRequestFilter {
             request.setAttribute(REQUEST_METHOD_ERROR_ATTRIBUTE, request.getMethod());
             throw ex;
         }
+    }
+
+    @Override
+    public int getOrder() {
+        return HIGHEST_PRECEDENCE;
     }
 }
