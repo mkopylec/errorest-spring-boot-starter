@@ -1,7 +1,6 @@
 package com.github.mkopylec.errorest.handling.providers;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
-import com.github.mkopylec.errorest.handling.ErrorData;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 
 import javax.servlet.http.HttpServletRequest;

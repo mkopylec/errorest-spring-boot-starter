@@ -1,5 +1,6 @@
 package com.github.mkopylec.errorest.handling;
 
+import com.github.mkopylec.errorest.handling.providers.ErrorData;
 import com.github.mkopylec.errorest.handling.providers.ErrorDataProvider;
 import com.github.mkopylec.errorest.handling.providers.ErrorDataProviderContext;
 import com.github.mkopylec.errorest.logging.ExceptionLogger;

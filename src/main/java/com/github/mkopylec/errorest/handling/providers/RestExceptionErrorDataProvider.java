@@ -2,8 +2,7 @@ package com.github.mkopylec.errorest.handling.providers;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
 import com.github.mkopylec.errorest.exceptions.RestException;
-import com.github.mkopylec.errorest.handling.ErrorData;
-import com.github.mkopylec.errorest.handling.ErrorData.ErrorDataBuilder;
+import com.github.mkopylec.errorest.handling.providers.ErrorData.ErrorDataBuilder;
 import com.github.mkopylec.errorest.response.Error;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,7 @@ import org.springframework.web.context.request.RequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.github.mkopylec.errorest.handling.ErrorData.ErrorDataBuilder.newErrorData;
+import static com.github.mkopylec.errorest.handling.providers.ErrorData.ErrorDataBuilder.newErrorData;
 
 public class RestExceptionErrorDataProvider extends ErrorDataProvider<RestException> {
 
