@@ -1,5 +1,8 @@
 package com.github.mkopylec.errorest.application;
 
+import com.github.mkopylec.errorest.exceptions.RestException;
+import com.github.mkopylec.errorest.logging.LoggingLevel;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -14,6 +17,6 @@ public class ServletFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        throw new RuntimeException("A servlet filter error has occurred");
+        throw new RestException("code", "desc", HttpStatus.BAD_REQUEST, LoggingLevel.WARN, false) {};
     }
 }

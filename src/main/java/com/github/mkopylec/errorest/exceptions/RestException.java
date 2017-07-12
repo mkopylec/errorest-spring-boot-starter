@@ -1,5 +1,6 @@
-package com.github.mkopylec.errorest;
+package com.github.mkopylec.errorest.exceptions;
 
+import com.github.mkopylec.errorest.logging.LoggingLevel;
 import org.springframework.http.HttpStatus;
 
 import static org.springframework.util.Assert.hasText;

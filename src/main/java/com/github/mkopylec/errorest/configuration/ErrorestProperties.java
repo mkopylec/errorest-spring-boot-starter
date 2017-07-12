@@ -1,9 +1,9 @@
 package com.github.mkopylec.errorest.configuration;
 
-import com.github.mkopylec.errorest.LoggingLevel;
+import com.github.mkopylec.errorest.logging.LoggingLevel;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import static com.github.mkopylec.errorest.LoggingLevel.ERROR;
+import static com.github.mkopylec.errorest.logging.LoggingLevel.ERROR;
 
 @ConfigurationProperties("errorest")
 public class ErrorestProperties {

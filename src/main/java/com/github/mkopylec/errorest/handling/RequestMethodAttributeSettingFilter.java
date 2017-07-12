@@ -1,4 +1,4 @@
-package com.github.mkopylec.errorest.handlers;
+package com.github.mkopylec.errorest.handling;
 
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;

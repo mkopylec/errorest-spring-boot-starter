@@ -1,9 +1,10 @@
 package com.github.mkopylec.errorest.configuration;
 
-import com.github.mkopylec.errorest.ExceptionLogger;
-import com.github.mkopylec.errorest.handlers.ControllerErrorHandler;
-import com.github.mkopylec.errorest.handlers.RequestMethodAttributeSettingFilter;
-import com.github.mkopylec.errorest.handlers.ServletFilterErrorHandler;
+import com.github.mkopylec.errorest.handling.ControllerErrorHandler;
+import com.github.mkopylec.errorest.handling.RequestMethodAttributeSettingFilter;
+import com.github.mkopylec.errorest.handling.ServletFilterErrorHandler;
+import com.github.mkopylec.errorest.handling.providers.ErrorDataProviderContext;
+import com.github.mkopylec.errorest.logging.ExceptionLogger;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
@@ -18,6 +19,14 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties({ErrorestProperties.class, ServerProperties.class})
 public class ErrorestConfiguration {
 
+    protected final ErrorestProperties errorestProperties;
+    protected final ServerProperties serverProperties;
+
+    public ErrorestConfiguration(ErrorestProperties errorestProperties, ServerProperties serverProperties) {
+        this.errorestProperties = errorestProperties;
+        this.serverProperties = serverProperties;
+    }
+
     @Bean
     @ConditionalOnMissingBean
     public ControllerErrorHandler controllerErrorHandler(ExceptionLogger exceptionLogger) {
@@ -26,8 +35,8 @@ public class ErrorestConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ServletFilterErrorHandler servletFilterErrorHandler(ErrorAttributes errorAttributes, ServerProperties serverProperties, ErrorestProperties errorestProperties, ExceptionLogger logger) {
-        return new ServletFilterErrorHandler(errorAttributes, serverProperties, errorestProperties, logger);
+    public ServletFilterErrorHandler servletFilterErrorHandler(ErrorAttributes errorAttributes, ExceptionLogger logger, ErrorDataProviderContext providerContext) {
+        return new ServletFilterErrorHandler(errorAttributes, serverProperties, errorestProperties, logger, providerContext);
     }
 
     @Bean
@@ -40,5 +49,11 @@ public class ErrorestConfiguration {
     @ConditionalOnMissingBean
     public ExceptionLogger exceptionLogger() {
         return new ExceptionLogger();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ErrorDataProviderContext errorDataProviderContext() {
+        return new ErrorDataProviderContext(errorestProperties);
     }
 }

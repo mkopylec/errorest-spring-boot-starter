@@ -1,4 +1,4 @@
-package com.github.mkopylec.errorest;
+package com.github.mkopylec.errorest.logging;
 
 public enum LoggingLevel {
 

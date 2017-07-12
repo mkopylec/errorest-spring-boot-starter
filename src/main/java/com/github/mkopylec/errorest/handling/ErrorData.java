@@ -1,8 +1,10 @@
-package com.github.mkopylec.errorest;
+package com.github.mkopylec.errorest.handling;
 
+import com.github.mkopylec.errorest.logging.ErrorsLoggingList;
+import com.github.mkopylec.errorest.logging.LoggingLevel;
+import com.github.mkopylec.errorest.response.Error;
 import org.springframework.http.HttpStatus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ErrorData {

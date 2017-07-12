@@ -1,4 +1,6 @@
-package com.github.mkopylec.errorest;
+package com.github.mkopylec.errorest.logging;
+
+import com.github.mkopylec.errorest.response.Error;
 
 import java.util.ArrayList;
 
