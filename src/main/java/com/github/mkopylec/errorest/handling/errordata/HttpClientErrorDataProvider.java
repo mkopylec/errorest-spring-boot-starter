@@ -1,8 +1,8 @@
-package com.github.mkopylec.errorest.handling.providers;
+package com.github.mkopylec.errorest.handling.errordata;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
 import com.github.mkopylec.errorest.configuration.ErrorestProperties.HttpClientError;
-import com.github.mkopylec.errorest.handling.providers.ErrorData.ErrorDataBuilder;
+import com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder;
 import com.github.mkopylec.errorest.response.Error;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.http.HttpStatus;
@@ -10,7 +10,7 @@ import org.springframework.web.context.request.RequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.github.mkopylec.errorest.handling.providers.ErrorData.ErrorDataBuilder.newErrorData;
+import static com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder.newErrorData;
 
 public abstract class HttpClientErrorDataProvider<T extends Throwable> extends ErrorDataProvider<T> {
 

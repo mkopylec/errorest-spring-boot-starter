@@ -1,4 +1,4 @@
-package com.github.mkopylec.errorest.handling.providers;
+package com.github.mkopylec.errorest.handling.errordata;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
 import com.github.mkopylec.errorest.exceptions.RestException;

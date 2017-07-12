@@ -1,6 +1,6 @@
 package com.github.mkopylec.errorest.logging;
 
-import com.github.mkopylec.errorest.handling.providers.ErrorData;
+import com.github.mkopylec.errorest.handling.errordata.ErrorData;
 import org.slf4j.Logger;
 
 import static com.github.mkopylec.errorest.logging.LoggingLevel.DEBUG;

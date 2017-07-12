@@ -1,4 +1,4 @@
-package com.github.mkopylec.errorest.handling.providers;
+package com.github.mkopylec.errorest.handling.errordata;
 
 import com.github.mkopylec.errorest.logging.ErrorsLoggingList;
 import com.github.mkopylec.errorest.logging.LoggingLevel;

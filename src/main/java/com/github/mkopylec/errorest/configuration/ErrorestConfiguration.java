@@ -3,7 +3,7 @@ package com.github.mkopylec.errorest.configuration;
 import com.github.mkopylec.errorest.handling.ControllerErrorHandler;
 import com.github.mkopylec.errorest.handling.RequestMethodAttributeSettingFilter;
 import com.github.mkopylec.errorest.handling.ServletFilterErrorHandler;
-import com.github.mkopylec.errorest.handling.providers.ErrorDataProviderContext;
+import com.github.mkopylec.errorest.handling.errordata.ErrorDataProviderContext;
 import com.github.mkopylec.errorest.logging.ExceptionLogger;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

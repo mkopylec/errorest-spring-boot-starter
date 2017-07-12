@@ -1,13 +1,13 @@
-package com.github.mkopylec.errorest.handling.providers;
+package com.github.mkopylec.errorest.handling.errordata;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
-import com.github.mkopylec.errorest.handling.providers.ErrorData.ErrorDataBuilder;
+import com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder;
 import com.github.mkopylec.errorest.response.Error;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
-import static com.github.mkopylec.errorest.handling.providers.ErrorData.ErrorDataBuilder.newErrorData;
+import static com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder.newErrorData;
 
 public abstract class BeanValidationErrorDataProvider<T extends Throwable> extends ErrorDataProvider<T> {
 

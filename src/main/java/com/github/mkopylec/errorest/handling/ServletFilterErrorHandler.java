@@ -1,9 +1,9 @@
 package com.github.mkopylec.errorest.handling;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
-import com.github.mkopylec.errorest.handling.providers.ErrorData;
-import com.github.mkopylec.errorest.handling.providers.ErrorDataProvider;
-import com.github.mkopylec.errorest.handling.providers.ErrorDataProviderContext;
+import com.github.mkopylec.errorest.handling.errordata.ErrorData;
+import com.github.mkopylec.errorest.handling.errordata.ErrorDataProvider;
+import com.github.mkopylec.errorest.handling.errordata.ErrorDataProviderContext;
 import com.github.mkopylec.errorest.logging.ExceptionLogger;
 import com.github.mkopylec.errorest.response.Errors;
 import org.springframework.boot.autoconfigure.web.BasicErrorController;
