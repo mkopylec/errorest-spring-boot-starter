@@ -13,7 +13,7 @@ public class ErrorDataProviderContext {
 
     public <T extends Throwable> ErrorDataProvider getErrorDataProvider(T ex) {
         if (ex instanceof RestException) {
-            return new RestExceptionErrorDataProvider();
+            return new RestExceptionErrorDataProvider(errorestProperties);
         }
         return new ThrowableErrorDataProvider(errorestProperties);
     }

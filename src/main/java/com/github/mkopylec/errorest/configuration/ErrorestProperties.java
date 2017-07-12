@@ -2,13 +2,34 @@ package com.github.mkopylec.errorest.configuration;
 
 import com.github.mkopylec.errorest.logging.LoggingLevel;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.http.HttpStatus;
 
 import static com.github.mkopylec.errorest.logging.LoggingLevel.ERROR;
+import static com.github.mkopylec.errorest.logging.LoggingLevel.WARN;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @ConfigurationProperties("errorest")
 public class ErrorestProperties {
 
+    private BeanValidationError beanValidationError = new BeanValidationError();
+    private HttpClientError httpClientError = new HttpClientError();
     private UnexpectedError unexpectedError = new UnexpectedError();
+
+    public BeanValidationError getBeanValidationError() {
+        return beanValidationError;
+    }
+
+    public void setBeanValidationError(BeanValidationError beanValidationError) {
+        this.beanValidationError = beanValidationError;
+    }
+
+    public HttpClientError getHttpClientError() {
+        return httpClientError;
+    }
+
+    public void setHttpClientError(HttpClientError httpClientError) {
+        this.httpClientError = httpClientError;
+    }
 
     public UnexpectedError getUnexpectedError() {
         return unexpectedError;
@@ -16,6 +37,59 @@ public class ErrorestProperties {
 
     public void setUnexpectedError(UnexpectedError unexpectedError) {
         this.unexpectedError = unexpectedError;
+    }
+
+    public static class BeanValidationError {
+
+        private LoggingLevel loggingLevel = WARN;
+        private boolean logStackTrace = false;
+        private HttpStatus responseHttpStatus = UNPROCESSABLE_ENTITY;
+
+        public LoggingLevel getLoggingLevel() {
+            return loggingLevel;
+        }
+
+        public void setLoggingLevel(LoggingLevel loggingLevel) {
+            this.loggingLevel = loggingLevel;
+        }
+
+        public boolean isLogStackTrace() {
+            return logStackTrace;
+        }
+
+        public void setLogStackTrace(boolean logStackTrace) {
+            this.logStackTrace = logStackTrace;
+        }
+
+        public HttpStatus getResponseHttpStatus() {
+            return responseHttpStatus;
+        }
+
+        public void setResponseHttpStatus(HttpStatus responseHttpStatus) {
+            this.responseHttpStatus = responseHttpStatus;
+        }
+    }
+
+    public static class HttpClientError {
+
+        private String code = "HTTP_ERROR";
+        private LoggingLevel loggingLevel = WARN;
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public LoggingLevel getLoggingLevel() {
+            return loggingLevel;
+        }
+
+        public void setLoggingLevel(LoggingLevel loggingLevel) {
+            this.loggingLevel = loggingLevel;
+        }
     }
 
     public static class UnexpectedError {

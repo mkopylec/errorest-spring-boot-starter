@@ -1,8 +1,9 @@
 package com.github.mkopylec.errorest.handling.providers;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
-import com.github.mkopylec.errorest.configuration.ErrorestProperties.UnexpectedError;
 import com.github.mkopylec.errorest.handling.ErrorData;
+import com.github.mkopylec.errorest.handling.ErrorData.ErrorDataBuilder;
+import com.github.mkopylec.errorest.logging.LoggingLevel;
 import com.github.mkopylec.errorest.response.Error;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.http.HttpStatus;
@@ -11,46 +12,56 @@ import org.springframework.web.context.request.RequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 import static com.github.mkopylec.errorest.handling.ErrorData.ErrorDataBuilder.newErrorData;
-import static com.github.mkopylec.errorest.handling.RequestMethodAttributeSettingFilter.REQUEST_METHOD_ERROR_ATTRIBUTE;
-import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.web.context.request.RequestAttributes.SCOPE_REQUEST;
 
-public class ThrowableErrorDataProvider implements ErrorDataProvider<Throwable> {
-
-    protected final ErrorestProperties errorestProperties;
+public class ThrowableErrorDataProvider extends ErrorDataProvider<Throwable> {
 
     public ThrowableErrorDataProvider(ErrorestProperties errorestProperties) {
-        this.errorestProperties = errorestProperties;
+        super(errorestProperties);
     }
 
     @Override
     public ErrorData getErrorData(Throwable ex, HttpServletRequest request) {
-        UnexpectedError unexpectedError = errorestProperties.getUnexpectedError();
-        return newErrorData()
-                .withLoggingLevel(unexpectedError.getLoggingLevel())
+        //TODO HttpRequestMethodNotSupportedException, HttpMediaTypeNotSupportedException, HttpMediaTypeNotAcceptableException
+        return buildErrorData(ex, INTERNAL_SERVER_ERROR)
                 .withRequestMethod(request.getMethod())
                 .withRequestUri(request.getRequestURI())
-                .withResponseStatus(INTERNAL_SERVER_ERROR)
-                .withThrowable(ex)
-                .withLogStackTrace(unexpectedError.isLogStackTrace())
-                .addError(new Error(unexpectedError.getCode(), ex.getMessage()))
                 .build();
     }
 
     @Override
     public ErrorData getErrorData(Throwable ex, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
-        String requestMethod = defaultIfBlank((String) requestAttributes.getAttribute(REQUEST_METHOD_ERROR_ATTRIBUTE, SCOPE_REQUEST), NOT_AVAILABLE_REQUEST_DATA);
-        String requestUri = errorAttributes.getErrorAttributes(requestAttributes, false).getOrDefault(REQUEST_URI_ERROR_ATTRIBUTE, NOT_AVAILABLE_REQUEST_DATA).toString();
-        UnexpectedError unexpectedError = errorestProperties.getUnexpectedError();
-        return newErrorData()
-                .withLoggingLevel(unexpectedError.getLoggingLevel())
+        String requestMethod = getRequestMethod(requestAttributes);
+        String requestUri = getRequestUri(errorAttributes, requestAttributes);
+        return buildErrorData(ex, defaultResponseStatus)
                 .withRequestMethod(requestMethod)
                 .withRequestUri(requestUri)
                 .withResponseStatus(defaultResponseStatus)
-                .withThrowable(ex)
-                .withLogStackTrace(unexpectedError.isLogStackTrace())
-                .addError(new Error(unexpectedError.getCode(), ex.getMessage()))
                 .build();
+    }
+
+    protected ErrorDataBuilder buildErrorData(Throwable ex, HttpStatus responseHttpStatus) {
+        return newErrorData()
+                .withLoggingLevel(getLoggingLevel(responseHttpStatus))
+                .withResponseStatus(responseHttpStatus)
+                .withThrowable(ex)
+                .withLogStackTrace(isLogStackTrace(responseHttpStatus))
+                .addError(new Error(getErrorCode(responseHttpStatus), getErrorDescription(ex, responseHttpStatus)));
+    }
+
+    protected LoggingLevel getLoggingLevel(HttpStatus responseHttpStatus) {
+        return responseHttpStatus.is4xxClientError() ? errorestProperties.getHttpClientError().getLoggingLevel() : errorestProperties.getUnexpectedError().getLoggingLevel();
+    }
+
+    protected boolean isLogStackTrace(HttpStatus responseHttpStatus) {
+        return !responseHttpStatus.is4xxClientError() && errorestProperties.getUnexpectedError().isLogStackTrace();
+    }
+
+    protected String getErrorCode(HttpStatus responseHttpStatus) {
+        return responseHttpStatus.is4xxClientError() ? errorestProperties.getHttpClientError().getCode() : errorestProperties.getUnexpectedError().getCode();
+    }
+
+    protected String getErrorDescription(Throwable ex, HttpStatus responseHttpStatus) {
+        return ex == null ? responseHttpStatus.getReasonPhrase() : ex.getMessage();
     }
 }
