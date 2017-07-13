@@ -1,38 +1,47 @@
 package com.github.mkopylec.errorest.exceptions;
 
-import com.github.mkopylec.errorest.response.Error;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.mkopylec.errorest.response.Errors;
+import org.slf4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpStatusCodeException;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.List;
 
 import static com.github.mkopylec.errorest.response.Errors.emptyErrors;
+import static org.slf4j.LoggerFactory.getLogger;
 
 public class RestResponseException extends HttpStatusCodeException {
 
-    protected final Errors errors;
+    private static final Logger log = getLogger(RestResponseException.class);
 
-    public RestResponseException(HttpStatus statusCode, String statusText, HttpHeaders responseHeaders, byte[] responseBody, Charset responseCharset, Errors errors) {
+    protected final ObjectMapper mapper;
+    protected Errors errors;
+
+    public RestResponseException(HttpStatus statusCode, String statusText, HttpHeaders responseHeaders, byte[] responseBody, Charset responseCharset, ObjectMapper mapper) {
         super(statusCode, statusText, responseHeaders, responseBody, responseCharset);
-        this.errors = errors == null ? emptyErrors() : errors;
+        this.mapper = mapper;
     }
 
-    public List<Error> getErrors() {
-        return errors.getErrors();
+    public Errors getResponseBodyAsErrors() {
+        if (errors != null) {
+            return errors;
+        }
+        errors = parseResponseBody();
+        if (errors == null) {
+            errors = emptyErrors();
+        }
+        return errors;
     }
 
-    public boolean hasErrors() {
-        return errors.hasErrors();
-    }
-
-    public boolean containsErrorCode(String code) {
-        return errors.containsErrorCode(code);
-    }
-
-    public boolean containsErrorDescription(String description) {
-        return errors.containsErrorDescription(description);
+    protected Errors parseResponseBody() {
+        try {
+            return mapper.readValue(getResponseBodyAsString(), Errors.class);
+        } catch (IOException e) {
+            log.warn("Cannot convert HTTP response body to " + Errors.class.getName(), e);
+            return null;
+        }
     }
 }
