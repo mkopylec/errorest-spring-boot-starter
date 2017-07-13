@@ -1,6 +1,11 @@
 package com.github.mkopylec.errorest.response;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.github.mkopylec.errorest.logging.ErrorsLoggingList;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +18,10 @@ public class Errors {
 
     protected final List<Error> errors;
 
-    public Errors(List<Error> errors) {
+    @JsonCreator
+    public Errors(
+            @JsonProperty("errors") @JacksonXmlProperty(localName = "errors") List<Error> errors
+    ) {
         this.errors = errors == null ? new ErrorsLoggingList() : errors;
     }
 
@@ -41,5 +49,29 @@ public class Errors {
 
     public static Errors emptyErrors() {
         return new Errors(emptyList());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        Errors rhs = (Errors) obj;
+        return new EqualsBuilder()
+                .append(this.errors, rhs.errors)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(errors)
+                .toHashCode();
     }
 }

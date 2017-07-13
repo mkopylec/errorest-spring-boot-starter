@@ -21,7 +21,6 @@ public class ThrowableErrorDataProvider extends ErrorDataProvider<Throwable> {
 
     @Override
     public ErrorData getErrorData(Throwable ex, HttpServletRequest request) {
-        //TODO HttpRequestMethodNotSupportedException, HttpMediaTypeNotSupportedException, HttpMediaTypeNotAcceptableException
         return buildErrorData(ex, INTERNAL_SERVER_ERROR)
                 .withRequestMethod(request.getMethod())
                 .withRequestUri(request.getRequestURI())
