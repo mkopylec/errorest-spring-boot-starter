@@ -25,7 +25,7 @@ public class RestResponseException extends HttpStatusCodeException {
     }
 
     public boolean hasErrors() {
-        return !errors.getErrors().isEmpty();
+        return errors.hasErrors();
     }
 
     public boolean containsErrorCode(String code) {

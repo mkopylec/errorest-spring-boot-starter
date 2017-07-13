@@ -4,6 +4,7 @@ import com.github.mkopylec.errorest.logging.LoggingLevel;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpStatus;
 
+import static com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat.FULL;
 import static com.github.mkopylec.errorest.logging.LoggingLevel.ERROR;
 import static com.github.mkopylec.errorest.logging.LoggingLevel.WARN;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
@@ -11,9 +12,19 @@ import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 @ConfigurationProperties("errorest")
 public class ErrorestProperties {
 
+    // TODO response body format support
+    private ResponseBodyFormat responseBodyFormat = FULL;
     private BeanValidationError beanValidationError = new BeanValidationError();
     private HttpClientError httpClientError = new HttpClientError();
     private UnexpectedError unexpectedError = new UnexpectedError();
+
+    public ResponseBodyFormat getResponseBodyFormat() {
+        return responseBodyFormat;
+    }
+
+    public void setResponseBodyFormat(ResponseBodyFormat responseBodyFormat) {
+        this.responseBodyFormat = responseBodyFormat;
+    }
 
     public BeanValidationError getBeanValidationError() {
         return beanValidationError;
@@ -37,6 +48,10 @@ public class ErrorestProperties {
 
     public void setUnexpectedError(UnexpectedError unexpectedError) {
         this.unexpectedError = unexpectedError;
+    }
+
+    public enum ResponseBodyFormat {
+        SIMPLE, FULL
     }
 
     public static class BeanValidationError {
