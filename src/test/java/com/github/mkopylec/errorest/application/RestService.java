@@ -1,8 +1,5 @@
 package com.github.mkopylec.errorest.application;
 
-import com.github.mkopylec.errorest.exceptions.RestException;
-import com.github.mkopylec.errorest.logging.LoggingLevel;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

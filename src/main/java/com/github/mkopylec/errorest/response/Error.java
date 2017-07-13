@@ -14,8 +14,16 @@ public class Error {
         return code;
     }
 
+    public boolean hasCode(String code) {
+        return this.code.equals(code);
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public boolean hasDescription(String description) {
+        return this.description.equals(description);
     }
 
     @Override

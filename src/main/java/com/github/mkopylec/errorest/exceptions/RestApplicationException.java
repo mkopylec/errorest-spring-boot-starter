@@ -6,14 +6,18 @@ import org.springframework.http.HttpStatus;
 import static org.springframework.util.Assert.hasText;
 import static org.springframework.util.Assert.notNull;
 
-public abstract class RestException extends RuntimeException {
+public abstract class RestApplicationException extends RuntimeException {
 
     protected final String errorCode;
     protected final HttpStatus responseHttpStatus;
     protected final LoggingLevel loggingLevel;
     protected final boolean logStackTrace;
 
-    protected RestException(String errorCode, String errorDescription, HttpStatus responseHttpStatus, LoggingLevel loggingLevel, boolean logStackTrace) {
+    public RestApplicationException(RestExceptionData data) {
+        this(data.getErrorCode(), data.getErrorDescription(), data.getResponseHttpStatus(), data.getLoggingLevel(), data.isLogStackTrace());
+    }
+
+    public RestApplicationException(String errorCode, String errorDescription, HttpStatus responseHttpStatus, LoggingLevel loggingLevel, boolean logStackTrace) {
         super(errorDescription);
         hasText(errorCode, "Empty exception error code");
         notNull(responseHttpStatus, "Empty exception response HTTP status");

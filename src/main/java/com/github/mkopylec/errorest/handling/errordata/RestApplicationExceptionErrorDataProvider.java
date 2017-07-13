@@ -1,7 +1,7 @@
 package com.github.mkopylec.errorest.handling.errordata;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
-import com.github.mkopylec.errorest.exceptions.RestException;
+import com.github.mkopylec.errorest.exceptions.RestApplicationException;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder;
 import com.github.mkopylec.errorest.response.Error;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
@@ -12,14 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import static com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder.newErrorData;
 
-public class RestExceptionErrorDataProvider extends ErrorDataProvider<RestException> {
+public class RestApplicationExceptionErrorDataProvider extends ErrorDataProvider<RestApplicationException> {
 
-    public RestExceptionErrorDataProvider(ErrorestProperties errorestProperties) {
+    public RestApplicationExceptionErrorDataProvider(ErrorestProperties errorestProperties) {
         super(errorestProperties);
     }
 
     @Override
-    public ErrorData getErrorData(RestException ex, HttpServletRequest request) {
+    public ErrorData getErrorData(RestApplicationException ex, HttpServletRequest request) {
         return buildErrorData(ex)
                 .withRequestMethod(request.getMethod())
                 .withRequestUri(request.getRequestURI())
@@ -27,7 +27,7 @@ public class RestExceptionErrorDataProvider extends ErrorDataProvider<RestExcept
     }
 
     @Override
-    public ErrorData getErrorData(RestException ex, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
+    public ErrorData getErrorData(RestApplicationException ex, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
         String requestMethod = getRequestMethod(requestAttributes);
         String requestUri = getRequestUri(errorAttributes, requestAttributes);
         return buildErrorData(ex)
@@ -36,7 +36,7 @@ public class RestExceptionErrorDataProvider extends ErrorDataProvider<RestExcept
                 .build();
     }
 
-    protected ErrorDataBuilder buildErrorData(RestException ex) {
+    protected ErrorDataBuilder buildErrorData(RestApplicationException ex) {
         return newErrorData()
                 .withLoggingLevel(ex.getLoggingLevel())
                 .withResponseStatus(ex.getResponseHttpStatus())
