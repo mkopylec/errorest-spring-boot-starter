@@ -6,7 +6,6 @@ import com.github.mkopylec.errorest.response.Error
 import spock.lang.Unroll
 
 import static com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat.FULL
-import static com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat.SIMPLE
 import static org.springframework.http.HttpHeaders.ACCEPT
 import static org.springframework.http.HttpMethod.GET
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
@@ -16,23 +15,23 @@ import static org.springframework.http.MediaType.APPLICATION_XML_VALUE
 class ExceptionErrorsSpec extends BasicSpec {
 
     @Unroll
-    def "Should get error from controller for #bodyFormat response body format and 'Accept: #acceptHeader' header"() {
+    def "Should get full error from #uri request for 'Accept: #acceptHeader' header"() {
         given:
-        responseBodyFormat = bodyFormat
+        responseBodyFormat = FULL
 
         when:
-        sendRequest GET, '/controller/exception', [(ACCEPT): acceptHeader]
+        sendRequest GET, uri, [(ACCEPT): acceptHeader]
 
         then:
         def ex = thrown RestResponseException
         ex.statusCode == INTERNAL_SERVER_ERROR
-        ex.responseBodyAsErrors.errors == [new Error('UNEXPECTED_ERROR', 'Exception from controller')]
+        ex.responseBodyAsErrors.errors == [new Error('UNEXPECTED_ERROR', description)]
 
         where:
-        bodyFormat | acceptHeader
-        SIMPLE     | APPLICATION_JSON_VALUE
-        SIMPLE     | APPLICATION_XML_VALUE
-        FULL       | APPLICATION_JSON_VALUE
-        FULL       | APPLICATION_XML_VALUE
+        uri                     | acceptHeader           | description
+//        '/controller/exception' | APPLICATION_JSON_VALUE | 'Exception from controller'
+//        '/controller/exception' | APPLICATION_XML_VALUE  | 'Exception from controller'
+//        '/filter/exception'     | APPLICATION_JSON_VALUE | 'Exception from servlet filer'
+        '/filter/exception'     | APPLICATION_XML_VALUE  | 'Exception from servlet filer'
     }
 }

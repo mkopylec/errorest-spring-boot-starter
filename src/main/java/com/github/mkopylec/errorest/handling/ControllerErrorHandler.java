@@ -1,5 +1,6 @@
 package com.github.mkopylec.errorest.handling;
 
+import com.github.mkopylec.errorest.configuration.ErrorestProperties;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData;
 import com.github.mkopylec.errorest.handling.errordata.ErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.ErrorDataProviderContext;
@@ -16,10 +17,12 @@ import static org.springframework.http.ResponseEntity.status;
 @RestControllerAdvice
 public class ControllerErrorHandler {
 
+    protected final ErrorestProperties errorestProperties;
     protected final ExceptionLogger logger;
     protected final ErrorDataProviderContext providerContext;
 
-    public ControllerErrorHandler(ExceptionLogger logger, ErrorDataProviderContext providerContext) {
+    public ControllerErrorHandler(ErrorestProperties errorestProperties, ExceptionLogger logger, ErrorDataProviderContext providerContext) {
+        this.errorestProperties = errorestProperties;
         this.logger = logger;
         this.providerContext = providerContext;
     }
@@ -29,6 +32,7 @@ public class ControllerErrorHandler {
         ErrorData errorData = getErrorData(ex, request);
         logger.log(errorData);
         Errors errors = new Errors(errorData.getErrors());
+        errors.formatErrors(errorestProperties.getResponseBodyFormat());
         return status(errorData.getResponseStatus())
                 .body(errors);
     }

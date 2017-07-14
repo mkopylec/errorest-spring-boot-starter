@@ -3,13 +3,16 @@ package com.github.mkopylec.errorest.response;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class Error {
 
+    public static final String NOT_AVAILABLE_DESCRIPTION = "<N/A>";
+
     protected final String code;
-    protected final String description;
+    protected String description;
 
     @JsonCreator
     public Error(
@@ -34,6 +37,18 @@ public class Error {
 
     public boolean hasDescription(String description) {
         return this.description.equals(description);
+    }
+
+    public void format(ResponseBodyFormat bodyFormat) {
+        switch (bodyFormat) {
+            case FULL:
+                return;
+            case WITHOUT_DESCRIPTIONS:
+                description = NOT_AVAILABLE_DESCRIPTION;
+                return;
+            default:
+                throw new IllegalArgumentException("Unsupported response body format: " + bodyFormat);
+        }
     }
 
     @Override

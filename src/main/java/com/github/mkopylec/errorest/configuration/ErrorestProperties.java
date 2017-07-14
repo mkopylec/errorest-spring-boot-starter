@@ -51,7 +51,7 @@ public class ErrorestProperties {
     }
 
     public enum ResponseBodyFormat {
-        SIMPLE, FULL
+        WITHOUT_DESCRIPTIONS, FULL
     }
 
     public static class BeanValidationError {

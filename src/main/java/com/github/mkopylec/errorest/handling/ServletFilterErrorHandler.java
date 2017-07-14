@@ -39,6 +39,7 @@ public class ServletFilterErrorHandler extends BasicErrorController {
         logger.log(errorData);
         ResponseEntity<Map<String, Object>> response = super.error(request);
         Errors errors = new Errors(errorData.getErrors());
+        errors.formatErrors(errorestProperties.getResponseBodyFormat());
         return status(errorData.getResponseStatus())
                 .headers(response.getHeaders())
                 .body(errors.toMap());

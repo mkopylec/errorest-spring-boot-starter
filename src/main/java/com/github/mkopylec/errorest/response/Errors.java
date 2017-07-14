@@ -2,7 +2,9 @@ package com.github.mkopylec.errorest.response;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat;
 import com.github.mkopylec.errorest.logging.ErrorsLoggingList;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -16,11 +18,16 @@ import static java.util.Collections.unmodifiableList;
 
 public class Errors {
 
+    public static final String ROOT_ERRORS_FIELD = "errors";
+    public static final String ERRORS_ITEM_FIELD = "error";
+
+    @JacksonXmlProperty(localName = ERRORS_ITEM_FIELD)
+    @JacksonXmlElementWrapper(useWrapping = false)
     protected final List<Error> errors;
 
     @JsonCreator
     public Errors(
-            @JsonProperty("errors") @JacksonXmlProperty(localName = "errors") List<Error> errors
+            @JsonProperty("errors") @JacksonXmlProperty List<Error> errors
     ) {
         this.errors = errors == null ? new ErrorsLoggingList() : errors;
     }
@@ -41,9 +48,13 @@ public class Errors {
         return errors.stream().anyMatch(error -> error.hasDescription(description));
     }
 
+    public void formatErrors(ResponseBodyFormat bodyFormat) {
+        errors.forEach(error -> error.format(bodyFormat));
+    }
+
     public Map<String, Object> toMap() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("errors", errors);
+        Map<String, Object> map = new HashMap<>(1);
+        map.put(ROOT_ERRORS_FIELD, errors);
         return map;
     }
 
