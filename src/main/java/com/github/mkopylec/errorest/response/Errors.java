@@ -40,6 +40,10 @@ public class Errors {
         return errors.stream().anyMatch(error -> error.hasCode(code));
     }
 
+    public boolean containsErrorDescriptions() {
+        return errors.stream().anyMatch(Error::hasDescription);
+    }
+
     public boolean containsErrorDescription(String description) {
         return errors.stream().anyMatch(error -> error.hasDescription(description));
     }

@@ -12,7 +12,6 @@ import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 @ConfigurationProperties("errorest")
 public class ErrorestProperties {
 
-    // TODO response body format support
     private ResponseBodyFormat responseBodyFormat = FULL;
     private BeanValidationError beanValidationError = new BeanValidationError();
     private HttpClientError httpClientError = new HttpClientError();

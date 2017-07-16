@@ -15,4 +15,8 @@ public class Controller {
     public void throwException() throws Exception {
         throw new Exception("Exception from controller");
     }
+
+    @GetMapping(path = "/no-error", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+    public void throwNoError() {
+    }
 }

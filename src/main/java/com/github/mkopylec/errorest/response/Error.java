@@ -7,9 +7,11 @@ import com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBod
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 public class Error {
 
-    public static final String NOT_AVAILABLE_DESCRIPTION = "<N/A>";
+    public static final String DESCRIPTION_NOT_AVAILABLE = "N/A";
 
     protected final String code;
     protected String description;
@@ -35,6 +37,10 @@ public class Error {
         return description;
     }
 
+    public boolean hasDescription() {
+        return isNotBlank(description) && !description.equals(DESCRIPTION_NOT_AVAILABLE);
+    }
+
     public boolean hasDescription(String description) {
         return this.description.equals(description);
     }
@@ -44,7 +50,7 @@ public class Error {
             case FULL:
                 return;
             case WITHOUT_DESCRIPTIONS:
-                description = NOT_AVAILABLE_DESCRIPTION;
+                description = DESCRIPTION_NOT_AVAILABLE;
                 return;
             default:
                 throw new IllegalArgumentException("Unsupported response body format: " + bodyFormat);
