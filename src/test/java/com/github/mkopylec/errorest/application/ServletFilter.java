@@ -14,6 +14,9 @@ public class ServletFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        throw new ServletException("Exception from servlet filer");
+        String uri = request.getRequestURI();
+        if (uri.endsWith("/exception")) {
+            throw new ServletException("Exception from servlet filer");
+        }
     }
 }

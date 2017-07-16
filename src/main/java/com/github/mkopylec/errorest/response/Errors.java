@@ -13,24 +13,23 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
-import static java.util.Collections.unmodifiableList;
 
-@JacksonXmlRootElement(localName = "errors")
+@JacksonXmlRootElement(localName = "body")
 public class Errors {
 
     @JacksonXmlProperty(localName = "error")
-    @JacksonXmlElementWrapper(useWrapping = false)
+    @JacksonXmlElementWrapper(localName = "errors")
     protected final List<Error> errors;
 
     @JsonCreator
     public Errors(
-            @JsonProperty("errors") @JacksonXmlProperty List<Error> errors
+            @JsonProperty("errors") @JacksonXmlProperty(localName = "Jackson bug workaround") List<Error> errors
     ) {
         this.errors = errors == null ? new ErrorsLoggingList() : errors;
     }
 
     public List<Error> getErrors() {
-        return unmodifiableList(errors);
+        return errors;
     }
 
     public boolean hasErrors() {

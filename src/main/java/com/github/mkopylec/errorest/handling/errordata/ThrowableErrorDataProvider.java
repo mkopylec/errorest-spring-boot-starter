@@ -44,6 +44,7 @@ public class ThrowableErrorDataProvider extends ErrorDataProvider<Throwable> {
                 .withResponseStatus(responseHttpStatus)
                 .withThrowable(ex)
                 .withLogStackTrace(isLogStackTrace(responseHttpStatus))
+                .addError(new Error(getErrorCode(responseHttpStatus), getErrorDescription(ex, responseHttpStatus)))
                 .addError(new Error(getErrorCode(responseHttpStatus), getErrorDescription(ex, responseHttpStatus)));
     }
 
