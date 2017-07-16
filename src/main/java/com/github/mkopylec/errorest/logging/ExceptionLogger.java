@@ -49,11 +49,11 @@ public class ExceptionLogger {
     }
 
     protected String createLogTemplate() {
-        return "{} {} {}{}";
+        return "{} {} {} | {}";
     }
 
     protected String createFullLog(ErrorData errorData) {
-        String log = errorData.getRequestMethod() + " " + errorData.getRequestUri() + " " + errorData.getResponseStatus() + errorData.getErrors();
+        String log = errorData.getRequestMethod() + " " + errorData.getRequestUri() + " " + errorData.getResponseStatus() + " | " + errorData.getErrors();
         if (errorData.getThrowable() == null) {
             log += " | No stack trace available";
         }

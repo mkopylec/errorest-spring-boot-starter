@@ -4,24 +4,21 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat;
 import com.github.mkopylec.errorest.logging.ErrorsLoggingList;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.unmodifiableList;
 
+@JacksonXmlRootElement(localName = "errors")
 public class Errors {
 
-    public static final String ROOT_ERRORS_FIELD = "errors";
-    public static final String ERRORS_ITEM_FIELD = "error";
-
-    @JacksonXmlProperty(localName = ERRORS_ITEM_FIELD)
+    @JacksonXmlProperty(localName = "error")
     @JacksonXmlElementWrapper(useWrapping = false)
     protected final List<Error> errors;
 
@@ -50,12 +47,6 @@ public class Errors {
 
     public void formatErrors(ResponseBodyFormat bodyFormat) {
         errors.forEach(error -> error.format(bodyFormat));
-    }
-
-    public Map<String, Object> toMap() {
-        Map<String, Object> map = new HashMap<>(1);
-        map.put(ROOT_ERRORS_FIELD, errors);
-        return map;
     }
 
     public static Errors emptyErrors() {

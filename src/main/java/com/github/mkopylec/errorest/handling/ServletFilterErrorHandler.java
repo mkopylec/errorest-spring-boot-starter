@@ -6,43 +6,52 @@ import com.github.mkopylec.errorest.handling.errordata.ErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.ErrorDataProviderContext;
 import com.github.mkopylec.errorest.logging.ExceptionLogger;
 import com.github.mkopylec.errorest.response.Errors;
-import org.springframework.boot.autoconfigure.web.BasicErrorController;
+import org.springframework.boot.autoconfigure.web.AbstractErrorController;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
+import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
+import static java.util.Collections.emptyList;
 import static org.springframework.http.ResponseEntity.status;
 
-public class ServletFilterErrorHandler extends BasicErrorController {
+@RestController
+public class ServletFilterErrorHandler extends AbstractErrorController {
 
     protected final ErrorAttributes errorAttributes;
     protected final ErrorestProperties errorestProperties;
+    protected final ErrorProperties errorProperties;
     protected final ExceptionLogger logger;
     protected final ErrorDataProviderContext providerContext;
 
     public ServletFilterErrorHandler(ErrorAttributes errorAttributes, ServerProperties serverProperties, ErrorestProperties errorestProperties, ExceptionLogger logger, ErrorDataProviderContext providerContext) {
-        super(errorAttributes, serverProperties.getError());
+        super(errorAttributes, emptyList());
         this.errorAttributes = errorAttributes;
         this.errorestProperties = errorestProperties;
+        errorProperties = serverProperties.getError();
         this.logger = logger;
         this.providerContext = providerContext;
     }
 
-    @Override
-    public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
+    @GetMapping("${server.error.path:${error.path:/error}}")
+    public ResponseEntity<Errors> error(HttpServletRequest request) {
         ErrorData errorData = getErrorData(request);
         logger.log(errorData);
-        ResponseEntity<Map<String, Object>> response = super.error(request);
         Errors errors = new Errors(errorData.getErrors());
         errors.formatErrors(errorestProperties.getResponseBodyFormat());
         return status(errorData.getResponseStatus())
-                .headers(response.getHeaders())
-                .body(errors.toMap());
+                .body(errors);
+    }
+
+    @Override
+    public String getErrorPath() {
+        return errorProperties.getPath();
     }
 
     @SuppressWarnings("unchecked")

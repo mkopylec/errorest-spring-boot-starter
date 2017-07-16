@@ -4,7 +4,7 @@ import com.github.mkopylec.errorest.response.Error;
 
 import java.util.ArrayList;
 
-import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static java.util.stream.Collectors.joining;
 
 public class ErrorsLoggingList extends ArrayList<Error> {
 
@@ -14,6 +14,6 @@ public class ErrorsLoggingList extends ArrayList<Error> {
 
     @Override
     public String toString() {
-        return stream().map(Error::toString).reduce(EMPTY, (error, nextError) -> error + " | " + nextError);
+        return stream().map(Error::toString).collect(joining(" | "));
     }
 }
