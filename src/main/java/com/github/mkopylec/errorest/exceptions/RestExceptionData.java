@@ -10,6 +10,7 @@ public class RestExceptionData {
     protected HttpStatus responseHttpStatus;
     protected LoggingLevel loggingLevel;
     protected boolean logStackTrace;
+    protected Throwable cause;
 
     public String getErrorCode() {
         return errorCode;
@@ -53,6 +54,18 @@ public class RestExceptionData {
 
     public RestExceptionData withLogStackTrace() {
         this.logStackTrace = true;
+        return this;
+    }
+
+    public Throwable getCause() {
+        return cause;
+    }
+
+    public RestExceptionData withCause(Throwable cause) {
+        if (cause != null) {
+            logStackTrace = true;
+        }
+        this.cause = cause;
         return this;
     }
 }

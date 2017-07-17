@@ -14,11 +14,19 @@ public abstract class RestApplicationException extends RuntimeException {
     protected final boolean logStackTrace;
 
     public RestApplicationException(RestExceptionData data) {
-        this(data.getErrorCode(), data.getErrorDescription(), data.getResponseHttpStatus(), data.getLoggingLevel(), data.isLogStackTrace());
+        this(data.getErrorCode(), data.getErrorDescription(), data.getResponseHttpStatus(), data.getLoggingLevel(), data.isLogStackTrace(), data.getCause());
     }
 
     public RestApplicationException(String errorCode, String errorDescription, HttpStatus responseHttpStatus, LoggingLevel loggingLevel, boolean logStackTrace) {
-        super(errorDescription);
+        this(errorCode, errorDescription, responseHttpStatus, loggingLevel, logStackTrace, null);
+    }
+
+    public RestApplicationException(String errorCode, String errorDescription, HttpStatus responseHttpStatus, LoggingLevel loggingLevel, Throwable cause) {
+        this(errorCode, errorDescription, responseHttpStatus, loggingLevel, true, cause);
+    }
+
+    private RestApplicationException(String errorCode, String errorDescription, HttpStatus responseHttpStatus, LoggingLevel loggingLevel, boolean logStackTrace, Throwable cause) {
+        super(errorDescription, cause);
         hasText(errorCode, "Empty exception error code");
         notNull(responseHttpStatus, "Empty exception response HTTP status");
         notNull(loggingLevel, "Empty exception logging level");

@@ -45,16 +45,12 @@ public class RestResponseExceptionErrorDataProvider extends ErrorDataProvider<Re
                 .withLoggingLevel(getLoggingLevel(responseHttpStatus))
                 .withResponseStatus(responseHttpStatus)
                 .withThrowable(ex)
-                .withLogStackTrace(isLogStackTrace(responseHttpStatus));
+                .withLogStackTrace(true);
         ex.getResponseBodyAsErrors().getErrors().forEach(builder::addError);
         return builder;
     }
 
     protected LoggingLevel getLoggingLevel(HttpStatus responseHttpStatus) {
         return responseHttpStatus.is4xxClientError() ? errorestProperties.getHttpClientError().getLoggingLevel() : ERROR;
-    }
-
-    protected boolean isLogStackTrace(HttpStatus responseHttpStatus) {
-        return !responseHttpStatus.is4xxClientError() || errorestProperties.getHttpClientError().isLogStackTrace();
     }
 }
