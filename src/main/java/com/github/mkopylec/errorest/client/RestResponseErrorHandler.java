@@ -9,10 +9,18 @@ import org.springframework.web.client.HttpStatusCodeException;
 
 import java.io.IOException;
 
+import static org.springframework.http.converter.json.Jackson2ObjectMapperBuilder.json;
+import static org.springframework.http.converter.json.Jackson2ObjectMapperBuilder.xml;
+
 public class RestResponseErrorHandler extends DefaultResponseErrorHandler {
 
     protected final ObjectMapper jsonMapper;
     protected final XmlMapper xmlMapper;
+
+    public RestResponseErrorHandler() {
+        jsonMapper = createJsonMapper();
+        xmlMapper = createXmlMapper();
+    }
 
     public RestResponseErrorHandler(ObjectMapper jsonMapper, XmlMapper xmlMapper) {
         this.jsonMapper = jsonMapper;
@@ -31,5 +39,13 @@ public class RestResponseErrorHandler extends DefaultResponseErrorHandler {
 
     protected RestResponseException replaceWithRestResponseException(HttpStatusCodeException ex, ClientHttpResponse response) {
         return new RestResponseException(ex.getStatusCode(), ex.getStatusText(), ex.getResponseHeaders(), ex.getResponseBodyAsByteArray(), getCharset(response), jsonMapper, xmlMapper);
+    }
+
+    protected ObjectMapper createJsonMapper() {
+        return json().build();
+    }
+
+    protected XmlMapper createXmlMapper() {
+        return xml().build();
     }
 }

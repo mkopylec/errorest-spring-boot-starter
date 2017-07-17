@@ -38,7 +38,7 @@ public class RestResponseException extends HttpStatusCodeException {
         }
         errors = parseResponseBody();
         if (errors == null) {
-            errors = emptyErrors();
+            return emptyErrors();
         }
         return errors;
     }
