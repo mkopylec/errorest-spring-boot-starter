@@ -43,6 +43,11 @@ public class RestResponseException extends HttpStatusCodeException {
         return errors;
     }
 
+    @Override
+    public String getMessage() {
+        return "External HTTP request has failed | Status: " + getStatusCode() + " | " + getResponseBodyAsString();
+    }
+
     protected Errors parseResponseBody() {
         try {
             if (hasContentType(APPLICATION_JSON)) {

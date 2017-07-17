@@ -5,6 +5,7 @@ import com.github.mkopylec.errorest.exceptions.RestApplicationException;
 import com.github.mkopylec.errorest.exceptions.RestResponseException;
 import com.github.mkopylec.errorest.handling.errordata.http.MediaTypeNotAcceptableErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.http.MediaTypeNotSupportedErrorDataProvider;
+import com.github.mkopylec.errorest.handling.errordata.http.MissingServletRequestParameterErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.http.RequestMethodNotSupportedErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.rest.RestApplicationExceptionErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.rest.RestResponseExceptionErrorDataProvider;
@@ -15,6 +16,7 @@ import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 
 public class ErrorDataProviderContext {
 
@@ -45,6 +47,9 @@ public class ErrorDataProviderContext {
         }
         if (ex instanceof HttpRequestMethodNotSupportedException) {
             return new RequestMethodNotSupportedErrorDataProvider(errorestProperties);
+        }
+        if (ex instanceof MissingServletRequestParameterException) {
+            return new MissingServletRequestParameterErrorDataProvider(errorestProperties);
         }
         return new ThrowableErrorDataProvider(errorestProperties);
     }

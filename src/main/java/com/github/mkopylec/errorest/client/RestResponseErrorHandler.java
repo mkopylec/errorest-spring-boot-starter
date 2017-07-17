@@ -36,8 +36,9 @@ public class RestResponseErrorHandler extends DefaultResponseErrorHandler {
         try {
             super.handleError(response);
         } catch (HttpStatusCodeException ex) {
-            log.debug("External HTTP request has failed | Status: {} | Body: {}", ex.getStatusCode(), ex.getResponseBodyAsString());
-            throw replaceWithRestResponseException(ex, response);
+            RestResponseException exception = replaceWithRestResponseException(ex, response);
+            log.debug(ex.getMessage(), ex);
+            throw exception;
         }
     }
 
