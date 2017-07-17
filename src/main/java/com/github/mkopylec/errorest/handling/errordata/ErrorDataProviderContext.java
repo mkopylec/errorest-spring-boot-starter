@@ -2,6 +2,14 @@ package com.github.mkopylec.errorest.handling.errordata;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
 import com.github.mkopylec.errorest.exceptions.RestApplicationException;
+import com.github.mkopylec.errorest.exceptions.RestResponseException;
+import com.github.mkopylec.errorest.handling.errordata.http.MediaTypeNotAcceptableErrorDataProvider;
+import com.github.mkopylec.errorest.handling.errordata.http.MediaTypeNotSupportedErrorDataProvider;
+import com.github.mkopylec.errorest.handling.errordata.http.RequestMethodNotSupportedErrorDataProvider;
+import com.github.mkopylec.errorest.handling.errordata.rest.RestApplicationExceptionErrorDataProvider;
+import com.github.mkopylec.errorest.handling.errordata.rest.RestResponseExceptionErrorDataProvider;
+import com.github.mkopylec.errorest.handling.errordata.validation.BindExceptionErrorDataProvider;
+import com.github.mkopylec.errorest.handling.errordata.validation.MethodArgumentNotValidErrorDataProvider;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -20,6 +28,9 @@ public class ErrorDataProviderContext {
         if (ex instanceof RestApplicationException) {
             return new RestApplicationExceptionErrorDataProvider(errorestProperties);
         }
+        if (ex instanceof RestResponseException) {
+            return new RestResponseExceptionErrorDataProvider(errorestProperties);
+        }
         if (ex instanceof BindException) {
             return new BindExceptionErrorDataProvider(errorestProperties);
         }
@@ -35,7 +46,6 @@ public class ErrorDataProviderContext {
         if (ex instanceof HttpRequestMethodNotSupportedException) {
             return new RequestMethodNotSupportedErrorDataProvider(errorestProperties);
         }
-        // TODO RestResponseException error data provider
         return new ThrowableErrorDataProvider(errorestProperties);
     }
 }

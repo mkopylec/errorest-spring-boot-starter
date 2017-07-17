@@ -1,9 +1,9 @@
-package com.github.mkopylec.errorest.handling.errordata;
+package com.github.mkopylec.errorest.handling.errordata.validation;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder;
+import com.github.mkopylec.errorest.handling.errordata.ErrorDataProvider;
 import com.github.mkopylec.errorest.response.Error;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;

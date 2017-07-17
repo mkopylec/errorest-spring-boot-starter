@@ -3,16 +3,20 @@ package com.github.mkopylec.errorest.client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.github.mkopylec.errorest.exceptions.RestResponseException;
+import org.slf4j.Logger;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.HttpStatusCodeException;
 
 import java.io.IOException;
 
+import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.http.converter.json.Jackson2ObjectMapperBuilder.json;
 import static org.springframework.http.converter.json.Jackson2ObjectMapperBuilder.xml;
 
 public class RestResponseErrorHandler extends DefaultResponseErrorHandler {
+
+    private static final Logger log = getLogger(RestResponseErrorHandler.class);
 
     protected final ObjectMapper jsonMapper;
     protected final XmlMapper xmlMapper;
@@ -32,6 +36,7 @@ public class RestResponseErrorHandler extends DefaultResponseErrorHandler {
         try {
             super.handleError(response);
         } catch (HttpStatusCodeException ex) {
+            log.debug("External HTTP request has failed | Status: {} | Body: {}", ex.getStatusCode(), ex.getResponseBodyAsString());
             throw replaceWithRestResponseException(ex, response);
         }
     }

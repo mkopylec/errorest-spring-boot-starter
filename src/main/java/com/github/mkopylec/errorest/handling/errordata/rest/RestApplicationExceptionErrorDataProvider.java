@@ -1,8 +1,10 @@
-package com.github.mkopylec.errorest.handling.errordata;
+package com.github.mkopylec.errorest.handling.errordata.rest;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
 import com.github.mkopylec.errorest.exceptions.RestApplicationException;
+import com.github.mkopylec.errorest.handling.errordata.ErrorData;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder;
+import com.github.mkopylec.errorest.handling.errordata.ErrorDataProvider;
 import com.github.mkopylec.errorest.response.Error;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.http.HttpStatus;

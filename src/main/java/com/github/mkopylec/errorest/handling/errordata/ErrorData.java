@@ -4,6 +4,7 @@ import com.github.mkopylec.errorest.logging.ErrorsLoggingList;
 import com.github.mkopylec.errorest.logging.LoggingLevel;
 import com.github.mkopylec.errorest.response.Error;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import java.util.List;
 
@@ -49,6 +50,10 @@ public class ErrorData {
 
     public Throwable getThrowable() {
         return throwable;
+    }
+
+    public boolean isExternalRequestError() {
+        return throwable instanceof HttpStatusCodeException;
     }
 
     public boolean isLogStackTrace() {

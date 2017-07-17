@@ -1,8 +1,10 @@
-package com.github.mkopylec.errorest.handling.errordata;
+package com.github.mkopylec.errorest.handling.errordata.http;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
 import com.github.mkopylec.errorest.configuration.ErrorestProperties.HttpClientError;
+import com.github.mkopylec.errorest.handling.errordata.ErrorData;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder;
+import com.github.mkopylec.errorest.handling.errordata.ErrorDataProvider;
 import com.github.mkopylec.errorest.response.Error;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import static com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder.newErrorData;
 
+// TODO Implement support for every 4xx exception in ResponseEntityExceptionHandler
 public abstract class HttpClientErrorDataProvider<T extends Throwable> extends ErrorDataProvider<T> {
 
     public static final String HTTP_CLIENT_ERROR_CODE = "HTTP_CLIENT_ERROR";

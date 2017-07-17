@@ -17,23 +17,23 @@ public class ExceptionLogger {
     public void log(ErrorData errorData) {
         log(TRACE, errorData,
                 () -> log.trace(createFullLog(errorData), errorData.getThrowable()),
-                () -> log.trace(createLogTemplate(), errorData.getRequestMethod(), errorData.getRequestUri(), errorData.getResponseStatus(), errorData.getErrors())
+                () -> log.trace(createLogTemplate(errorData), errorData.getRequestMethod(), errorData.getRequestUri(), errorData.getResponseStatus(), errorData.getErrors())
         );
         log(DEBUG, errorData,
                 () -> log.debug(createFullLog(errorData), errorData.getThrowable()),
-                () -> log.debug(createLogTemplate(), errorData.getRequestMethod(), errorData.getRequestUri(), errorData.getResponseStatus(), errorData.getErrors())
+                () -> log.debug(createLogTemplate(errorData), errorData.getRequestMethod(), errorData.getRequestUri(), errorData.getResponseStatus(), errorData.getErrors())
         );
         log(INFO, errorData,
                 () -> log.info(createFullLog(errorData), errorData.getThrowable()),
-                () -> log.info(createLogTemplate(), errorData.getRequestMethod(), errorData.getRequestUri(), errorData.getResponseStatus(), errorData.getErrors())
+                () -> log.info(createLogTemplate(errorData), errorData.getRequestMethod(), errorData.getRequestUri(), errorData.getResponseStatus(), errorData.getErrors())
         );
         log(WARN, errorData,
                 () -> log.warn(createFullLog(errorData), errorData.getThrowable()),
-                () -> log.warn(createLogTemplate(), errorData.getRequestMethod(), errorData.getRequestUri(), errorData.getResponseStatus(), errorData.getErrors())
+                () -> log.warn(createLogTemplate(errorData), errorData.getRequestMethod(), errorData.getRequestUri(), errorData.getResponseStatus(), errorData.getErrors())
         );
         log(ERROR, errorData,
                 () -> log.error(createFullLog(errorData), errorData.getThrowable()),
-                () -> log.error(createLogTemplate(), errorData.getRequestMethod(), errorData.getRequestUri(), errorData.getResponseStatus(), errorData.getErrors())
+                () -> log.error(createLogTemplate(errorData), errorData.getRequestMethod(), errorData.getRequestUri(), errorData.getResponseStatus(), errorData.getErrors())
         );
     }
 
@@ -48,12 +48,16 @@ public class ExceptionLogger {
         }
     }
 
-    protected String createLogTemplate() {
-        return "{} {} {} | {}";
+    protected String createLogTemplate(ErrorData errorData) {
+        return errorData.isExternalRequestError() ? "{} {} {} | External HTTP request has failed | {}" : "{} {} {} | {}";
     }
 
     protected String createFullLog(ErrorData errorData) {
-        String log = errorData.getRequestMethod() + " " + errorData.getRequestUri() + " " + errorData.getResponseStatus() + " | " + errorData.getErrors();
+        String log = errorData.getRequestMethod() + " " + errorData.getRequestUri() + " " + errorData.getResponseStatus();
+        if (errorData.isExternalRequestError()) {
+            log += " | External HTTP request has failed";
+        }
+        log += " | " + errorData.getErrors();
         if (errorData.getThrowable() == null) {
             log += " | No stack trace available";
         }
