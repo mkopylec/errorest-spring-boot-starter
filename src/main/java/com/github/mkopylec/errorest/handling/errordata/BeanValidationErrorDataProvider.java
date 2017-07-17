@@ -3,11 +3,13 @@ package com.github.mkopylec.errorest.handling.errordata;
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder;
 import com.github.mkopylec.errorest.response.Error;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
 import static com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder.newErrorData;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 public abstract class BeanValidationErrorDataProvider<T extends Throwable> extends ErrorDataProvider<T> {
 
@@ -19,7 +21,7 @@ public abstract class BeanValidationErrorDataProvider<T extends Throwable> exten
         ErrorestProperties.BeanValidationError validationError = errorestProperties.getBeanValidationError();
         ErrorDataBuilder builder = newErrorData()
                 .withLoggingLevel(validationError.getLoggingLevel())
-                .withResponseStatus(validationError.getResponseHttpStatus())
+                .withResponseStatus(UNPROCESSABLE_ENTITY)
                 .withLogStackTrace(validationError.isLogStackTrace());
         result.getAllErrors().forEach(objectError -> {
             Error error = createError(objectError);

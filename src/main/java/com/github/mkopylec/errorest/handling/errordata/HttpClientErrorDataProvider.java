@@ -14,6 +14,8 @@ import static com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDat
 
 public abstract class HttpClientErrorDataProvider<T extends Throwable> extends ErrorDataProvider<T> {
 
+    public static final String HTTP_CLIENT_ERROR_CODE = "HTTP_CLIENT_ERROR";
+
     public HttpClientErrorDataProvider(ErrorestProperties errorestProperties) {
         super(errorestProperties);
     }
@@ -43,7 +45,7 @@ public abstract class HttpClientErrorDataProvider<T extends Throwable> extends E
                 .withResponseStatus(responseHttpStatus)
                 .withThrowable(ex)
                 .withLogStackTrace(httpClientError.isLogStackTrace())
-                .addError(new Error(httpClientError.getCode(), getErrorDescription(ex)));
+                .addError(new Error(HTTP_CLIENT_ERROR_CODE, getErrorDescription(ex)));
     }
 
     protected abstract String getErrorDescription(T ex);

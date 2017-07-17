@@ -11,9 +11,13 @@ import org.springframework.web.context.request.RequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 import static com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder.newErrorData;
+import static com.github.mkopylec.errorest.handling.errordata.HttpClientErrorDataProvider.HTTP_CLIENT_ERROR_CODE;
+import static com.github.mkopylec.errorest.logging.LoggingLevel.ERROR;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 public class ThrowableErrorDataProvider extends ErrorDataProvider<Throwable> {
+
+    public static final String UNEXPECTED_ERROR_CODE = "UNEXPECTED_ERROR";
 
     public ThrowableErrorDataProvider(ErrorestProperties errorestProperties) {
         super(errorestProperties);
@@ -48,15 +52,15 @@ public class ThrowableErrorDataProvider extends ErrorDataProvider<Throwable> {
     }
 
     protected LoggingLevel getLoggingLevel(HttpStatus responseHttpStatus) {
-        return responseHttpStatus.is4xxClientError() ? errorestProperties.getHttpClientError().getLoggingLevel() : errorestProperties.getUnexpectedError().getLoggingLevel();
+        return responseHttpStatus.is4xxClientError() ? errorestProperties.getHttpClientError().getLoggingLevel() : ERROR;
     }
 
     protected boolean isLogStackTrace(HttpStatus responseHttpStatus) {
-        return responseHttpStatus.is4xxClientError() ? errorestProperties.getHttpClientError().isLogStackTrace() : errorestProperties.getUnexpectedError().isLogStackTrace();
+        return !responseHttpStatus.is4xxClientError() || errorestProperties.getHttpClientError().isLogStackTrace();
     }
 
     protected String getErrorCode(HttpStatus responseHttpStatus) {
-        return responseHttpStatus.is4xxClientError() ? errorestProperties.getHttpClientError().getCode() : errorestProperties.getUnexpectedError().getCode();
+        return responseHttpStatus.is4xxClientError() ? HTTP_CLIENT_ERROR_CODE : UNEXPECTED_ERROR_CODE;
     }
 
     protected String getErrorDescription(Throwable ex, HttpStatus responseHttpStatus) {

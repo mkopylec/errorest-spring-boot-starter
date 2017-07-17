@@ -2,4 +2,5 @@
 gradle.properties
 .gradle
 build
+classes
 *.iml

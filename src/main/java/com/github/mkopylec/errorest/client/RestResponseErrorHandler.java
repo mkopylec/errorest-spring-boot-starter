@@ -32,7 +32,6 @@ public class RestResponseErrorHandler extends DefaultResponseErrorHandler {
         try {
             super.handleError(response);
         } catch (HttpStatusCodeException ex) {
-            // TODO log exception with body
             throw replaceWithRestResponseException(ex, response);
         }
     }
