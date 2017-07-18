@@ -5,7 +5,6 @@ import com.github.mkopylec.errorest.exceptions.RestApplicationException;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder;
 import com.github.mkopylec.errorest.handling.errordata.ErrorDataProvider;
-import com.github.mkopylec.errorest.response.Error;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.context.request.RequestAttributes;
@@ -39,11 +38,13 @@ public class RestApplicationExceptionErrorDataProvider extends ErrorDataProvider
     }
 
     protected ErrorDataBuilder buildErrorData(RestApplicationException ex) {
-        return newErrorData()
+        ErrorDataBuilder builder = newErrorData()
                 .withLoggingLevel(ex.getLoggingLevel())
                 .withResponseStatus(ex.getResponseHttpStatus())
+                .withMessage(ex.getMessage())
                 .withThrowable(ex)
-                .withLogStackTrace(ex.isLogStackTrace())
-                .addError(new Error(ex.getErrorCode(), ex.getErrorDescription()));
+                .withLogStackTrace(ex.isLogStackTrace());
+        ex.getErrors().forEach(builder::addError);
+        return builder;
     }
 }

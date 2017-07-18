@@ -12,6 +12,7 @@ import org.springframework.web.context.request.RequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.github.mkopylec.errorest.handling.errordata.ErrorData.EXTERNAL_REQUEST_FAIL_MESSAGE;
 import static com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder.newErrorData;
 import static com.github.mkopylec.errorest.logging.LoggingLevel.ERROR;
 
@@ -44,6 +45,7 @@ public class RestResponseExceptionErrorDataProvider extends ErrorDataProvider<Re
         ErrorDataBuilder builder = newErrorData()
                 .withLoggingLevel(getLoggingLevel(responseHttpStatus))
                 .withResponseStatus(responseHttpStatus)
+                .withMessage(EXTERNAL_REQUEST_FAIL_MESSAGE)
                 .withThrowable(ex)
                 .withLogStackTrace(true);
         ex.getResponseBodyAsErrors().getErrors().forEach(builder::addError);

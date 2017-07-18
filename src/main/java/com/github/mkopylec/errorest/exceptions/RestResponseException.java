@@ -12,6 +12,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+import static com.github.mkopylec.errorest.handling.errordata.ErrorData.EXTERNAL_REQUEST_FAIL_MESSAGE;
 import static com.github.mkopylec.errorest.response.Errors.emptyErrors;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
@@ -45,7 +46,7 @@ public class RestResponseException extends HttpStatusCodeException {
 
     @Override
     public String getMessage() {
-        return "External HTTP request has failed | Status: " + getStatusCode() + " | " + getResponseBodyAsString();
+        return EXTERNAL_REQUEST_FAIL_MESSAGE + " | Status: " + getStatusCode() + " | " + getResponseBodyAsString();
     }
 
     protected Errors parseResponseBody() {

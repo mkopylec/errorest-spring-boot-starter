@@ -49,13 +49,13 @@ public class ExceptionLogger {
     }
 
     protected String createLogTemplate(ErrorData errorData) {
-        return errorData.isExternalRequestError() ? "{} {} {} | External HTTP request has failed | {}" : "{} {} {} | {}";
+        return errorData.hasMessage() ? "{} {} {} | " + errorData.getMessage() + " | {}" : "{} {} {} | {}";
     }
 
     protected String createFullLog(ErrorData errorData) {
         String log = errorData.getRequestMethod() + " " + errorData.getRequestUri() + " " + errorData.getResponseStatus();
-        if (errorData.isExternalRequestError()) {
-            log += " | External HTTP request has failed";
+        if (errorData.hasMessage()) {
+            log += " | " + errorData.getMessage();
         }
         log += " | " + errorData.getErrors();
         if (errorData.getThrowable() == null) {

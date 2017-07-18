@@ -1,32 +1,36 @@
 package com.github.mkopylec.errorest.exceptions;
 
+import com.github.mkopylec.errorest.logging.ErrorsLoggingList;
 import com.github.mkopylec.errorest.logging.LoggingLevel;
+import com.github.mkopylec.errorest.response.Error;
 import org.springframework.http.HttpStatus;
+
+import java.util.List;
 
 public class RestExceptionData {
 
-    protected String errorCode;
-    protected String errorDescription;
+    protected String message;
+    protected final List<Error> errors = new ErrorsLoggingList();
     protected HttpStatus responseHttpStatus;
     protected LoggingLevel loggingLevel;
     protected boolean logStackTrace;
     protected Throwable cause;
 
-    public String getErrorCode() {
-        return errorCode;
+    public String getMessage() {
+        return message;
     }
 
-    public RestExceptionData withErrorCode(String errorCode) {
-        this.errorCode = errorCode;
+    public RestExceptionData withMessage(String message) {
+        this.message = message;
         return this;
     }
 
-    public String getErrorDescription() {
-        return errorDescription;
+    public List<Error> getErrors() {
+        return errors;
     }
 
-    public RestExceptionData withErrorDescription(String errorDescription) {
-        this.errorDescription = errorDescription;
+    public RestExceptionData addError(String code, String description) {
+        errors.add(new Error(code, description));
         return this;
     }
 
