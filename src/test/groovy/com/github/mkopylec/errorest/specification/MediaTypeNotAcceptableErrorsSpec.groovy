@@ -9,11 +9,12 @@ import static com.github.mkopylec.errorest.configuration.ErrorestProperties.Resp
 import static com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat.WITHOUT_DESCRIPTIONS
 import static org.springframework.http.HttpHeaders.ACCEPT
 import static org.springframework.http.HttpMethod.GET
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
+import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import static org.springframework.http.MediaType.APPLICATION_XML_VALUE
+import static org.springframework.http.MediaType.TEXT_XML_VALUE
 
-class ExceptionErrorsSpec extends BasicSpec {
+class MediaTypeNotAcceptableErrorsSpec extends BasicSpec {
 
     @Unroll
     def "Should get full error from #uri request for 'Accept: #acceptHeader' header"() {
@@ -25,15 +26,13 @@ class ExceptionErrorsSpec extends BasicSpec {
 
         then:
         def ex = thrown RestResponseException
-        ex.statusCode == INTERNAL_SERVER_ERROR
-        ex.responseBodyAsErrors.errors == [new Error('UNEXPECTED_ERROR', description)]
+        ex.statusCode == NOT_ACCEPTABLE
+        ex.responseBodyAsErrors.errors == [new Error('HTTP_CLIENT_ERROR', description)]
 
         where:
-        uri                     | acceptHeader           | description
-        '/controller/exception' | APPLICATION_JSON_VALUE | 'Exception from controller'
-        '/controller/exception' | APPLICATION_XML_VALUE  | 'Exception from controller'
-        '/filter/exception'     | APPLICATION_JSON_VALUE | 'Exception from servlet filer'
-        '/filter/exception'     | APPLICATION_XML_VALUE  | 'Exception from servlet filer'
+        uri                                     | acceptHeader   | description
+        '/controller/media-type-not-acceptable' | TEXT_XML_VALUE | 'HttpMediaTypeNotAcceptableException from controller'
+        '/filter/media-type-not-acceptable'     | TEXT_XML_VALUE | 'HttpMediaTypeNotAcceptableException from servlet filer'
     }
 
     @Unroll
@@ -46,14 +45,14 @@ class ExceptionErrorsSpec extends BasicSpec {
 
         then:
         def ex = thrown RestResponseException
-        ex.statusCode == INTERNAL_SERVER_ERROR
-        ex.responseBodyAsErrors.errors == [new Error('UNEXPECTED_ERROR', 'N/A')]
+        ex.statusCode == NOT_ACCEPTABLE
+        ex.responseBodyAsErrors.errors == [new Error('HTTP_CLIENT_ERROR', 'N/A')]
 
         where:
-        uri                     | acceptHeader
-        '/controller/exception' | APPLICATION_JSON_VALUE
-        '/controller/exception' | APPLICATION_XML_VALUE
-        '/filter/exception'     | APPLICATION_JSON_VALUE
-        '/filter/exception'     | APPLICATION_XML_VALUE
+        uri                                     | acceptHeader
+        '/controller/media-type-not-acceptable' | APPLICATION_JSON_VALUE
+        '/controller/media-type-not-acceptable' | APPLICATION_XML_VALUE
+        '/filter/media-type-not-acceptable'     | APPLICATION_JSON_VALUE
+        '/filter/media-type-not-acceptable'     | APPLICATION_XML_VALUE
     }
 }

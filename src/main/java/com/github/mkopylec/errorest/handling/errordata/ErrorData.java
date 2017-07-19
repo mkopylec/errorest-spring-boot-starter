@@ -4,6 +4,7 @@ import com.github.mkopylec.errorest.logging.ErrorsLoggingList;
 import com.github.mkopylec.errorest.logging.LoggingLevel;
 import com.github.mkopylec.errorest.response.Error;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 
 import java.util.List;
 
@@ -47,6 +48,10 @@ public class ErrorData {
 
     public HttpStatus getResponseStatus() {
         return responseStatus;
+    }
+
+    public boolean hasToSetResponseBody() {
+        return !(throwable instanceof HttpMediaTypeNotAcceptableException);
     }
 
     public String getMessage() {

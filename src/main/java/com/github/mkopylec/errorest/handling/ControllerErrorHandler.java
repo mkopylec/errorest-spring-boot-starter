@@ -34,7 +34,7 @@ public class ControllerErrorHandler {
         Errors errors = new Errors(errorData.getErrors());
         errors.formatErrors(errorestProperties.getResponseBodyFormat());
         return status(errorData.getResponseStatus())
-                .body(errors);
+                .body(errorData.hasToSetResponseBody() ? errors : null);
     }
 
     @SuppressWarnings("unchecked")

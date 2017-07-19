@@ -46,7 +46,7 @@ public class RestResponseException extends HttpStatusCodeException {
 
     @Override
     public String getMessage() {
-        return EXTERNAL_REQUEST_FAIL_MESSAGE + " | Status: " + getStatusCode() + " | " + getResponseBodyAsString();
+        return EXTERNAL_REQUEST_FAIL_MESSAGE + " | Status: " + getStatusCode() + " | Body: " + getResponseBodyAsString();
     }
 
     protected Errors parseResponseBody() {
@@ -65,6 +65,7 @@ public class RestResponseException extends HttpStatusCodeException {
     }
 
     private boolean hasContentType(MediaType mediaType) {
-        return getResponseHeaders().getContentType().includes(mediaType);
+        MediaType contentType = getResponseHeaders().getContentType();
+        return contentType == null || contentType.includes(mediaType);
     }
 }
