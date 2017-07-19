@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import static com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder.newErrorData;
 
-// TODO Implement support for every 4xx exception in ResponseEntityExceptionHandler
 public abstract class HttpClientErrorDataProvider<T extends Throwable> extends ErrorDataProvider<T> {
 
     public static final String HTTP_CLIENT_ERROR_CODE = "HTTP_CLIENT_ERROR";
