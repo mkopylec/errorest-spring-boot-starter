@@ -1,7 +1,9 @@
-package com.github.mkopylec.errorest.handling.errordata;
+package com.github.mkopylec.errorest.handling.errordata.generic;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
+import com.github.mkopylec.errorest.handling.errordata.ErrorData;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder;
+import com.github.mkopylec.errorest.handling.errordata.ErrorDataProvider;
 import com.github.mkopylec.errorest.logging.LoggingLevel;
 import com.github.mkopylec.errorest.response.Error;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;

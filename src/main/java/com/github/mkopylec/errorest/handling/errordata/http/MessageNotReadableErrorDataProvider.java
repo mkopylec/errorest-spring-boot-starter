@@ -2,27 +2,27 @@ package com.github.mkopylec.errorest.handling.errordata.http;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData;
-import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.beans.TypeMismatchException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 
 import javax.servlet.http.HttpServletRequest;
 
 import static org.apache.commons.lang3.StringUtils.uncapitalize;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.METHOD_NOT_ALLOWED;
 
-public class MissingServletRequestParameterErrorDataProvider extends HttpClientErrorDataProvider<MissingServletRequestParameterException> {
+public class MessageNotReadableErrorDataProvider extends HttpClientErrorDataProvider<HttpMessageNotReadableException> {
 
-    public MissingServletRequestParameterErrorDataProvider(ErrorestProperties errorestProperties) {
+    public MessageNotReadableErrorDataProvider(ErrorestProperties errorestProperties) {
         super(errorestProperties);
     }
 
     @Override
-    public ErrorData getErrorData(MissingServletRequestParameterException ex, HttpServletRequest request) {
+    public ErrorData getErrorData(HttpMessageNotReadableException ex, HttpServletRequest request) {
         return getErrorData(ex, request, BAD_REQUEST);
     }
 
     @Override
-    protected String getErrorDescription(MissingServletRequestParameterException ex) {
+    protected String getErrorDescription(HttpMessageNotReadableException ex) {
         return BAD_REQUEST.getReasonPhrase() + ", " + uncapitalize(ex.getMessage());
     }
 }
