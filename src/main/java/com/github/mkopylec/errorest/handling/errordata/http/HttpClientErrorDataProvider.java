@@ -23,13 +23,13 @@ public abstract class HttpClientErrorDataProvider<T extends Throwable> extends E
     }
 
     @Override
-    public ErrorData getErrorData(T ex, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
+    public ErrorData getErrorData(T ex, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
         String requestMethod = getRequestMethod(requestAttributes);
         String requestUri = getRequestUri(errorAttributes, requestAttributes);
-        return buildErrorData(ex, defaultResponseStatus)
+        return buildErrorData(ex, responseHttpStatus)
                 .withRequestMethod(requestMethod)
                 .withRequestUri(requestUri)
-                .withResponseStatus(defaultResponseStatus)
+                .withResponseStatus(responseHttpStatus)
                 .build();
     }
 

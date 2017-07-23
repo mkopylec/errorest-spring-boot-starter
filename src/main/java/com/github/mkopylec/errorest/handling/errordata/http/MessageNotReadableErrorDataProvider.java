@@ -2,8 +2,10 @@ package com.github.mkopylec.errorest.handling.errordata.http;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData;
-import org.springframework.beans.TypeMismatchException;
+import org.springframework.boot.autoconfigure.web.ErrorAttributes;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.context.request.RequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,6 +21,11 @@ public class MessageNotReadableErrorDataProvider extends HttpClientErrorDataProv
     @Override
     public ErrorData getErrorData(HttpMessageNotReadableException ex, HttpServletRequest request) {
         return getErrorData(ex, request, BAD_REQUEST);
+    }
+
+    @Override
+    public ErrorData getErrorData(HttpMessageNotReadableException ex, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
+        return super.getErrorData(ex, BAD_REQUEST, errorAttributes, requestAttributes);
     }
 
     @Override

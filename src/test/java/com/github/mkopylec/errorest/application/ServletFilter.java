@@ -1,7 +1,8 @@
 package com.github.mkopylec.errorest.application;
 
-import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -12,10 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.springframework.http.HttpHeaders.ACCEPT;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_XML;
+import static org.springframework.http.MediaType.TEXT_HTML;
+import static org.springframework.http.MediaType.TEXT_PLAIN;
 
 @WebFilter("/filter/*")
 public class ServletFilter extends OncePerRequestFilter {
@@ -28,6 +32,12 @@ public class ServletFilter extends OncePerRequestFilter {
         }
         if (uri.endsWith("/media-type-not-acceptable")) {
             throw new HttpMediaTypeNotAcceptableException(asList(APPLICATION_JSON, APPLICATION_XML));
+        }
+        if (uri.endsWith("/media-type-not-supported")) {
+            throw new HttpMediaTypeNotSupportedException(TEXT_HTML, singletonList(TEXT_PLAIN));
+        }
+        if (uri.endsWith("/message-not-readable")) {
+            throw new HttpMessageNotReadableException("Message not readable from servlet filter");
         }
         if (uri.endsWith("/no-error")) {
             prepareResponse(request, response);

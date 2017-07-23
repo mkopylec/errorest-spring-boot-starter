@@ -46,7 +46,7 @@ public class ServletFilterErrorHandler extends AbstractErrorController {
         Errors errors = new Errors(errorData.getErrors());
         errors.formatErrors(errorestProperties.getResponseBodyFormat());
         return status(errorData.getResponseStatus())
-                .body(errorData.hasToSetResponseBody() ? errors : null);
+                .body(errors);
     }
 
     @Override
