@@ -1,10 +1,10 @@
 package com.github.mkopylec.errorest.specification
 
 import com.github.mkopylec.errorest.BasicSpec
-import com.github.mkopylec.errorest.exceptions.RestResponseException
-import com.github.mkopylec.errorest.response.Error
+import com.github.mkopylec.errorest.exceptions.ErrorestResponseException
 import spock.lang.Unroll
 
+import static com.github.mkopylec.errorest.assertions.Assertions.assertThat
 import static com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat.FULL
 import static com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat.WITHOUT_DESCRIPTIONS
 import static org.springframework.http.HttpHeaders.ACCEPT
@@ -24,9 +24,11 @@ class ExceptionErrorsSpec extends BasicSpec {
         sendRequest GET, uri, [(ACCEPT): acceptHeader]
 
         then:
-        def ex = thrown RestResponseException
-        ex.statusCode == INTERNAL_SERVER_ERROR
-        ex.responseBodyAsErrors.errors == [new Error('UNEXPECTED_ERROR', description)]
+        def ex = thrown ErrorestResponseException
+        assertThat(ex)
+                .hasErrorsId()
+                .hasStatus(INTERNAL_SERVER_ERROR)
+                .hasSingleError('UNEXPECTED_ERROR', description)
 
         where:
         uri                     | acceptHeader           | description
@@ -45,9 +47,11 @@ class ExceptionErrorsSpec extends BasicSpec {
         sendRequest GET, uri, [(ACCEPT): acceptHeader]
 
         then:
-        def ex = thrown RestResponseException
-        ex.statusCode == INTERNAL_SERVER_ERROR
-        ex.responseBodyAsErrors.errors == [new Error('UNEXPECTED_ERROR', 'N/A')]
+        def ex = thrown ErrorestResponseException
+        assertThat(ex)
+                .hasErrorsId()
+                .hasStatus(INTERNAL_SERVER_ERROR)
+                .hasSingleError('UNEXPECTED_ERROR', 'N/A')
 
         where:
         uri                     | acceptHeader

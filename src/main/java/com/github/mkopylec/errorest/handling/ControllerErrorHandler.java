@@ -31,7 +31,7 @@ public class ControllerErrorHandler {
     public ResponseEntity<Errors> handleThrowable(Throwable ex, HttpServletRequest request) {
         ErrorData errorData = getErrorData(ex, request);
         logger.log(errorData);
-        Errors errors = new Errors(errorData.getErrors());
+        Errors errors = new Errors(errorData.getId(), errorData.getErrors());
         errors.formatErrors(errorestProperties.getResponseBodyFormat());
         return status(errorData.getResponseStatus())
                 .body(errors);

@@ -7,12 +7,15 @@ import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class ErrorData {
 
     public static final String EXTERNAL_REQUEST_FAIL_MESSAGE = "External HTTP request has failed";
+    public static final int ERRORS_ID_LENGTH = 10;
 
+    protected final String id;
     protected final LoggingLevel loggingLevel;
     protected final String requestMethod;
     protected final String requestUri;
@@ -22,7 +25,8 @@ public class ErrorData {
     protected final Throwable throwable;
     protected final boolean logStackTrace;
 
-    protected ErrorData(LoggingLevel loggingLevel, String requestMethod, String requestUri, HttpStatus responseStatus, String message, List<Error> errors, Throwable throwable, boolean logStackTrace) {
+    protected ErrorData(String id, LoggingLevel loggingLevel, String requestMethod, String requestUri, HttpStatus responseStatus, String message, List<Error> errors, Throwable throwable, boolean logStackTrace) {
+        this.id = id;
         this.loggingLevel = loggingLevel;
         this.requestMethod = requestMethod;
         this.requestUri = requestUri;
@@ -31,6 +35,10 @@ public class ErrorData {
         this.errors = errors;
         this.throwable = throwable;
         this.logStackTrace = logStackTrace;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public LoggingLevel getLoggingLevel() {
@@ -71,6 +79,7 @@ public class ErrorData {
 
     public static final class ErrorDataBuilder {
 
+        protected String id;
         protected LoggingLevel loggingLevel;
         protected String requestMethod;
         protected String requestUri;
@@ -81,6 +90,7 @@ public class ErrorData {
         protected boolean logStackTrace;
 
         private ErrorDataBuilder() {
+            id = randomAlphanumeric(ERRORS_ID_LENGTH).toLowerCase();
         }
 
         public static ErrorDataBuilder newErrorData() {
@@ -128,7 +138,7 @@ public class ErrorData {
         }
 
         public ErrorData build() {
-            return new ErrorData(loggingLevel, requestMethod, requestUri, responseStatus, message, errors, throwable, logStackTrace);
+            return new ErrorData(id, loggingLevel, requestMethod, requestUri, responseStatus, message, errors, throwable, logStackTrace);
         }
     }
 }

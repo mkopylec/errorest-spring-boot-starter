@@ -22,7 +22,7 @@ public class Error {
             @JsonProperty("description") @JacksonXmlProperty(localName = "description", isAttribute = true) String description
     ) {
         this.code = code;
-        this.description = description;
+        this.description = isNotBlank(description) ? description : DESCRIPTION_NOT_AVAILABLE;
     }
 
     public String getCode() {
@@ -38,7 +38,7 @@ public class Error {
     }
 
     public boolean hasDescription() {
-        return isNotBlank(description) && !description.equals(DESCRIPTION_NOT_AVAILABLE);
+        return !description.equals(DESCRIPTION_NOT_AVAILABLE);
     }
 
     public boolean hasDescription(String description) {

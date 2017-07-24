@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
-public class RestExceptionData {
+public class ErrorestExceptionData {
 
     protected String message;
     protected final List<Error> errors = new ErrorsLoggingList();
@@ -20,7 +20,7 @@ public class RestExceptionData {
         return message;
     }
 
-    public RestExceptionData withMessage(String message) {
+    public ErrorestExceptionData withMessage(String message) {
         this.message = message;
         return this;
     }
@@ -29,7 +29,7 @@ public class RestExceptionData {
         return errors;
     }
 
-    public RestExceptionData addError(String code, String description) {
+    public ErrorestExceptionData addError(String code, String description) {
         errors.add(new Error(code, description));
         return this;
     }
@@ -38,7 +38,7 @@ public class RestExceptionData {
         return responseHttpStatus;
     }
 
-    public RestExceptionData withResponseHttpStatus(HttpStatus responseHttpStatus) {
+    public ErrorestExceptionData withResponseHttpStatus(HttpStatus responseHttpStatus) {
         this.responseHttpStatus = responseHttpStatus;
         return this;
     }
@@ -47,7 +47,7 @@ public class RestExceptionData {
         return loggingLevel;
     }
 
-    public RestExceptionData withLoggingLevel(LoggingLevel loggingLevel) {
+    public ErrorestExceptionData withLoggingLevel(LoggingLevel loggingLevel) {
         this.loggingLevel = loggingLevel;
         return this;
     }
@@ -56,7 +56,7 @@ public class RestExceptionData {
         return logStackTrace;
     }
 
-    public RestExceptionData withLogStackTrace() {
+    public ErrorestExceptionData withLogStackTrace() {
         this.logStackTrace = true;
         return this;
     }
@@ -65,7 +65,7 @@ public class RestExceptionData {
         return cause;
     }
 
-    public RestExceptionData withCause(Throwable cause) {
+    public ErrorestExceptionData withCause(Throwable cause) {
         if (cause != null) {
             logStackTrace = true;
         }

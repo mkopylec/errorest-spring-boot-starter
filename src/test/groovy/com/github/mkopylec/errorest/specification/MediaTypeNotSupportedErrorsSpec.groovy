@@ -1,7 +1,7 @@
 package com.github.mkopylec.errorest.specification
 
 import com.github.mkopylec.errorest.BasicSpec
-import com.github.mkopylec.errorest.exceptions.RestResponseException
+import com.github.mkopylec.errorest.exceptions.ErrorestResponseException
 import com.github.mkopylec.errorest.response.Error
 import spock.lang.Unroll
 
@@ -26,7 +26,7 @@ class MediaTypeNotSupportedErrorsSpec extends BasicSpec {
         sendRequest GET, uri, [(ACCEPT): acceptHeader, (CONTENT_TYPE): TEXT_HTML_VALUE]
 
         then:
-        def ex = thrown RestResponseException
+        def ex = thrown ErrorestResponseException
         ex.statusCode == UNSUPPORTED_MEDIA_TYPE
         ex.responseBodyAsErrors.errors == [new Error('HTTP_CLIENT_ERROR', 'Unsupported Media Type: text/html, supported media types are text/plain')]
 
@@ -47,7 +47,7 @@ class MediaTypeNotSupportedErrorsSpec extends BasicSpec {
         sendRequest GET, uri, [(ACCEPT): acceptHeader, (CONTENT_TYPE): TEXT_HTML_VALUE]
 
         then:
-        def ex = thrown RestResponseException
+        def ex = thrown ErrorestResponseException
         ex.statusCode == UNSUPPORTED_MEDIA_TYPE
         ex.responseBodyAsErrors.errors == [new Error('HTTP_CLIENT_ERROR', 'N/A')]
 

@@ -10,22 +10,22 @@ import static org.springframework.util.Assert.hasText;
 import static org.springframework.util.Assert.notEmpty;
 import static org.springframework.util.Assert.notNull;
 
-public abstract class RestApplicationException extends RuntimeException {
+public abstract class ErrorestApplicationException extends RuntimeException {
 
     protected final List<Error> errors;
     protected final HttpStatus responseHttpStatus;
     protected final LoggingLevel loggingLevel;
     protected final boolean logStackTrace;
 
-    public RestApplicationException(RestExceptionData data) {
+    public ErrorestApplicationException(ErrorestExceptionData data) {
         this(data.getMessage(), data.getErrors(), data.getResponseHttpStatus(), data.getLoggingLevel(), data.isLogStackTrace(), data.getCause());
     }
 
-    public RestApplicationException(String message, RestResponseException cause, LoggingLevel loggingLevel) {
+    public ErrorestApplicationException(String message, ErrorestResponseException cause, LoggingLevel loggingLevel) {
         this(message, cause.getResponseBodyAsErrors().getErrors(), cause.getStatusCode(), loggingLevel, true, cause);
     }
 
-    private RestApplicationException(String message, List<Error> errors, HttpStatus responseHttpStatus, LoggingLevel loggingLevel, boolean logStackTrace, Throwable cause) {
+    private ErrorestApplicationException(String message, List<Error> errors, HttpStatus responseHttpStatus, LoggingLevel loggingLevel, boolean logStackTrace, Throwable cause) {
         super(message, cause);
         notEmpty(errors, "Empty errors");
         errors.forEach(error -> {

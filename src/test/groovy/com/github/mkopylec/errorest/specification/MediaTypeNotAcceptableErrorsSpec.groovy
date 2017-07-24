@@ -1,9 +1,10 @@
 package com.github.mkopylec.errorest.specification
 
 import com.github.mkopylec.errorest.BasicSpec
-import com.github.mkopylec.errorest.exceptions.RestResponseException
+import com.github.mkopylec.errorest.exceptions.ErrorestResponseException
 import spock.lang.Unroll
 
+import static com.github.mkopylec.errorest.assertions.Assertions.assertThat
 import static com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat.FULL
 import static org.springframework.http.HttpHeaders.ACCEPT
 import static org.springframework.http.HttpMethod.GET
@@ -21,9 +22,10 @@ class MediaTypeNotAcceptableErrorsSpec extends BasicSpec {
         sendRequest GET, uri, [(ACCEPT): acceptHeader]
 
         then:
-        def ex = thrown RestResponseException
-        ex.statusCode == NOT_ACCEPTABLE
-        ex.responseBodyAsErrors.errors == []
+        def ex = thrown ErrorestResponseException
+        assertThat(ex)
+                .hasStatus(NOT_ACCEPTABLE)
+                .hasNoErrors()
 
         where:
         uri                                     | acceptHeader

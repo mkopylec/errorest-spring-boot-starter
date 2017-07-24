@@ -1,7 +1,7 @@
 package com.github.mkopylec.errorest
 
 import com.github.mkopylec.errorest.application.RestApplication
-import com.github.mkopylec.errorest.client.RestClient
+import com.github.mkopylec.errorest.client.ErrorestTemplate
 import com.github.mkopylec.errorest.configuration.ErrorestProperties
 import com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat
 import com.github.mkopylec.errorest.response.Errors
@@ -26,7 +26,7 @@ abstract class BasicSpec extends Specification {
     @LocalServerPort
     private int port
     @Shared
-    private RestTemplate restTemplate = new RestClient()
+    private RestTemplate restTemplate = new ErrorestTemplate()
 
     protected ResponseEntity<Errors> sendRequest(HttpMethod method, String uri, Map<String, String> headers = [:], Object body = null) {
         def url = "http://localhost:$port$uri"

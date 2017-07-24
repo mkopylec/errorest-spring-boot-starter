@@ -1,7 +1,7 @@
 package com.github.mkopylec.errorest.specification
 
 import com.github.mkopylec.errorest.BasicSpec
-import com.github.mkopylec.errorest.exceptions.RestResponseException
+import com.github.mkopylec.errorest.exceptions.ErrorestResponseException
 import com.github.mkopylec.errorest.response.Error
 import spock.lang.Unroll
 
@@ -24,7 +24,7 @@ class MessageNotReadableErrorsSpec extends BasicSpec {
         sendRequest POST, uri, [(ACCEPT): acceptHeader], [request: 'body']
 
         then:
-        def ex = thrown RestResponseException
+        def ex = thrown ErrorestResponseException
         ex.statusCode == BAD_REQUEST
         ex.responseBodyAsErrors.errors[0].hasCode('HTTP_CLIENT_ERROR')
         ex.responseBodyAsErrors.errors[0].description.startsWith('Bad Request, ')
@@ -46,7 +46,7 @@ class MessageNotReadableErrorsSpec extends BasicSpec {
         sendRequest POST, uri, [(ACCEPT): acceptHeader], [request: 'body']
 
         then:
-        def ex = thrown RestResponseException
+        def ex = thrown ErrorestResponseException
         ex.statusCode == BAD_REQUEST
         ex.responseBodyAsErrors.errors == [new Error('HTTP_CLIENT_ERROR', 'N/A')]
 

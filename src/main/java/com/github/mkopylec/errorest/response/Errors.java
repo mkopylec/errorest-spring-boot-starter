@@ -13,19 +13,30 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
+import static org.springframework.util.Assert.hasText;
 
 @JacksonXmlRootElement(localName = "body")
 public class Errors {
 
+    public static final String EMPTY_ERRORS_ID = "N/A";
+
+    protected final String id;
     @JacksonXmlProperty(localName = "error")
     @JacksonXmlElementWrapper(localName = "errors")
     protected final List<Error> errors;
 
     @JsonCreator
     public Errors(
+            @JsonProperty("id") @JacksonXmlProperty(localName = "id", isAttribute = true) String id,
             @JsonProperty("errors") @JacksonXmlProperty(localName = "Jackson bug workaround") List<Error> errors
     ) {
+        hasText(id, "Empty errors ID");
+        this.id = id;
         this.errors = errors == null ? new ErrorsLoggingList() : errors;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public List<Error> getErrors() {
@@ -53,7 +64,7 @@ public class Errors {
     }
 
     public static Errors emptyErrors() {
-        return new Errors(emptyList());
+        return new Errors(EMPTY_ERRORS_ID, emptyList());
     }
 
     @Override
@@ -69,6 +80,7 @@ public class Errors {
         }
         Errors rhs = (Errors) obj;
         return new EqualsBuilder()
+                .append(this.id, rhs.id)
                 .append(this.errors, rhs.errors)
                 .isEquals();
     }
@@ -76,6 +88,7 @@ public class Errors {
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
+                .append(id)
                 .append(errors)
                 .toHashCode();
     }

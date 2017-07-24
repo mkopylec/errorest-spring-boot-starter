@@ -6,23 +6,23 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-public class RestClient extends RestTemplate {
+public class ErrorestTemplate extends RestTemplate {
 
-    public RestClient() {
+    public ErrorestTemplate() {
         replaceErrorHandler();
     }
 
-    public RestClient(ClientHttpRequestFactory requestFactory) {
+    public ErrorestTemplate(ClientHttpRequestFactory requestFactory) {
         super(requestFactory);
         replaceErrorHandler();
     }
 
-    public RestClient(List<HttpMessageConverter<?>> messageConverters) {
+    public ErrorestTemplate(List<HttpMessageConverter<?>> messageConverters) {
         super(messageConverters);
         replaceErrorHandler();
     }
 
     protected void replaceErrorHandler() {
-        setErrorHandler(new RestResponseErrorHandler());
+        setErrorHandler(new ErrorestResponseErrorHandler());
     }
 }

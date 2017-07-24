@@ -1,7 +1,7 @@
 package com.github.mkopylec.errorest.handling.errordata.rest;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
-import com.github.mkopylec.errorest.exceptions.RestApplicationException;
+import com.github.mkopylec.errorest.exceptions.ErrorestApplicationException;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder;
 import com.github.mkopylec.errorest.handling.errordata.ErrorDataProvider;
@@ -13,14 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import static com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder.newErrorData;
 
-public class RestApplicationExceptionErrorDataProvider extends ErrorDataProvider<RestApplicationException> {
+public class ErrorestApplicationExceptionErrorDataProvider extends ErrorDataProvider<ErrorestApplicationException> {
 
-    public RestApplicationExceptionErrorDataProvider(ErrorestProperties errorestProperties) {
+    public ErrorestApplicationExceptionErrorDataProvider(ErrorestProperties errorestProperties) {
         super(errorestProperties);
     }
 
     @Override
-    public ErrorData getErrorData(RestApplicationException ex, HttpServletRequest request) {
+    public ErrorData getErrorData(ErrorestApplicationException ex, HttpServletRequest request) {
         return buildErrorData(ex)
                 .withRequestMethod(request.getMethod())
                 .withRequestUri(request.getRequestURI())
@@ -28,7 +28,7 @@ public class RestApplicationExceptionErrorDataProvider extends ErrorDataProvider
     }
 
     @Override
-    public ErrorData getErrorData(RestApplicationException ex, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
+    public ErrorData getErrorData(ErrorestApplicationException ex, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
         String requestMethod = getRequestMethod(requestAttributes);
         String requestUri = getRequestUri(errorAttributes, requestAttributes);
         return buildErrorData(ex)
@@ -37,7 +37,7 @@ public class RestApplicationExceptionErrorDataProvider extends ErrorDataProvider
                 .build();
     }
 
-    protected ErrorDataBuilder buildErrorData(RestApplicationException ex) {
+    protected ErrorDataBuilder buildErrorData(ErrorestApplicationException ex) {
         ErrorDataBuilder builder = newErrorData()
                 .withLoggingLevel(ex.getLoggingLevel())
                 .withResponseStatus(ex.getResponseHttpStatus())

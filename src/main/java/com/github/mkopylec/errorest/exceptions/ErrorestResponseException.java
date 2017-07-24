@@ -19,15 +19,15 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_XML;
 
-public class RestResponseException extends HttpStatusCodeException {
+public class ErrorestResponseException extends HttpStatusCodeException {
 
-    private static final Logger log = getLogger(RestResponseException.class);
+    private static final Logger log = getLogger(ErrorestResponseException.class);
 
     protected final ObjectMapper jsonMapper;
     protected final XmlMapper xmlMapper;
     protected Errors errors;
 
-    public RestResponseException(HttpStatus statusCode, String statusText, HttpHeaders responseHeaders, byte[] responseBody, Charset responseCharset, ObjectMapper jsonMapper, XmlMapper xmlMapper) {
+    public ErrorestResponseException(HttpStatus statusCode, String statusText, HttpHeaders responseHeaders, byte[] responseBody, Charset responseCharset, ObjectMapper jsonMapper, XmlMapper xmlMapper) {
         super(statusCode, statusText, responseHeaders, responseBody, responseCharset);
         this.jsonMapper = jsonMapper;
         this.xmlMapper = xmlMapper;
@@ -64,7 +64,7 @@ public class RestResponseException extends HttpStatusCodeException {
         }
     }
 
-    private boolean hasContentType(MediaType mediaType) {
+    protected boolean hasContentType(MediaType mediaType) {
         MediaType contentType = getResponseHeaders().getContentType();
         return contentType == null || contentType.includes(mediaType);
     }

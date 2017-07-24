@@ -43,7 +43,7 @@ public class ServletFilterErrorHandler extends AbstractErrorController {
     public ResponseEntity<Errors> error(HttpServletRequest request) {
         ErrorData errorData = getErrorData(request);
         logger.log(errorData);
-        Errors errors = new Errors(errorData.getErrors());
+        Errors errors = new Errors(errorData.getId(), errorData.getErrors());
         errors.formatErrors(errorestProperties.getResponseBodyFormat());
         return status(errorData.getResponseStatus())
                 .body(errors);
