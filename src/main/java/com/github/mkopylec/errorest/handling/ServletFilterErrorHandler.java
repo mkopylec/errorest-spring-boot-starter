@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -39,7 +39,7 @@ public class ServletFilterErrorHandler extends AbstractErrorController {
         this.providerContext = providerContext;
     }
 
-    @GetMapping("${server.error.path:${error.path:/error}}")
+    @RequestMapping("${server.error.path:${error.path:/error}}")
     public ResponseEntity<Errors> error(HttpServletRequest request) {
         ErrorData errorData = getErrorData(request);
         logger.log(errorData);
