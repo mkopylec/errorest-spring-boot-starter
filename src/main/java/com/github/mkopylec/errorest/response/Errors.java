@@ -32,7 +32,7 @@ public class Errors {
     ) {
         hasText(id, "Empty errors ID");
         this.id = id;
-        this.errors = errors == null ? new ErrorsLoggingList() : errors;
+        this.errors = errors == null ? new ErrorsLoggingList() : new ErrorsLoggingList(errors);
     }
 
     public String getId() {
