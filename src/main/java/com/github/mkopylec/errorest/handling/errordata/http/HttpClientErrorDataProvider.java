@@ -29,7 +29,6 @@ public abstract class HttpClientErrorDataProvider<T extends Throwable> extends E
         return buildErrorData(ex, responseHttpStatus)
                 .withRequestMethod(requestMethod)
                 .withRequestUri(requestUri)
-                .withResponseStatus(responseHttpStatus)
                 .build();
     }
 
@@ -46,7 +45,6 @@ public abstract class HttpClientErrorDataProvider<T extends Throwable> extends E
                 .withLoggingLevel(httpClientError.getLoggingLevel())
                 .withResponseStatus(responseHttpStatus)
                 .withThrowable(ex)
-                .withLogStackTrace(httpClientError.isLogStackTrace())
                 .addError(new Error(HTTP_CLIENT_ERROR_CODE, getErrorDescription(ex)));
     }
 

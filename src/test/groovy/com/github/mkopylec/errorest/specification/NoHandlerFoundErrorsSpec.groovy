@@ -1,7 +1,7 @@
 package com.github.mkopylec.errorest.specification
 
 import com.github.mkopylec.errorest.BasicSpec
-import com.github.mkopylec.errorest.exceptions.ErrorestResponseException
+import com.github.mkopylec.errorest.exceptions.ExternalHttpRequestException
 import org.springframework.test.context.TestPropertySource
 import spock.lang.Unroll
 
@@ -14,7 +14,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import static org.springframework.http.MediaType.APPLICATION_XML_VALUE
 
-@TestPropertySource(properties = ['spring.mvc.throw-exception-if-no-handler-found: true'])
+@TestPropertySource(properties = ['spring.mvc.throw-exception-if-no-handler-found: true', 'spring.mvc.static-path-pattern: /static/**'])
 class NoHandlerFoundErrorsSpec extends BasicSpec {
 
     @Unroll
@@ -26,18 +26,18 @@ class NoHandlerFoundErrorsSpec extends BasicSpec {
         sendRequest GET, uri, [(ACCEPT): acceptHeader]
 
         then:
-        def ex = thrown ErrorestResponseException
+        def ex = thrown ExternalHttpRequestException
         assertThat(ex)
                 .hasStatus(NOT_FOUND)
                 .hasErrorsId()
-                .hasSingleError('HTTP_CLIENT_ERROR', 'Bad Request, required request part \'part\' is not present')
+                .hasSingleError('HTTP_CLIENT_ERROR', description)
 
         where:
-        uri                            | acceptHeader
-        '/controller/no-handler-found' | APPLICATION_JSON_VALUE
-        '/controller/no-handler-found' | APPLICATION_XML_VALUE
-        '/filter/no-handler-found'     | APPLICATION_JSON_VALUE
-        '/filter/no-handler-found'     | APPLICATION_XML_VALUE
+        uri                            | acceptHeader           | description
+        '/controller/no-handler-found' | APPLICATION_JSON_VALUE | 'Not Found, no handler found for GET /controller/no-handler-found'
+        '/controller/no-handler-found' | APPLICATION_XML_VALUE  | 'Not Found, no handler found for GET /controller/no-handler-found'
+        '/filter/no-handler-found'     | APPLICATION_JSON_VALUE | 'Not Found, no handler found for GET /filter/no-handler-found'
+        '/filter/no-handler-found'     | APPLICATION_XML_VALUE  | 'Not Found, no handler found for GET /filter/no-handler-found'
     }
 
     @Unroll
@@ -49,7 +49,7 @@ class NoHandlerFoundErrorsSpec extends BasicSpec {
         sendRequest GET, uri, [(ACCEPT): acceptHeader]
 
         then:
-        def ex = thrown ErrorestResponseException
+        def ex = thrown ExternalHttpRequestException
         assertThat(ex)
                 .hasStatus(NOT_FOUND)
                 .hasErrorsId()

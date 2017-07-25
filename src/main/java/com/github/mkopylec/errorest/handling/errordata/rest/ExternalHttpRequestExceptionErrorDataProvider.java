@@ -1,7 +1,7 @@
 package com.github.mkopylec.errorest.handling.errordata.rest;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
-import com.github.mkopylec.errorest.exceptions.ErrorestResponseException;
+import com.github.mkopylec.errorest.exceptions.ExternalHttpRequestException;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder;
 import com.github.mkopylec.errorest.handling.errordata.ErrorDataProvider;
@@ -12,18 +12,17 @@ import org.springframework.web.context.request.RequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.github.mkopylec.errorest.handling.errordata.ErrorData.EXTERNAL_REQUEST_FAIL_MESSAGE;
 import static com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder.newErrorData;
 import static com.github.mkopylec.errorest.logging.LoggingLevel.ERROR;
 
-public class ErrorestResponseExceptionErrorDataProvider extends ErrorDataProvider<ErrorestResponseException> {
+public class ExternalHttpRequestExceptionErrorDataProvider extends ErrorDataProvider<ExternalHttpRequestException> {
 
-    public ErrorestResponseExceptionErrorDataProvider(ErrorestProperties errorestProperties) {
+    public ExternalHttpRequestExceptionErrorDataProvider(ErrorestProperties errorestProperties) {
         super(errorestProperties);
     }
 
     @Override
-    public ErrorData getErrorData(ErrorestResponseException ex, HttpServletRequest request) {
+    public ErrorData getErrorData(ExternalHttpRequestException ex, HttpServletRequest request) {
         return buildErrorData(ex, ex.getStatusCode())
                 .withRequestMethod(request.getMethod())
                 .withRequestUri(request.getRequestURI())
@@ -31,7 +30,7 @@ public class ErrorestResponseExceptionErrorDataProvider extends ErrorDataProvide
     }
 
     @Override
-    public ErrorData getErrorData(ErrorestResponseException ex, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
+    public ErrorData getErrorData(ExternalHttpRequestException ex, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
         String requestMethod = getRequestMethod(requestAttributes);
         String requestUri = getRequestUri(errorAttributes, requestAttributes);
         return buildErrorData(ex, defaultResponseStatus)
@@ -41,13 +40,11 @@ public class ErrorestResponseExceptionErrorDataProvider extends ErrorDataProvide
                 .build();
     }
 
-    protected ErrorDataBuilder buildErrorData(ErrorestResponseException ex, HttpStatus responseHttpStatus) {
+    protected ErrorDataBuilder buildErrorData(ExternalHttpRequestException ex, HttpStatus responseHttpStatus) {
         ErrorDataBuilder builder = newErrorData()
                 .withLoggingLevel(getLoggingLevel(responseHttpStatus))
                 .withResponseStatus(responseHttpStatus)
-                .withMessage(EXTERNAL_REQUEST_FAIL_MESSAGE)
-                .withThrowable(ex)
-                .withLogStackTrace(true);
+                .withThrowable(ex);
         ex.getResponseBodyAsErrors().getErrors().forEach(builder::addError);
         return builder;
     }

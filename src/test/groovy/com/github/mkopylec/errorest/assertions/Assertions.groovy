@@ -1,10 +1,10 @@
 package com.github.mkopylec.errorest.assertions
 
-import com.github.mkopylec.errorest.exceptions.ErrorestResponseException
+import com.github.mkopylec.errorest.exceptions.ExternalHttpRequestException
 
 class Assertions {
 
-    static ErrorestResponseAssert assertThat(ErrorestResponseException ex) {
-        return new ErrorestResponseAssert(ex)
+    static ErrorHttpResponseAssert assertThat(ExternalHttpRequestException ex) {
+        return new ErrorHttpResponseAssert(ex)
     }
 }

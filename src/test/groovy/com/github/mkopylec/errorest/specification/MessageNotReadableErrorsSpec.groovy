@@ -1,7 +1,7 @@
 package com.github.mkopylec.errorest.specification
 
 import com.github.mkopylec.errorest.BasicSpec
-import com.github.mkopylec.errorest.exceptions.ErrorestResponseException
+import com.github.mkopylec.errorest.exceptions.ExternalHttpRequestException
 import spock.lang.Unroll
 
 import static com.github.mkopylec.errorest.assertions.Assertions.assertThat
@@ -24,7 +24,7 @@ class MessageNotReadableErrorsSpec extends BasicSpec {
         sendRequest POST, uri, [(ACCEPT): acceptHeader], [request: 'body']
 
         then:
-        def ex = thrown ErrorestResponseException
+        def ex = thrown ExternalHttpRequestException
         assertThat(ex)
                 .hasStatus(BAD_REQUEST)
                 .hasErrorsId()
@@ -47,7 +47,7 @@ class MessageNotReadableErrorsSpec extends BasicSpec {
         sendRequest POST, uri, [(ACCEPT): acceptHeader], [request: 'body']
 
         then:
-        def ex = thrown ErrorestResponseException
+        def ex = thrown ExternalHttpRequestException
         assertThat(ex)
                 .hasStatus(BAD_REQUEST)
                 .hasErrorsId()

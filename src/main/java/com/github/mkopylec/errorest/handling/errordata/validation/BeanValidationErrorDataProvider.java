@@ -21,8 +21,7 @@ public abstract class BeanValidationErrorDataProvider<T extends Throwable> exten
         ErrorestProperties.BeanValidationError validationError = errorestProperties.getBeanValidationError();
         ErrorDataBuilder builder = newErrorData()
                 .withLoggingLevel(validationError.getLoggingLevel())
-                .withResponseStatus(UNPROCESSABLE_ENTITY)
-                .withLogStackTrace(validationError.isLogStackTrace());
+                .withResponseStatus(UNPROCESSABLE_ENTITY);
         result.getAllErrors().forEach(objectError -> {
             Error error = createError(objectError);
             builder.addError(error);

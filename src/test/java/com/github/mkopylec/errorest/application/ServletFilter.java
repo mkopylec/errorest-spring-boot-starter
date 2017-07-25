@@ -6,6 +6,7 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -47,8 +48,13 @@ public class ServletFilter extends OncePerRequestFilter {
         if (uri.endsWith("/missing-servlet-request-part")) {
             throw new MissingServletRequestPartException("part");
         }
+        if (uri.endsWith("/no-handler-found")) {
+            throw new NoHandlerFoundException(request.getMethod(), request.getRequestURI(), null);
+        }
         if (uri.endsWith("/no-error")) {
             prepareResponse(request, response);
+        } else {
+            filterChain.doFilter(request, response);
         }
     }
 

@@ -49,16 +49,11 @@ public class ThrowableErrorDataProvider extends ErrorDataProvider<Throwable> {
                 .withLoggingLevel(getLoggingLevel(responseHttpStatus))
                 .withResponseStatus(responseHttpStatus)
                 .withThrowable(ex)
-                .withLogStackTrace(isLogStackTrace(responseHttpStatus))
                 .addError(new Error(getErrorCode(responseHttpStatus), getErrorDescription(ex, responseHttpStatus)));
     }
 
     protected LoggingLevel getLoggingLevel(HttpStatus responseHttpStatus) {
         return responseHttpStatus.is4xxClientError() ? errorestProperties.getHttpClientError().getLoggingLevel() : ERROR;
-    }
-
-    protected boolean isLogStackTrace(HttpStatus responseHttpStatus) {
-        return !responseHttpStatus.is4xxClientError() || errorestProperties.getHttpClientError().isLogStackTrace();
     }
 
     protected String getErrorCode(HttpStatus responseHttpStatus) {

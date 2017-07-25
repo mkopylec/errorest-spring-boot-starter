@@ -44,7 +44,6 @@ public class ErrorestProperties {
     public static class BeanValidationError {
 
         private LoggingLevel loggingLevel = WARN;
-        private boolean logStackTrace = false;
 
         public LoggingLevel getLoggingLevel() {
             return loggingLevel;
@@ -52,21 +51,12 @@ public class ErrorestProperties {
 
         public void setLoggingLevel(LoggingLevel loggingLevel) {
             this.loggingLevel = loggingLevel;
-        }
-
-        public boolean isLogStackTrace() {
-            return logStackTrace;
-        }
-
-        public void setLogStackTrace(boolean logStackTrace) {
-            this.logStackTrace = logStackTrace;
         }
     }
 
     public static class HttpClientError {
 
         private LoggingLevel loggingLevel = WARN;
-        private boolean logStackTrace = false;
 
         public LoggingLevel getLoggingLevel() {
             return loggingLevel;
@@ -74,14 +64,6 @@ public class ErrorestProperties {
 
         public void setLoggingLevel(LoggingLevel loggingLevel) {
             this.loggingLevel = loggingLevel;
-        }
-
-        public boolean isLogStackTrace() {
-            return logStackTrace;
-        }
-
-        public void setLogStackTrace(boolean logStackTrace) {
-            this.logStackTrace = logStackTrace;
         }
     }
 }

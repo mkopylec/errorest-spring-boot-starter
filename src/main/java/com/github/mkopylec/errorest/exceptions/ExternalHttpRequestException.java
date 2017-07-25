@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.github.mkopylec.errorest.response.Errors;
 import org.slf4j.Logger;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -12,23 +13,26 @@ import org.springframework.web.client.HttpStatusCodeException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import static com.github.mkopylec.errorest.handling.errordata.ErrorData.EXTERNAL_REQUEST_FAIL_MESSAGE;
 import static com.github.mkopylec.errorest.response.Errors.emptyErrors;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_XML;
 
-public class ErrorestResponseException extends HttpStatusCodeException {
+public class ExternalHttpRequestException extends HttpStatusCodeException {
 
-    private static final Logger log = getLogger(ErrorestResponseException.class);
+    private static final Logger log = getLogger(ExternalHttpRequestException.class);
 
+    protected final HttpMethod method;
+    protected final String url;
     protected final ObjectMapper jsonMapper;
     protected final XmlMapper xmlMapper;
     protected Errors errors;
 
-    public ErrorestResponseException(HttpStatus statusCode, String statusText, HttpHeaders responseHeaders, byte[] responseBody, Charset responseCharset, ObjectMapper jsonMapper, XmlMapper xmlMapper) {
+    public ExternalHttpRequestException(HttpMethod method, String url, HttpStatus statusCode, String statusText, HttpHeaders responseHeaders, byte[] responseBody, Charset responseCharset, ObjectMapper jsonMapper, XmlMapper xmlMapper) {
         super(statusCode, statusText, responseHeaders, responseBody, responseCharset);
+        this.method = method;
+        this.url = url;
         this.jsonMapper = jsonMapper;
         this.xmlMapper = xmlMapper;
     }
@@ -46,7 +50,7 @@ public class ErrorestResponseException extends HttpStatusCodeException {
 
     @Override
     public String getMessage() {
-        return EXTERNAL_REQUEST_FAIL_MESSAGE + " | Status: " + getStatusCode() + " | Body: " + getResponseBodyAsString();
+        return "An external HTTP request has failed: " + method + " " + url + " " + getStatusCode() + ". Response body: " + getResponseBodyAsString();
     }
 
     protected Errors parseResponseBody() {

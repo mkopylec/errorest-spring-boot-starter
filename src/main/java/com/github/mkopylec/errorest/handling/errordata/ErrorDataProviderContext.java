@@ -1,8 +1,8 @@
 package com.github.mkopylec.errorest.handling.errordata;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
-import com.github.mkopylec.errorest.exceptions.ErrorestApplicationException;
-import com.github.mkopylec.errorest.exceptions.ErrorestResponseException;
+import com.github.mkopylec.errorest.exceptions.ApplicationException;
+import com.github.mkopylec.errorest.exceptions.ExternalHttpRequestException;
 import com.github.mkopylec.errorest.handling.errordata.generic.ThrowableErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.http.MediaTypeNotAcceptableErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.http.MediaTypeNotSupportedErrorDataProvider;
@@ -13,8 +13,8 @@ import com.github.mkopylec.errorest.handling.errordata.http.NoHandlerFoundErrorD
 import com.github.mkopylec.errorest.handling.errordata.http.RequestMethodNotSupportedErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.http.ServletRequestBindingErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.http.TypeMismatchErrorDataProvider;
-import com.github.mkopylec.errorest.handling.errordata.rest.ErrorestApplicationExceptionErrorDataProvider;
-import com.github.mkopylec.errorest.handling.errordata.rest.ErrorestResponseExceptionErrorDataProvider;
+import com.github.mkopylec.errorest.handling.errordata.rest.ApplicationExceptionErrorDataProvider;
+import com.github.mkopylec.errorest.handling.errordata.rest.ExternalHttpRequestExceptionErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.validation.BindExceptionErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.validation.MethodArgumentNotValidErrorDataProvider;
 import org.springframework.beans.TypeMismatchException;
@@ -38,11 +38,11 @@ public class ErrorDataProviderContext {
     }
 
     public <T extends Throwable> ErrorDataProvider getErrorDataProvider(T ex) {
-        if (ex instanceof ErrorestApplicationException) {
-            return new ErrorestApplicationExceptionErrorDataProvider(errorestProperties);
+        if (ex instanceof ApplicationException) {
+            return new ApplicationExceptionErrorDataProvider(errorestProperties);
         }
-        if (ex instanceof ErrorestResponseException) {
-            return new ErrorestResponseExceptionErrorDataProvider(errorestProperties);
+        if (ex instanceof ExternalHttpRequestException) {
+            return new ExternalHttpRequestExceptionErrorDataProvider(errorestProperties);
         }
         if (ex instanceof BindException) {
             return new BindExceptionErrorDataProvider(errorestProperties);

@@ -1,7 +1,7 @@
 package com.github.mkopylec.errorest.specification
 
 import com.github.mkopylec.errorest.BasicSpec
-import com.github.mkopylec.errorest.exceptions.ErrorestResponseException
+import com.github.mkopylec.errorest.exceptions.ExternalHttpRequestException
 import spock.lang.Unroll
 
 import static com.github.mkopylec.errorest.assertions.Assertions.assertThat
@@ -22,7 +22,7 @@ class MediaTypeNotAcceptableErrorsSpec extends BasicSpec {
         sendRequest GET, uri, [(ACCEPT): acceptHeader]
 
         then:
-        def ex = thrown ErrorestResponseException
+        def ex = thrown ExternalHttpRequestException
         assertThat(ex)
                 .hasStatus(NOT_ACCEPTABLE)
                 .hasNoErrors()

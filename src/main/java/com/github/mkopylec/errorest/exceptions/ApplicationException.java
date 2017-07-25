@@ -10,23 +10,18 @@ import static org.springframework.util.Assert.hasText;
 import static org.springframework.util.Assert.notEmpty;
 import static org.springframework.util.Assert.notNull;
 
-public abstract class ErrorestApplicationException extends RuntimeException {
+public abstract class ApplicationException extends RuntimeException {
 
     protected final List<Error> errors;
     protected final HttpStatus responseHttpStatus;
     protected final LoggingLevel loggingLevel;
-    protected final boolean logStackTrace;
 
-    public ErrorestApplicationException(ErrorestExceptionData data) {
-        this(data.getMessage(), data.getErrors(), data.getResponseHttpStatus(), data.getLoggingLevel(), data.isLogStackTrace(), data.getCause());
+    public ApplicationException(ApplicationExceptionConfiguration configuration) {
+        this(configuration.getErrors(), configuration.getResponseHttpStatus(), configuration.getLoggingLevel(), configuration.getCause());
     }
 
-    public ErrorestApplicationException(String message, ErrorestResponseException cause, LoggingLevel loggingLevel) {
-        this(message, cause.getResponseBodyAsErrors().getErrors(), cause.getStatusCode(), loggingLevel, true, cause);
-    }
-
-    private ErrorestApplicationException(String message, List<Error> errors, HttpStatus responseHttpStatus, LoggingLevel loggingLevel, boolean logStackTrace, Throwable cause) {
-        super(message, cause);
+    private ApplicationException(List<Error> errors, HttpStatus responseHttpStatus, LoggingLevel loggingLevel, Throwable cause) {
+        super(cause);
         notEmpty(errors, "Empty errors");
         errors.forEach(error -> {
             notNull(error, "Empty error");
@@ -38,7 +33,6 @@ public abstract class ErrorestApplicationException extends RuntimeException {
         this.errors = errors;
         this.responseHttpStatus = responseHttpStatus;
         this.loggingLevel = loggingLevel;
-        this.logStackTrace = logStackTrace;
     }
 
     public List<Error> getErrors() {
@@ -53,7 +47,8 @@ public abstract class ErrorestApplicationException extends RuntimeException {
         return loggingLevel;
     }
 
-    public boolean isLogStackTrace() {
-        return logStackTrace;
+    @Override
+    public String getMessage() {
+        return "An application error has occurred. Status: " + responseHttpStatus + " | " + errors;
     }
 }

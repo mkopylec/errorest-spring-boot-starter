@@ -8,33 +8,31 @@ import org.springframework.http.HttpStatus;
 import java.util.List;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class ErrorData {
 
-    public static final String EXTERNAL_REQUEST_FAIL_MESSAGE = "External HTTP request has failed";
     public static final int ERRORS_ID_LENGTH = 10;
 
     protected final String id;
     protected final LoggingLevel loggingLevel;
     protected final String requestMethod;
+    protected final String externalRequestMethod;
     protected final String requestUri;
+    protected final String externalRequestUri;
     protected final HttpStatus responseStatus;
-    protected String message;
     protected final List<Error> errors;
     protected final Throwable throwable;
-    protected final boolean logStackTrace;
 
-    protected ErrorData(String id, LoggingLevel loggingLevel, String requestMethod, String requestUri, HttpStatus responseStatus, String message, List<Error> errors, Throwable throwable, boolean logStackTrace) {
+    protected ErrorData(String id, LoggingLevel loggingLevel, String requestMethod, String externalRequestMethod, String requestUri, HttpStatus responseStatus, String externalRequestUri, List<Error> errors, Throwable throwable) {
         this.id = id;
         this.loggingLevel = loggingLevel;
         this.requestMethod = requestMethod;
+        this.externalRequestMethod = externalRequestMethod;
         this.requestUri = requestUri;
         this.responseStatus = responseStatus;
-        this.message = message;
+        this.externalRequestUri = externalRequestUri;
         this.errors = errors;
         this.throwable = throwable;
-        this.logStackTrace = logStackTrace;
     }
 
     public String getId() {
@@ -49,20 +47,24 @@ public class ErrorData {
         return requestMethod;
     }
 
+    public String getExternalRequestMethod() {
+        return externalRequestMethod;
+    }
+
     public String getRequestUri() {
         return requestUri;
     }
 
+    public String getExternalRequestUri() {
+        return externalRequestUri;
+    }
+
+    public boolean isExternalHttpRequestError() {
+        return externalRequestMethod != null && externalRequestUri != null;
+    }
+
     public HttpStatus getResponseStatus() {
         return responseStatus;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public boolean hasMessage() {
-        return isNotBlank(message);
     }
 
     public List<Error> getErrors() {
@@ -73,21 +75,17 @@ public class ErrorData {
         return throwable;
     }
 
-    public boolean isLogStackTrace() {
-        return logStackTrace;
-    }
-
     public static final class ErrorDataBuilder {
 
         protected String id;
         protected LoggingLevel loggingLevel;
         protected String requestMethod;
+        protected String externalRequestMethod;
         protected String requestUri;
+        protected String externalRequestUri;
         protected HttpStatus responseStatus;
-        protected String message;
         protected List<Error> errors = new ErrorsLoggingList();
         protected Throwable throwable;
-        protected boolean logStackTrace;
 
         private ErrorDataBuilder() {
             id = randomAlphanumeric(ERRORS_ID_LENGTH).toLowerCase();
@@ -107,18 +105,23 @@ public class ErrorData {
             return this;
         }
 
+        public ErrorDataBuilder withExternalRequestMethod(String externalRequestMethod) {
+            this.externalRequestMethod = externalRequestMethod;
+            return this;
+        }
+
         public ErrorDataBuilder withRequestUri(String requestUri) {
             this.requestUri = requestUri;
             return this;
         }
 
-        public ErrorDataBuilder withResponseStatus(HttpStatus responseStatus) {
-            this.responseStatus = responseStatus;
+        public ErrorDataBuilder withExternalRequestUri(String externalRequestUri) {
+            this.externalRequestUri = externalRequestUri;
             return this;
         }
 
-        public ErrorDataBuilder withMessage(String message) {
-            this.message = message;
+        public ErrorDataBuilder withResponseStatus(HttpStatus responseStatus) {
+            this.responseStatus = responseStatus;
             return this;
         }
 
@@ -132,13 +135,8 @@ public class ErrorData {
             return this;
         }
 
-        public ErrorDataBuilder withLogStackTrace(boolean logStackTrace) {
-            this.logStackTrace = logStackTrace;
-            return this;
-        }
-
         public ErrorData build() {
-            return new ErrorData(id, loggingLevel, requestMethod, requestUri, responseStatus, message, errors, throwable, logStackTrace);
+            return new ErrorData(id, loggingLevel, requestMethod, externalRequestMethod, requestUri, responseStatus, externalRequestUri, errors, throwable);
         }
     }
 }
