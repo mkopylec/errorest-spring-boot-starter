@@ -2,20 +2,20 @@ package com.github.mkopylec.errorest.specification
 
 import com.github.mkopylec.errorest.BasicSpec
 import com.github.mkopylec.errorest.exceptions.ErrorestResponseException
+import org.springframework.test.context.TestPropertySource
 import spock.lang.Unroll
 
 import static com.github.mkopylec.errorest.assertions.Assertions.assertThat
 import static com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat.FULL
 import static com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat.WITHOUT_DESCRIPTIONS
 import static org.springframework.http.HttpHeaders.ACCEPT
-import static org.springframework.http.HttpHeaders.CONTENT_TYPE
 import static org.springframework.http.HttpMethod.GET
-import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE
+import static org.springframework.http.HttpStatus.NOT_FOUND
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import static org.springframework.http.MediaType.APPLICATION_XML_VALUE
-import static org.springframework.http.MediaType.TEXT_HTML_VALUE
 
-class MediaTypeNotSupportedErrorsSpec extends BasicSpec {
+@TestPropertySource(properties = ['spring.mvc.throw-exception-if-no-handler-found: true'])
+class NoHandlerFoundErrorsSpec extends BasicSpec {
 
     @Unroll
     def "Should get full error from #uri request for 'Accept: #acceptHeader' header"() {
@@ -23,21 +23,21 @@ class MediaTypeNotSupportedErrorsSpec extends BasicSpec {
         responseBodyFormat = FULL
 
         when:
-        sendRequest GET, uri, [(ACCEPT): acceptHeader, (CONTENT_TYPE): TEXT_HTML_VALUE]
+        sendRequest GET, uri, [(ACCEPT): acceptHeader]
 
         then:
         def ex = thrown ErrorestResponseException
         assertThat(ex)
-                .hasStatus(UNSUPPORTED_MEDIA_TYPE)
+                .hasStatus(NOT_FOUND)
                 .hasErrorsId()
-                .hasSingleError('HTTP_CLIENT_ERROR', 'Unsupported Media Type: text/html, supported media types are text/plain')
+                .hasSingleError('HTTP_CLIENT_ERROR', 'Bad Request, required request part \'part\' is not present')
 
         where:
-        uri                                    | acceptHeader
-        '/controller/media-type-not-supported' | APPLICATION_JSON_VALUE
-        '/controller/media-type-not-supported' | APPLICATION_XML_VALUE
-        '/filter/media-type-not-supported'     | APPLICATION_JSON_VALUE
-        '/filter/media-type-not-supported'     | APPLICATION_XML_VALUE
+        uri                            | acceptHeader
+        '/controller/no-handler-found' | APPLICATION_JSON_VALUE
+        '/controller/no-handler-found' | APPLICATION_XML_VALUE
+        '/filter/no-handler-found'     | APPLICATION_JSON_VALUE
+        '/filter/no-handler-found'     | APPLICATION_XML_VALUE
     }
 
     @Unroll
@@ -46,20 +46,20 @@ class MediaTypeNotSupportedErrorsSpec extends BasicSpec {
         responseBodyFormat = WITHOUT_DESCRIPTIONS
 
         when:
-        sendRequest GET, uri, [(ACCEPT): acceptHeader, (CONTENT_TYPE): TEXT_HTML_VALUE]
+        sendRequest GET, uri, [(ACCEPT): acceptHeader]
 
         then:
         def ex = thrown ErrorestResponseException
         assertThat(ex)
-                .hasStatus(UNSUPPORTED_MEDIA_TYPE)
+                .hasStatus(NOT_FOUND)
                 .hasErrorsId()
                 .hasSingleErrorWithoutDescription('HTTP_CLIENT_ERROR')
 
         where:
-        uri                                    | acceptHeader
-        '/controller/media-type-not-supported' | APPLICATION_JSON_VALUE
-        '/controller/media-type-not-supported' | APPLICATION_XML_VALUE
-        '/filter/media-type-not-supported'     | APPLICATION_JSON_VALUE
-        '/filter/media-type-not-supported'     | APPLICATION_XML_VALUE
+        uri                            | acceptHeader
+        '/controller/no-handler-found' | APPLICATION_JSON_VALUE
+        '/controller/no-handler-found' | APPLICATION_XML_VALUE
+        '/filter/no-handler-found'     | APPLICATION_JSON_VALUE
+        '/filter/no-handler-found'     | APPLICATION_XML_VALUE
     }
 }

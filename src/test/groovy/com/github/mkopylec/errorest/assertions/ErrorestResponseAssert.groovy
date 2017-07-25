@@ -25,13 +25,27 @@ class ErrorestResponseAssert {
     }
 
     ErrorestResponseAssert hasNoErrors() {
+        assert errors.id == 'N/A'
         assert errors.errors.empty
+        return this
+    }
+
+    ErrorestResponseAssert hasSingleErrorWithoutDescription(String code) {
+        assert errors.errors.size() == 1
+        assert errors.errors[0] == new Error(code, 'N/A')
         return this
     }
 
     ErrorestResponseAssert hasSingleError(String code, String description) {
         assert errors.errors.size() == 1
         assert errors.errors[0] == new Error(code, description)
+        return this
+    }
+
+    ErrorestResponseAssert hasSingleErrorWithDescriptionPrefix(String code, String descriptionPrefix) {
+        assert errors.errors.size() == 1
+        assert errors.errors[0].hasCode(code)
+        assert errors.errors[0].description.startsWith(descriptionPrefix)
         return this
     }
 

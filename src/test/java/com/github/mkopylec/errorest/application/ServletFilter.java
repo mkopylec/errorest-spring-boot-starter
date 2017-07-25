@@ -3,7 +3,9 @@ package com.github.mkopylec.errorest.application;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -38,6 +40,12 @@ public class ServletFilter extends OncePerRequestFilter {
         }
         if (uri.endsWith("/message-not-readable")) {
             throw new HttpMessageNotReadableException("Message not readable from servlet filter");
+        }
+        if (uri.endsWith("/missing-servlet-request-parameter")) {
+            throw new MissingServletRequestParameterException("query-parameter", "String");
+        }
+        if (uri.endsWith("/missing-servlet-request-part")) {
+            throw new MissingServletRequestPartException("part");
         }
         if (uri.endsWith("/no-error")) {
             prepareResponse(request, response);

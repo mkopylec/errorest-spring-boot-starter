@@ -2,9 +2,9 @@ package com.github.mkopylec.errorest.specification
 
 import com.github.mkopylec.errorest.BasicSpec
 import com.github.mkopylec.errorest.exceptions.ErrorestResponseException
-import com.github.mkopylec.errorest.response.Error
 import spock.lang.Unroll
 
+import static com.github.mkopylec.errorest.assertions.Assertions.assertThat
 import static com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat.FULL
 import static com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat.WITHOUT_DESCRIPTIONS
 import static org.springframework.http.HttpHeaders.ACCEPT
@@ -25,9 +25,10 @@ class MessageNotReadableErrorsSpec extends BasicSpec {
 
         then:
         def ex = thrown ErrorestResponseException
-        ex.statusCode == BAD_REQUEST
-        ex.responseBodyAsErrors.errors[0].hasCode('HTTP_CLIENT_ERROR')
-        ex.responseBodyAsErrors.errors[0].description.startsWith('Bad Request, ')
+        assertThat(ex)
+                .hasStatus(BAD_REQUEST)
+                .hasErrorsId()
+                .hasSingleErrorWithDescriptionPrefix('HTTP_CLIENT_ERROR', 'Bad Request, ')
 
         where:
         uri                                | acceptHeader
@@ -47,8 +48,10 @@ class MessageNotReadableErrorsSpec extends BasicSpec {
 
         then:
         def ex = thrown ErrorestResponseException
-        ex.statusCode == BAD_REQUEST
-        ex.responseBodyAsErrors.errors == [new Error('HTTP_CLIENT_ERROR', 'N/A')]
+        assertThat(ex)
+                .hasStatus(BAD_REQUEST)
+                .hasErrorsId()
+                .hasSingleErrorWithoutDescription('HTTP_CLIENT_ERROR')
 
         where:
         uri                                | acceptHeader

@@ -26,8 +26,8 @@ class ExceptionErrorsSpec extends BasicSpec {
         then:
         def ex = thrown ErrorestResponseException
         assertThat(ex)
-                .hasErrorsId()
                 .hasStatus(INTERNAL_SERVER_ERROR)
+                .hasErrorsId()
                 .hasSingleError('UNEXPECTED_ERROR', description)
 
         where:
@@ -49,9 +49,9 @@ class ExceptionErrorsSpec extends BasicSpec {
         then:
         def ex = thrown ErrorestResponseException
         assertThat(ex)
-                .hasErrorsId()
                 .hasStatus(INTERNAL_SERVER_ERROR)
-                .hasSingleError('UNEXPECTED_ERROR', 'N/A')
+                .hasErrorsId()
+                .hasSingleErrorWithoutDescription('UNEXPECTED_ERROR')
 
         where:
         uri                     | acceptHeader

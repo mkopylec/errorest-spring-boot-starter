@@ -2,7 +2,10 @@ package com.github.mkopylec.errorest.handling.errordata.http;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData;
+import org.springframework.boot.autoconfigure.web.ErrorAttributes;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.context.request.RequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,6 +21,11 @@ public class RequestMethodNotSupportedErrorDataProvider extends HttpClientErrorD
     @Override
     public ErrorData getErrorData(HttpRequestMethodNotSupportedException ex, HttpServletRequest request) {
         return getErrorData(ex, request, METHOD_NOT_ALLOWED);
+    }
+
+    @Override
+    public ErrorData getErrorData(HttpRequestMethodNotSupportedException ex, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
+        return super.getErrorData(ex, METHOD_NOT_ALLOWED, errorAttributes, requestAttributes);
     }
 
     @Override
