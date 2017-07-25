@@ -59,6 +59,10 @@ public class Errors {
         return errors.stream().anyMatch(error -> error.hasDescription(description));
     }
 
+    public boolean isEmpty() {
+        return EMPTY_ERRORS_ID.equals(id) && !hasErrors();
+    }
+
     public void formatErrors(ResponseBodyFormat bodyFormat) {
         errors.forEach(error -> error.format(bodyFormat));
     }
