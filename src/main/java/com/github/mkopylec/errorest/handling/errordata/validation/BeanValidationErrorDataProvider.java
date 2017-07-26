@@ -30,7 +30,7 @@ public abstract class BeanValidationErrorDataProvider<T extends Throwable> exten
     }
 
     protected Error createError(ObjectError error) {
-        return new Error(error.getDefaultMessage(), "Invalid " + getField(error) + " value: " + getRejectedValue(error));
+        return new Error(error.getDefaultMessage(), "Invalid '" + getField(error) + "' value: " + getRejectedValue(error));
     }
 
     protected String getField(ObjectError error) {

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestOperations;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -69,6 +70,10 @@ public class Controller {
     @GetMapping(path = "/external-request", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
     public void throwExternalHttpRequestException() {
         rest.getForObject("http://localhost:10000/external/resource", String.class);
+    }
+
+    @PostMapping(path = "/method-argument-not-valid", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+    public void throwMethodArgumentNotValidException(@RequestBody @Valid ValidatedRequest request) {
     }
 
     @GetMapping(path = "/no-error", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})

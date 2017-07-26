@@ -9,6 +9,9 @@ import org.springframework.web.context.request.RequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * INFO: BindException will never be thrown when request body is annotated with @RequestBody.
+ */
 public class BindExceptionErrorDataProvider extends BeanValidationErrorDataProvider<BindException> {
 
     public BindExceptionErrorDataProvider(ErrorestProperties errorestProperties) {
