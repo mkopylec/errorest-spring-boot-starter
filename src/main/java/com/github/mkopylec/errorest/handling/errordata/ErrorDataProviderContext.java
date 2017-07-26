@@ -13,8 +13,9 @@ import com.github.mkopylec.errorest.handling.errordata.http.NoHandlerFoundErrorD
 import com.github.mkopylec.errorest.handling.errordata.http.RequestMethodNotSupportedErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.http.ServletRequestBindingErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.http.TypeMismatchErrorDataProvider;
-import com.github.mkopylec.errorest.handling.errordata.rest.ApplicationExceptionErrorDataProvider;
-import com.github.mkopylec.errorest.handling.errordata.rest.ExternalHttpRequestExceptionErrorDataProvider;
+import com.github.mkopylec.errorest.handling.errordata.rest.ApplicationErrorDataProvider;
+import com.github.mkopylec.errorest.handling.errordata.rest.ExternalHttpRequestErrorDataProvider;
+import com.github.mkopylec.errorest.handling.errordata.security.AccessDeniedErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.validation.BindExceptionErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.validation.MethodArgumentNotValidErrorDataProvider;
 import org.springframework.beans.TypeMismatchException;
@@ -39,10 +40,10 @@ public class ErrorDataProviderContext {
 
     public <T extends Throwable> ErrorDataProvider getErrorDataProvider(T ex) {
         if (ex instanceof ApplicationException) {
-            return new ApplicationExceptionErrorDataProvider(errorestProperties);
+            return new ApplicationErrorDataProvider(errorestProperties);
         }
         if (ex instanceof ExternalHttpRequestException) {
-            return new ExternalHttpRequestExceptionErrorDataProvider(errorestProperties);
+            return new ExternalHttpRequestErrorDataProvider(errorestProperties);
         }
         if (ex instanceof BindException) {
             return new BindExceptionErrorDataProvider(errorestProperties);
@@ -76,6 +77,9 @@ public class ErrorDataProviderContext {
         }
         if (ex instanceof TypeMismatchException) {
             return new TypeMismatchErrorDataProvider(errorestProperties);
+        }
+        if (ex != null && ex.getClass().getName().equals("org.springframework.security.access.AccessDeniedException")) {
+            return new AccessDeniedErrorDataProvider(errorestProperties);
         }
         return new ThrowableErrorDataProvider(errorestProperties);
     }

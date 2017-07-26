@@ -1,6 +1,7 @@
 package com.github.mkopylec.errorest.application;
 
 import com.github.mkopylec.errorest.client.ErrorestTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -74,6 +75,15 @@ public class Controller {
 
     @PostMapping(path = "/method-argument-not-valid", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
     public void throwMethodArgumentNotValidException(@RequestBody @Valid ValidatedRequest request) {
+    }
+
+    @PreAuthorize("authenticated")
+    @GetMapping(path = "/secured-with-annotation", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+    public void throwAccessDeniedException() {
+    }
+
+    @GetMapping(path = "/secured-with-configuration", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+    public void unauthorized() {
     }
 
     @GetMapping(path = "/no-error", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})

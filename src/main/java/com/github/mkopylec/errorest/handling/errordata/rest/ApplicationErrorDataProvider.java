@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import static com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder.newErrorData;
 
-public class ApplicationExceptionErrorDataProvider extends ErrorDataProvider<ApplicationException> {
+public class ApplicationErrorDataProvider extends ErrorDataProvider<ApplicationException> {
 
-    public ApplicationExceptionErrorDataProvider(ErrorestProperties errorestProperties) {
+    public ApplicationErrorDataProvider(ErrorestProperties errorestProperties) {
         super(errorestProperties);
     }
 

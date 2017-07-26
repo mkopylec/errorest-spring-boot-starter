@@ -15,9 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import static com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder.newErrorData;
 import static com.github.mkopylec.errorest.logging.LoggingLevel.ERROR;
 
-public class ExternalHttpRequestExceptionErrorDataProvider extends ErrorDataProvider<ExternalHttpRequestException> {
+public class ExternalHttpRequestErrorDataProvider extends ErrorDataProvider<ExternalHttpRequestException> {
 
-    public ExternalHttpRequestExceptionErrorDataProvider(ErrorestProperties errorestProperties) {
+    public ExternalHttpRequestErrorDataProvider(ErrorestProperties errorestProperties) {
         super(errorestProperties);
     }
 
