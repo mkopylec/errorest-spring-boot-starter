@@ -5,6 +5,7 @@ import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
@@ -55,6 +56,9 @@ public class ServletFilter extends OncePerRequestFilter {
         }
         if (uri.endsWith("/request-method-not-supported")) {
             throw new HttpRequestMethodNotSupportedException(request.getMethod(), singletonList("DELETE"));
+        }
+        if (uri.endsWith("/servlet-request-binding")) {
+            throw new ServletRequestBindingException("Exception from servlet filter");
         }
         if (uri.endsWith("/type-mismatch")) {
             String parameter = request.getParameter("query-parameter");
