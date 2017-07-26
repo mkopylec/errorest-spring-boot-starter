@@ -1,5 +1,6 @@
 package com.github.mkopylec.errorest.application;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +42,10 @@ public class Controller {
 
     @PostMapping(path = "/missing-servlet-request-part", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
     public void throwMissingServletRequestPartException(@RequestPart("part") Object part) {
+    }
+
+    @DeleteMapping(path = "/request-method-not-supported", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+    public void throwHttpRequestMethodNotSupportedException() {
     }
 
     @GetMapping(path = "/no-error", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})

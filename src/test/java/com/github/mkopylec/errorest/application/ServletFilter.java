@@ -3,6 +3,7 @@ package com.github.mkopylec.errorest.application;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
@@ -50,6 +51,9 @@ public class ServletFilter extends OncePerRequestFilter {
         }
         if (uri.endsWith("/no-handler-found")) {
             throw new NoHandlerFoundException(request.getMethod(), request.getRequestURI(), null);
+        }
+        if (uri.endsWith("/request-method-not-supported")) {
+            throw new HttpRequestMethodNotSupportedException(request.getMethod(), singletonList("DELETE"));
         }
         if (uri.endsWith("/no-error")) {
             prepareResponse(request, response);
