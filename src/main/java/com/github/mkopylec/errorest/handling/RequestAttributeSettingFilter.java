@@ -9,9 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class RequestMethodAttributeSettingFilter extends OncePerRequestFilter implements Ordered {
+import static com.github.mkopylec.errorest.handling.errordata.ErrorDataProviderContext.ACCESS_DENIED_EXCEPTION_CLASS;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
-    public static final String REQUEST_METHOD_ERROR_ATTRIBUTE = RequestMethodAttributeSettingFilter.class.getName() + ".method";
+public class RequestAttributeSettingFilter extends OncePerRequestFilter implements Ordered {
+
+    public static final String REQUEST_METHOD_ERROR_ATTRIBUTE = RequestAttributeSettingFilter.class.getName() + ".method";
+    public static final String AUTHORIZATION_HEADER_ERROR_ATTRIBUTE = RequestAttributeSettingFilter.class.getName() + ".authorization";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -19,6 +23,9 @@ public class RequestMethodAttributeSettingFilter extends OncePerRequestFilter im
             filterChain.doFilter(request, response);
         } catch (Throwable ex) {
             request.setAttribute(REQUEST_METHOD_ERROR_ATTRIBUTE, request.getMethod());
+            if (ex.getClass().getName().equals(ACCESS_DENIED_EXCEPTION_CLASS)) {
+                request.setAttribute(AUTHORIZATION_HEADER_ERROR_ATTRIBUTE, request.getHeader(AUTHORIZATION));
+            }
             throw ex;
         }
     }

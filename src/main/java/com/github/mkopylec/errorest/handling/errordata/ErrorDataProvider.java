@@ -7,7 +7,8 @@ import org.springframework.web.context.request.RequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.github.mkopylec.errorest.handling.RequestMethodAttributeSettingFilter.REQUEST_METHOD_ERROR_ATTRIBUTE;
+import static com.github.mkopylec.errorest.handling.RequestAttributeSettingFilter.AUTHORIZATION_HEADER_ERROR_ATTRIBUTE;
+import static com.github.mkopylec.errorest.handling.RequestAttributeSettingFilter.REQUEST_METHOD_ERROR_ATTRIBUTE;
 import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 import static org.springframework.web.context.request.RequestAttributes.SCOPE_REQUEST;
 
@@ -31,6 +32,14 @@ public abstract class ErrorDataProvider<T extends Throwable> {
     }
 
     protected String getRequestMethod(RequestAttributes requestAttributes) {
-        return defaultIfBlank((String) requestAttributes.getAttribute(REQUEST_METHOD_ERROR_ATTRIBUTE, SCOPE_REQUEST), NOT_AVAILABLE_DATA);
+        return getAttribute(REQUEST_METHOD_ERROR_ATTRIBUTE, requestAttributes);
+    }
+
+    protected String getAuthorizationHeader(RequestAttributes requestAttributes) {
+        return getAttribute(AUTHORIZATION_HEADER_ERROR_ATTRIBUTE, requestAttributes);
+    }
+
+    protected String getAttribute(String name, RequestAttributes requestAttributes) {
+        return defaultIfBlank((String) requestAttributes.getAttribute(name, SCOPE_REQUEST), NOT_AVAILABLE_DATA);
     }
 }

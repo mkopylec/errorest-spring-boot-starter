@@ -32,6 +32,8 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 public class ErrorDataProviderContext {
 
+    public static final String ACCESS_DENIED_EXCEPTION_CLASS = "org.springframework.security.access.AccessDeniedException";
+
     protected final ErrorestProperties errorestProperties;
 
     public ErrorDataProviderContext(ErrorestProperties errorestProperties) {
@@ -78,7 +80,7 @@ public class ErrorDataProviderContext {
         if (ex instanceof TypeMismatchException) {
             return new TypeMismatchErrorDataProvider(errorestProperties);
         }
-        if (ex != null && ex.getClass().getName().equals("org.springframework.security.access.AccessDeniedException")) {
+        if (ex != null && ex.getClass().getName().equals(ACCESS_DENIED_EXCEPTION_CLASS)) {
             return new AccessDeniedErrorDataProvider(errorestProperties);
         }
         return new ThrowableErrorDataProvider(errorestProperties);

@@ -13,8 +13,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .httpBasic().disable()
                 .exceptionHandling().authenticationEntryPoint(new ErrorestAuthenticationEntryPoint())
+                .and().anonymous()
                 .and().authorizeRequests()
                 .antMatchers("/controller/secured-with-configuration").authenticated();
     }
+
+//    @Override
+//    public void init(WebSecurity web) throws Exception {
+//        web.ignoring().antMatchers(POST, "/controller/**");
+//    }
 }

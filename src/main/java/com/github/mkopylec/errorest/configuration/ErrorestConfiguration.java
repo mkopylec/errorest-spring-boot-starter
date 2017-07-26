@@ -1,7 +1,7 @@
 package com.github.mkopylec.errorest.configuration;
 
 import com.github.mkopylec.errorest.handling.ControllerErrorHandler;
-import com.github.mkopylec.errorest.handling.RequestMethodAttributeSettingFilter;
+import com.github.mkopylec.errorest.handling.RequestAttributeSettingFilter;
 import com.github.mkopylec.errorest.handling.ServletFilterErrorHandler;
 import com.github.mkopylec.errorest.handling.errordata.ErrorDataProviderContext;
 import com.github.mkopylec.errorest.logging.ExceptionLogger;
@@ -41,8 +41,8 @@ public class ErrorestConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public RequestMethodAttributeSettingFilter requestMethodAttributeSettingFilter() {
-        return new RequestMethodAttributeSettingFilter();
+    public RequestAttributeSettingFilter requestMethodAttributeSettingFilter() {
+        return new RequestAttributeSettingFilter();
     }
 
     @Bean

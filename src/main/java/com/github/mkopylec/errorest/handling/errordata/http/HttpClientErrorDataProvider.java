@@ -1,10 +1,10 @@
 package com.github.mkopylec.errorest.handling.errordata.http;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
-import com.github.mkopylec.errorest.configuration.ErrorestProperties.HttpClientError;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder;
 import com.github.mkopylec.errorest.handling.errordata.ErrorDataProvider;
+import com.github.mkopylec.errorest.logging.LoggingLevel;
 import com.github.mkopylec.errorest.response.Error;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.http.HttpStatus;
@@ -40,9 +40,9 @@ public abstract class HttpClientErrorDataProvider<T extends Throwable> extends E
     }
 
     protected ErrorDataBuilder buildErrorData(T ex, HttpStatus responseHttpStatus) {
-        HttpClientError httpClientError = errorestProperties.getHttpClientError();
+        LoggingLevel loggingLevel = errorestProperties.getHttpClientError().getLoggingLevel();
         return newErrorData()
-                .withLoggingLevel(httpClientError.getLoggingLevel())
+                .withLoggingLevel(loggingLevel)
                 .withResponseStatus(responseHttpStatus)
                 .withThrowable(ex)
                 .addError(new Error(HTTP_CLIENT_ERROR_CODE, getErrorDescription(ex)));
