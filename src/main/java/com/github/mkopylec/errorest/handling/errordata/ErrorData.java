@@ -16,21 +16,17 @@ public class ErrorData {
     protected final String id;
     protected final LoggingLevel loggingLevel;
     protected final String requestMethod;
-    protected final String externalRequestMethod;
     protected final String requestUri;
-    protected final String externalRequestUri;
     protected final HttpStatus responseStatus;
     protected final List<Error> errors;
     protected final Throwable throwable;
 
-    protected ErrorData(String id, LoggingLevel loggingLevel, String requestMethod, String externalRequestMethod, String requestUri, HttpStatus responseStatus, String externalRequestUri, List<Error> errors, Throwable throwable) {
+    protected ErrorData(String id, LoggingLevel loggingLevel, String requestMethod, String requestUri, HttpStatus responseStatus, List<Error> errors, Throwable throwable) {
         this.id = id;
         this.loggingLevel = loggingLevel;
         this.requestMethod = requestMethod;
-        this.externalRequestMethod = externalRequestMethod;
         this.requestUri = requestUri;
         this.responseStatus = responseStatus;
-        this.externalRequestUri = externalRequestUri;
         this.errors = errors;
         this.throwable = throwable;
     }
@@ -43,24 +39,16 @@ public class ErrorData {
         return loggingLevel;
     }
 
+    public boolean hasLoggingLevel(LoggingLevel level) {
+        return loggingLevel == level;
+    }
+
     public String getRequestMethod() {
         return requestMethod;
     }
 
-    public String getExternalRequestMethod() {
-        return externalRequestMethod;
-    }
-
     public String getRequestUri() {
         return requestUri;
-    }
-
-    public String getExternalRequestUri() {
-        return externalRequestUri;
-    }
-
-    public boolean isExternalHttpRequestError() {
-        return externalRequestMethod != null && externalRequestUri != null;
     }
 
     public HttpStatus getResponseStatus() {
@@ -80,9 +68,7 @@ public class ErrorData {
         protected String id;
         protected LoggingLevel loggingLevel;
         protected String requestMethod;
-        protected String externalRequestMethod;
         protected String requestUri;
-        protected String externalRequestUri;
         protected HttpStatus responseStatus;
         protected List<Error> errors = new ErrorsLoggingList();
         protected Throwable throwable;
@@ -105,18 +91,8 @@ public class ErrorData {
             return this;
         }
 
-        public ErrorDataBuilder withExternalRequestMethod(String externalRequestMethod) {
-            this.externalRequestMethod = externalRequestMethod;
-            return this;
-        }
-
         public ErrorDataBuilder withRequestUri(String requestUri) {
             this.requestUri = requestUri;
-            return this;
-        }
-
-        public ErrorDataBuilder withExternalRequestUri(String externalRequestUri) {
-            this.externalRequestUri = externalRequestUri;
             return this;
         }
 
@@ -136,7 +112,7 @@ public class ErrorData {
         }
 
         public ErrorData build() {
-            return new ErrorData(id, loggingLevel, requestMethod, externalRequestMethod, requestUri, responseStatus, externalRequestUri, errors, throwable);
+            return new ErrorData(id, loggingLevel, requestMethod, requestUri, responseStatus, errors, throwable);
         }
     }
 }

@@ -1,11 +1,13 @@
 package com.github.mkopylec.errorest.application;
 
+import com.github.mkopylec.errorest.client.ErrorestTemplate;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.client.RestOperations;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
@@ -29,6 +31,8 @@ import static org.springframework.http.MediaType.TEXT_PLAIN;
 
 @WebFilter("/filter/*")
 public class ServletFilter extends OncePerRequestFilter {
+
+    private final RestOperations rest = new ErrorestTemplate();
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -67,6 +71,9 @@ public class ServletFilter extends OncePerRequestFilter {
         }
         if (uri.endsWith("/application")) {
             throw new TestApplicationException();
+        }
+        if (uri.endsWith("/external-request")) {
+            rest.getForObject("http://localhost:10000/external/resource", String.class);
         }
         if (uri.endsWith("/no-error")) {
             prepareResponse(request, response);

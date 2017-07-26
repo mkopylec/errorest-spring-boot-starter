@@ -1,5 +1,6 @@
 package com.github.mkopylec.errorest.application;
 
+import com.github.mkopylec.errorest.client.ErrorestTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestOperations;
 
 import java.util.Map;
 
@@ -19,6 +21,8 @@ import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
 @RestController
 @RequestMapping("/controller")
 public class Controller {
+
+    private final RestOperations rest = new ErrorestTemplate();
 
     @GetMapping(path = "/exception", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
     public void throwException() throws Exception {
@@ -60,6 +64,11 @@ public class Controller {
     @GetMapping(path = "/application", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
     public void throwApplicationException() {
         throw new TestApplicationException();
+    }
+
+    @GetMapping(path = "/external-request", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+    public void throwExternalHttpRequestException() {
+        rest.getForObject("http://localhost:10000/external/resource", String.class);
     }
 
     @GetMapping(path = "/no-error", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})

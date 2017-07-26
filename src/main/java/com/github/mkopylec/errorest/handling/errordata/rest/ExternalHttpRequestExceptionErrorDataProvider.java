@@ -33,10 +33,9 @@ public class ExternalHttpRequestExceptionErrorDataProvider extends ErrorDataProv
     public ErrorData getErrorData(ExternalHttpRequestException ex, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
         String requestMethod = getRequestMethod(requestAttributes);
         String requestUri = getRequestUri(errorAttributes, requestAttributes);
-        return buildErrorData(ex, defaultResponseStatus)
+        return buildErrorData(ex, ex.getStatusCode())
                 .withRequestMethod(requestMethod)
                 .withRequestUri(requestUri)
-                .withResponseStatus(defaultResponseStatus)
                 .build();
     }
 

@@ -23,17 +23,13 @@ public class ExceptionLogger {
     }
 
     protected void log(LoggingLevel loggingLevel, ErrorData errorData, Runnable logger) {
-        if (errorData.getLoggingLevel() != loggingLevel) {
+        if (!errorData.hasLoggingLevel(loggingLevel)) {
             return;
         }
         logger.run();
     }
 
     protected String createFullLog(ErrorData errorData) {
-        String log = errorData.getRequestMethod() + " " + errorData.getRequestUri() + " " + errorData.getResponseStatus();
-        if (errorData.isExternalHttpRequestError()) {
-            log += " -> " + errorData.getExternalRequestMethod() + " " + errorData.getExternalRequestUri();
-        }
-        return log + " | ID: " + errorData.getId() + " | " + errorData.getErrors();
+        return "ID: " + errorData.getId() + " | " + errorData.getRequestMethod() + " " + errorData.getRequestUri() + " " + errorData.getResponseStatus() + " | " + errorData.getErrors();
     }
 }
