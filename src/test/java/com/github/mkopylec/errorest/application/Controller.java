@@ -57,6 +57,11 @@ public class Controller {
     public void throwTypeMismatchException(@RequestParam("query-parameter") int parameter) {
     }
 
+    @GetMapping(path = "/application", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+    public void throwApplicationException() {
+        throw new TestApplicationException();
+    }
+
     @GetMapping(path = "/no-error", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
     public void throwNoError() {
     }

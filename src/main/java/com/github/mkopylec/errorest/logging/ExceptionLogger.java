@@ -34,6 +34,6 @@ public class ExceptionLogger {
         if (errorData.isExternalHttpRequestError()) {
             log += " -> " + errorData.getExternalRequestMethod() + " " + errorData.getExternalRequestUri();
         }
-        return log + " | Error ID: " + errorData.getId() + " | " + errorData.getErrors();
+        return log + " | ID: " + errorData.getId() + " | " + errorData.getErrors();
     }
 }

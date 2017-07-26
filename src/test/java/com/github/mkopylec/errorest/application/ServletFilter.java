@@ -65,6 +65,9 @@ public class ServletFilter extends OncePerRequestFilter {
             NumberFormatException ex = new NumberFormatException("For input string: \"" + parameter + "\"");
             throw new MethodArgumentTypeMismatchException(parameter, int.class, null, null, ex);
         }
+        if (uri.endsWith("/application")) {
+            throw new TestApplicationException();
+        }
         if (uri.endsWith("/no-error")) {
             prepareResponse(request, response);
         } else {

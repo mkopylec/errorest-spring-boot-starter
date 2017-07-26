@@ -42,6 +42,22 @@ class ErrorHttpResponseAssert {
         return this
     }
 
+    ErrorHttpResponseAssert hasMultipleErrorsWithoutDescriptions(List<String> codes) {
+        assert errors.errors.size() == codes.size()
+        codes.each {
+            code -> assert errors.errors.contains(new Error(code, 'N/A'))
+        }
+        return this
+    }
+
+    ErrorHttpResponseAssert hasMultipleErrors(Map<String, String> errorsMap) {
+        assert errors.errors.size() == errorsMap.size()
+        errorsMap.each {
+            code, description -> assert errors.errors.contains(new Error(code, description))
+        }
+        return this
+    }
+
     ErrorHttpResponseAssert hasSingleErrorWithDescriptionPrefix(String code, String descriptionPrefix) {
         assert errors.errors.size() == 1
         assert errors.errors[0].hasCode(code)
