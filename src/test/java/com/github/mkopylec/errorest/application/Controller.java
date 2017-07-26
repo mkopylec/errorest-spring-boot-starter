@@ -48,6 +48,10 @@ public class Controller {
     public void throwHttpRequestMethodNotSupportedException() {
     }
 
+    @GetMapping(path = "/type-mismatch", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+    public void throwTypeMismatchException(@RequestParam("query-parameter") int parameter) {
+    }
+
     @GetMapping(path = "/no-error", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
     public void throwNoError() {
     }
