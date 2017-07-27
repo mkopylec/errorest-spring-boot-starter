@@ -15,7 +15,6 @@ import com.github.mkopylec.errorest.handling.errordata.http.ServletRequestBindin
 import com.github.mkopylec.errorest.handling.errordata.http.TypeMismatchErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.rest.ApplicationErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.rest.ExternalHttpRequestErrorDataProvider;
-import com.github.mkopylec.errorest.handling.errordata.security.AccessDeniedErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.validation.BindExceptionErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.validation.MethodArgumentNotValidErrorDataProvider;
 import org.springframework.beans.TypeMismatchException;
@@ -31,8 +30,6 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 public class ErrorDataProviderContext {
-
-    public static final String ACCESS_DENIED_EXCEPTION_CLASS = "org.springframework.security.access.AccessDeniedException";
 
     protected final ErrorestProperties errorestProperties;
 
@@ -79,9 +76,6 @@ public class ErrorDataProviderContext {
         }
         if (ex instanceof TypeMismatchException) {
             return new TypeMismatchErrorDataProvider(errorestProperties);
-        }
-        if (ex != null && ex.getClass().getName().equals(ACCESS_DENIED_EXCEPTION_CLASS)) {
-            return new AccessDeniedErrorDataProvider(errorestProperties);
         }
         return new ThrowableErrorDataProvider(errorestProperties);
     }

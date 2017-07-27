@@ -7,7 +7,7 @@ import org.springframework.web.context.request.RequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.github.mkopylec.errorest.handling.RequestAttributeSettingFilter.AUTHORIZATION_HEADER_ERROR_ATTRIBUTE;
+import static com.github.mkopylec.errorest.handling.RequestAttributeSettingFilter.REQUEST_HEADERS_ERROR_ATTRIBUTE;
 import static com.github.mkopylec.errorest.handling.RequestAttributeSettingFilter.REQUEST_METHOD_ERROR_ATTRIBUTE;
 import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
 import static org.springframework.web.context.request.RequestAttributes.SCOPE_REQUEST;
@@ -35,8 +35,8 @@ public abstract class ErrorDataProvider<T extends Throwable> {
         return getAttribute(REQUEST_METHOD_ERROR_ATTRIBUTE, requestAttributes);
     }
 
-    protected String getAuthorizationHeader(RequestAttributes requestAttributes) {
-        return getAttribute(AUTHORIZATION_HEADER_ERROR_ATTRIBUTE, requestAttributes);
+    protected String getRequestHeaders(RequestAttributes requestAttributes) {
+        return getAttribute(REQUEST_HEADERS_ERROR_ATTRIBUTE, requestAttributes);
     }
 
     protected String getAttribute(String name, RequestAttributes requestAttributes) {

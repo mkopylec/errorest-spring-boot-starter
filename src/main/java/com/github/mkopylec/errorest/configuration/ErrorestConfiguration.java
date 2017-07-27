@@ -50,10 +50,4 @@ public class ErrorestConfiguration {
     public ExceptionLogger exceptionLogger() {
         return new ExceptionLogger();
     }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public ErrorDataProviderContext errorDataProviderContext() {
-        return new ErrorDataProviderContext(errorestProperties);
-    }
 }

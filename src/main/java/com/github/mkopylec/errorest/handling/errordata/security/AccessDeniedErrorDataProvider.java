@@ -13,7 +13,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 import static com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder.newErrorData;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static com.github.mkopylec.errorest.handling.utils.HttpUtils.getHeaders;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 public class AccessDeniedErrorDataProvider extends ErrorDataProvider<AccessDeniedException> {
@@ -26,7 +26,7 @@ public class AccessDeniedErrorDataProvider extends ErrorDataProvider<AccessDenie
 
     @Override
     public ErrorData getErrorData(AccessDeniedException ex, HttpServletRequest request) {
-        return buildErrorData(ex, request.getHeader(AUTHORIZATION))
+        return buildErrorData(ex, getHeaders(request))
                 .withRequestMethod(request.getMethod())
                 .withRequestUri(request.getRequestURI())
                 .build();
@@ -36,19 +36,19 @@ public class AccessDeniedErrorDataProvider extends ErrorDataProvider<AccessDenie
     public ErrorData getErrorData(AccessDeniedException ex, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
         String requestMethod = getRequestMethod(requestAttributes);
         String requestUri = getRequestUri(errorAttributes, requestAttributes);
-        String authorizationHeader = getAuthorizationHeader(requestAttributes);
-        return buildErrorData(ex, authorizationHeader)
+        String requestHeaders = getRequestHeaders(requestAttributes);
+        return buildErrorData(ex, requestHeaders)
                 .withRequestMethod(requestMethod)
                 .withRequestUri(requestUri)
                 .build();
     }
 
-    protected ErrorData.ErrorDataBuilder buildErrorData(AccessDeniedException ex, String authorizationHeader) {
+    protected ErrorData.ErrorDataBuilder buildErrorData(AccessDeniedException ex, String requestHeaders) {
         LoggingLevel loggingLevel = errorestProperties.getHttpClientError().getLoggingLevel();
         return newErrorData()
                 .withLoggingLevel(loggingLevel)
                 .withResponseStatus(FORBIDDEN)
                 .withThrowable(ex)
-                .addError(new Error(SECURITY_ERROR_CODE, "Access denied for request header: '" + AUTHORIZATION + ": " + authorizationHeader + "'"));
+                .addError(new Error(SECURITY_ERROR_CODE, "Access denied for request headers: " + requestHeaders));
     }
 }
