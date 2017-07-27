@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.github.mkopylec.errorest.handling.utils.HttpUtils.getHeaders;
+import static com.github.mkopylec.errorest.handling.utils.HttpUtils.getHeadersAsText;
 
 public class RequestAttributeSettingFilter extends OncePerRequestFilter implements Ordered {
 
@@ -22,7 +22,7 @@ public class RequestAttributeSettingFilter extends OncePerRequestFilter implemen
             filterChain.doFilter(request, response);
         } catch (Throwable ex) {
             request.setAttribute(REQUEST_METHOD_ERROR_ATTRIBUTE, request.getMethod());
-            request.setAttribute(REQUEST_HEADERS_ERROR_ATTRIBUTE, getHeaders(request));
+            request.setAttribute(REQUEST_HEADERS_ERROR_ATTRIBUTE, getHeadersAsText(request));
             throw ex;
         }
     }

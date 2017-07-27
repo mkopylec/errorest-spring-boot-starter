@@ -3,9 +3,9 @@ package com.github.mkopylec.errorest.handling.errordata.security;
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
 import org.springframework.security.access.AccessDeniedException;
 
-public class AccessDeniedErrorDataProvider extends SecurityErrorDataProvider<AccessDeniedException> {
+public class AuthenticationErrorDataProvider extends SecurityErrorDataProvider<AccessDeniedException> {
 
-    public AccessDeniedErrorDataProvider(ErrorestProperties errorestProperties) {
+    public AuthenticationErrorDataProvider(ErrorestProperties errorestProperties) {
         super(errorestProperties);
     }
 }

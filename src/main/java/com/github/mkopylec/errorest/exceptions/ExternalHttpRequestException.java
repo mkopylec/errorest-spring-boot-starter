@@ -70,6 +70,6 @@ public class ExternalHttpRequestException extends HttpStatusCodeException {
 
     protected boolean hasContentType(MediaType mediaType) {
         MediaType contentType = getResponseHeaders().getContentType();
-        return contentType == null || contentType.includes(mediaType);
+        return contentType != null && contentType.includes(mediaType);
     }
 }

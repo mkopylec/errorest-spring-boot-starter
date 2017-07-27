@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class HttpUtils {
 
-    public static String getHeaders(HttpServletRequest request) {
+    public static String getHeadersAsText(HttpServletRequest request) {
         Map<String, String> headers = new HashMap<>();
         Enumeration<String> names = request.getHeaderNames();
         while (names.hasMoreElements()) {
