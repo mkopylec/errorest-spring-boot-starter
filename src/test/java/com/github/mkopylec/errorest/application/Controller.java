@@ -77,13 +77,17 @@ public class Controller {
     public void throwMethodArgumentNotValidException(@RequestBody @Valid ValidatedRequest request) {
     }
 
-    @PreAuthorize("authenticated")
-    @GetMapping(path = "/secured-with-annotation", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
-    public void throwAccessDeniedException() {
+    @GetMapping(path = "/access-denied-via-configuration", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+    public void throwAccessDeniedExceptionViaConfiguration() {
     }
 
-    @GetMapping(path = "/secured-with-configuration", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
-    public void unauthorized() {
+    @PreAuthorize("authenticated")
+    @GetMapping(path = "/access-denied-via-annotation", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+    public void throwAccessDeniedExceptionViaAnnotation() {
+    }
+
+    @GetMapping(path = "/authentication-error", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+    public void throwAuthenticationException() {
     }
 
     @GetMapping(path = "/no-error", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})

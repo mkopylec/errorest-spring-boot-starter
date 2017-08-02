@@ -1,7 +1,12 @@
 package com.github.mkopylec.errorest.application;
 
 import com.github.mkopylec.errorest.client.ErrorestTemplate;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.stereotype.Component;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -15,13 +20,13 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static org.springframework.boot.autoconfigure.security.SecurityProperties.DEFAULT_FILTER_ORDER;
 import static org.springframework.http.HttpHeaders.ACCEPT;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -29,13 +34,18 @@ import static org.springframework.http.MediaType.APPLICATION_XML;
 import static org.springframework.http.MediaType.TEXT_HTML;
 import static org.springframework.http.MediaType.TEXT_PLAIN;
 
-@WebFilter("/filter/*")
+@Component
+@Order(DEFAULT_FILTER_ORDER - 1)
 public class ServletFilter extends OncePerRequestFilter {
 
     private final RestOperations rest = new ErrorestTemplate();
+    private final AntPathRequestMatcher requestMatcher = new AntPathRequestMatcher("/filter/**");
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        if (!requestMatcher.matches(request)) {
+            filterChain.doFilter(request, response);
+        }
         String uri = request.getRequestURI();
         if (uri.endsWith("/exception")) {
             throw new RuntimeException("Exception from servlet filer");
@@ -74,6 +84,12 @@ public class ServletFilter extends OncePerRequestFilter {
         }
         if (uri.endsWith("/external-request")) {
             rest.getForObject("http://localhost:10000/external/resource", String.class);
+        }
+        if (uri.endsWith("/access-denied")) {
+            throw new AccessDeniedException("Access denied from servlet filter");
+        }
+        if (uri.endsWith("/authentication-error")) {
+            throw new BadCredentialsException("Access denied from servlet filter");
         }
         if (uri.endsWith("/no-error")) {
             prepareResponse(request, response);

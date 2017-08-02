@@ -44,12 +44,15 @@ public abstract class SecurityErrorDataProvider<T extends Throwable> extends Err
 
     protected ErrorDataBuilder buildErrorData(T ex, String requestHeaders) {
         LoggingLevel loggingLevel = errorestProperties.getHttpClientError().getLoggingLevel();
+        String description = getErrorDescription(requestHeaders);
         return newErrorData()
                 .withLoggingLevel(loggingLevel)
                 .withResponseStatus(getResponseHttpStatus())
                 .withThrowable(ex)
-                .addError(new Error(SECURITY_ERROR_CODE, "Access denied for request with headers: " + requestHeaders));
+                .addError(new Error(SECURITY_ERROR_CODE, description));
     }
 
     protected abstract HttpStatus getResponseHttpStatus();
+
+    protected abstract String getErrorDescription(String requestHeaders);
 }

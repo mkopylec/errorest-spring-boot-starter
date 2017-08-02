@@ -16,4 +16,9 @@ public class AccessDeniedErrorDataProvider extends SecurityErrorDataProvider<Acc
     protected HttpStatus getResponseHttpStatus() {
         return FORBIDDEN;
     }
+
+    @Override
+    protected String getErrorDescription(String requestHeaders) {
+        return "Access denied for request with headers: " + requestHeaders;
+    }
 }

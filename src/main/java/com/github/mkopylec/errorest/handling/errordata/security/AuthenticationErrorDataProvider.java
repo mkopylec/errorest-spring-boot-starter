@@ -16,4 +16,9 @@ public class AuthenticationErrorDataProvider extends SecurityErrorDataProvider<A
     protected HttpStatus getResponseHttpStatus() {
         return UNAUTHORIZED;
     }
+
+    @Override
+    protected String getErrorDescription(String requestHeaders) {
+        return "Authentication failed for request with headers: " + requestHeaders;
+    }
 }
