@@ -5,8 +5,10 @@ import com.github.mkopylec.errorest.handling.RequestAttributeSettingFilter;
 import com.github.mkopylec.errorest.handling.ServletFilterErrorHandler;
 import com.github.mkopylec.errorest.handling.errordata.ErrorDataProviderContext;
 import com.github.mkopylec.errorest.logging.ExceptionLogger;
+import com.github.mkopylec.errorest.response.ErrorsFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorMvcAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -29,14 +31,27 @@ public class ErrorestConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ControllerErrorHandler controllerErrorHandler(ExceptionLogger exceptionLogger, ErrorDataProviderContext providerContext) {
-        return new ControllerErrorHandler(errorestProperties, exceptionLogger, providerContext);
+    public ControllerErrorHandler controllerErrorHandler(ErrorsFactory errorsFactory, ErrorDataProviderContext providerContext) {
+        return new ControllerErrorHandler(errorsFactory, providerContext);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public ServletFilterErrorHandler servletFilterErrorHandler(ErrorAttributes errorAttributes, ExceptionLogger logger, ErrorDataProviderContext providerContext) {
-        return new ServletFilterErrorHandler(errorAttributes, serverProperties, errorestProperties, logger, providerContext);
+    public ServletFilterErrorHandler servletFilterErrorHandler(ErrorAttributes errorAttributes, ErrorsFactory errorsFactory, ErrorDataProviderContext providerContext) {
+        return new ServletFilterErrorHandler(errorAttributes, serverProperties, errorsFactory, providerContext);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ErrorsFactory errorsFactory(ExceptionLogger logger) {
+        return new ErrorsFactory(errorestProperties, logger);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnMissingClass({"org.springframework.security.access.AccessDeniedException", "org.springframework.security.core.AuthenticationException"})
+    public ErrorDataProviderContext errorDataProviderContext() {
+        return new ErrorDataProviderContext(errorestProperties);
     }
 
     @Bean

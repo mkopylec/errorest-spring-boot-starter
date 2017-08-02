@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import static com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder.newErrorData;
 import static com.github.mkopylec.errorest.handling.utils.HttpUtils.getHeadersAsText;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 public abstract class SecurityErrorDataProvider<T extends Throwable> extends ErrorDataProvider<T> {
 
@@ -47,8 +46,10 @@ public abstract class SecurityErrorDataProvider<T extends Throwable> extends Err
         LoggingLevel loggingLevel = errorestProperties.getHttpClientError().getLoggingLevel();
         return newErrorData()
                 .withLoggingLevel(loggingLevel)
-                .withResponseStatus(FORBIDDEN)
+                .withResponseStatus(getResponseHttpStatus())
                 .withThrowable(ex)
-                .addError(new Error(SECURITY_ERROR_CODE, "Access denied for request headers: " + requestHeaders));
+                .addError(new Error(SECURITY_ERROR_CODE, "Access denied for request with headers: " + requestHeaders));
     }
+
+    protected abstract HttpStatus getResponseHttpStatus();
 }

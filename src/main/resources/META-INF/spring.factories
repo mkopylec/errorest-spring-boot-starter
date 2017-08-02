@@ -1,4 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.github.mkopylec.errorest.configuration.ErrorestConfiguration,\
-com.github.mkopylec.errorest.configuration.ErrorDataConfiguration,\
-com.github.mkopylec.errorest.configuration.SecurityErrorDataConfiguration
+com.github.mkopylec.errorest.configuration.SecurityErrorestConfiguration

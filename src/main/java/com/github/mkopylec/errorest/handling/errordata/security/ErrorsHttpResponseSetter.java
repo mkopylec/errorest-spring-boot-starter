@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.github.mkopylec.errorest.response.Errors;
 import org.slf4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,15 +20,17 @@ import static org.springframework.http.MediaType.parseMediaType;
 import static org.springframework.http.converter.json.Jackson2ObjectMapperBuilder.json;
 import static org.springframework.http.converter.json.Jackson2ObjectMapperBuilder.xml;
 
-public class ErrorsHttpResponseBodySetter {
+public class ErrorsHttpResponseSetter {
 
-    private static final Logger log = getLogger(ErrorsHttpResponseBodySetter.class);
+    private static final Logger log = getLogger(ErrorsHttpResponseSetter.class);
 
     protected ObjectMapper jsonMapper = json().build();
     protected XmlMapper xmlMapper = xml().build();
 
-    public void setErrorsResponseBody(Errors errors, HttpServletRequest request, HttpServletResponse response) {
-//        response.getWriter().
+    public void setErrorsResponse(Errors errors, HttpStatus responseHttpStatus, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String body = toResponseBody(errors, request);
+        response.setStatus(responseHttpStatus.value());
+        response.getWriter().write(body);
     }
 
     public void setJsonMapper(ObjectMapper jsonMapper) {

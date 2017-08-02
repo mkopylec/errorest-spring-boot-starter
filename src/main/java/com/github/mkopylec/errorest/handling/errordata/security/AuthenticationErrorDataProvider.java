@@ -1,11 +1,19 @@
 package com.github.mkopylec.errorest.handling.errordata.security;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
 
-public class AuthenticationErrorDataProvider extends SecurityErrorDataProvider<AccessDeniedException> {
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+
+public class AuthenticationErrorDataProvider extends SecurityErrorDataProvider<AuthenticationException> {
 
     public AuthenticationErrorDataProvider(ErrorestProperties errorestProperties) {
         super(errorestProperties);
+    }
+
+    @Override
+    protected HttpStatus getResponseHttpStatus() {
+        return UNAUTHORIZED;
     }
 }

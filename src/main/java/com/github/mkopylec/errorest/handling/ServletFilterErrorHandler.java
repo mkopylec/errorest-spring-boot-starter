@@ -1,11 +1,10 @@
 package com.github.mkopylec.errorest.handling;
 
-import com.github.mkopylec.errorest.configuration.ErrorestProperties;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData;
 import com.github.mkopylec.errorest.handling.errordata.ErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.ErrorDataProviderContext;
-import com.github.mkopylec.errorest.logging.ExceptionLogger;
 import com.github.mkopylec.errorest.response.Errors;
+import com.github.mkopylec.errorest.response.ErrorsFactory;
 import org.springframework.boot.autoconfigure.web.AbstractErrorController;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
@@ -25,26 +24,22 @@ import static org.springframework.http.ResponseEntity.status;
 public class ServletFilterErrorHandler extends AbstractErrorController {
 
     protected final ErrorAttributes errorAttributes;
-    protected final ErrorestProperties errorestProperties;
     protected final ErrorProperties errorProperties;
-    protected final ExceptionLogger logger;
+    protected final ErrorsFactory errorsFactory;
     protected final ErrorDataProviderContext providerContext;
 
-    public ServletFilterErrorHandler(ErrorAttributes errorAttributes, ServerProperties serverProperties, ErrorestProperties errorestProperties, ExceptionLogger logger, ErrorDataProviderContext providerContext) {
+    public ServletFilterErrorHandler(ErrorAttributes errorAttributes, ServerProperties serverProperties, ErrorsFactory errorsFactory, ErrorDataProviderContext providerContext) {
         super(errorAttributes, emptyList());
         this.errorAttributes = errorAttributes;
-        this.errorestProperties = errorestProperties;
         errorProperties = serverProperties.getError();
-        this.logger = logger;
+        this.errorsFactory = errorsFactory;
         this.providerContext = providerContext;
     }
 
     @RequestMapping("${server.error.path:${error.path:/error}}")
     public ResponseEntity<Errors> error(HttpServletRequest request) {
         ErrorData errorData = getErrorData(request);
-        logger.log(errorData);
-        Errors errors = new Errors(errorData.getId(), errorData.getErrors());
-        errors.formatErrors(errorestProperties.getResponseBodyFormat());
+        Errors errors = errorsFactory.logAndCreateErrors(errorData);
         return status(errorData.getResponseStatus())
                 .body(errors);
     }
