@@ -27,6 +27,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler)
                 .and().authorizeRequests()
-                .antMatchers("/controller/authentication-error-via-configuration").authenticated();
+                .antMatchers("/controller/authentication-error").authenticated();
     }
 }
