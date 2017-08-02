@@ -18,8 +18,8 @@ public class Error {
 
     @JsonCreator
     public Error(
-            @JsonProperty("code") @JacksonXmlProperty(localName = "code", isAttribute = true) String code,
-            @JsonProperty("description") @JacksonXmlProperty(localName = "description", isAttribute = true) String description
+            @JsonProperty("code") @JacksonXmlProperty(localName = "code") String code,
+            @JsonProperty("description") @JacksonXmlProperty(localName = "description") String description
     ) {
         this.code = code;
         this.description = isNotBlank(description) ? description : DESCRIPTION_NOT_AVAILABLE;

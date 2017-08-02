@@ -14,8 +14,11 @@ import java.io.IOException;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.http.HttpHeaders.ACCEPT;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_XML;
+import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 import static org.springframework.http.MediaType.parseMediaType;
 import static org.springframework.http.converter.json.Jackson2ObjectMapperBuilder.json;
 import static org.springframework.http.converter.json.Jackson2ObjectMapperBuilder.xml;
@@ -28,9 +31,12 @@ public class ErrorsHttpResponseSetter {
     protected XmlMapper xmlMapper = xml().build();
 
     public void setErrorsResponse(Errors errors, HttpStatus responseHttpStatus, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String body = toResponseBody(errors, request);
         response.setStatus(responseHttpStatus.value());
-        response.getWriter().write(body);
+        HttpResponseData responseData = getResponseData(errors, request);
+        if (responseData != null) {
+            response.addHeader(CONTENT_TYPE, responseData.getContentType());
+            response.getWriter().write(responseData.getBody());
+        }
     }
 
     public void setJsonMapper(ObjectMapper jsonMapper) {
@@ -41,14 +47,16 @@ public class ErrorsHttpResponseSetter {
         this.xmlMapper = xmlMapper;
     }
 
-    protected String toResponseBody(Errors errors, HttpServletRequest request) {
+    protected HttpResponseData getResponseData(Errors errors, HttpServletRequest request) {
         String acceptHeader = request.getHeader(ACCEPT);
         try {
             if (hasAcceptedType(APPLICATION_JSON, acceptHeader)) {
-                return jsonMapper.writeValueAsString(errors);
+                String body = jsonMapper.writeValueAsString(errors);
+                return new HttpResponseData(APPLICATION_JSON_VALUE, body);
             }
             if (hasAcceptedType(APPLICATION_XML, acceptHeader)) {
-                return xmlMapper.writeValueAsString(errors);
+                String body = xmlMapper.writeValueAsString(errors);
+                return new HttpResponseData(APPLICATION_XML_VALUE, body);
             }
             throw new IOException("Incompatible HTTP request " + ACCEPT + " header: " + acceptHeader);
         } catch (IOException e) {
@@ -59,5 +67,24 @@ public class ErrorsHttpResponseSetter {
 
     protected boolean hasAcceptedType(MediaType accept, String acceptHeader) {
         return isNotBlank(acceptHeader) && parseMediaType(acceptHeader).includes(accept);
+    }
+
+    public static class HttpResponseData {
+
+        protected final String contentType;
+        protected final String body;
+
+        protected HttpResponseData(String contentType, String body) {
+            this.contentType = contentType;
+            this.body = body;
+        }
+
+        protected String getContentType() {
+            return contentType;
+        }
+
+        protected String getBody() {
+            return body;
+        }
     }
 }

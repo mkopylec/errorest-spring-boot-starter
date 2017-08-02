@@ -28,7 +28,7 @@ public class Errors {
 
     @JsonCreator
     public Errors(
-            @JsonProperty("id") @JacksonXmlProperty(localName = "id", isAttribute = true) String id,
+            @JsonProperty("id") @JacksonXmlProperty(localName = "id") String id,
             @JsonProperty("errors") @JacksonXmlProperty(localName = "Jackson bug workaround") List<Error> errors
     ) {
         hasText(id, "Empty errors ID");
