@@ -9,12 +9,12 @@ import java.util.List;
 
 public class ApplicationExceptionConfiguration {
 
-    protected final List<Error> errors = new ErrorsLoggingList();
+    protected List<Error> errors = new ErrorsLoggingList();
     protected HttpStatus responseHttpStatus;
     protected LoggingLevel loggingLevel;
     protected Throwable cause;
 
-    public List<Error> getErrors() {
+    protected List<Error> getErrors() {
         return errors;
     }
 
@@ -23,7 +23,12 @@ public class ApplicationExceptionConfiguration {
         return this;
     }
 
-    public HttpStatus getResponseHttpStatus() {
+    public ApplicationExceptionConfiguration withErrors(ErrorsLoggingList errors) {
+        this.errors = errors;
+        return this;
+    }
+
+    protected HttpStatus getResponseHttpStatus() {
         return responseHttpStatus;
     }
 
@@ -32,7 +37,7 @@ public class ApplicationExceptionConfiguration {
         return this;
     }
 
-    public LoggingLevel getLoggingLevel() {
+    protected LoggingLevel getLoggingLevel() {
         return loggingLevel;
     }
 
@@ -41,7 +46,7 @@ public class ApplicationExceptionConfiguration {
         return this;
     }
 
-    public Throwable getCause() {
+    protected Throwable getCause() {
         return cause;
     }
 
