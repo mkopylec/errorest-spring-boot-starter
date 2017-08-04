@@ -15,11 +15,12 @@ public class ExceptionLogger {
     private static final Logger log = getLogger(ExceptionLogger.class);
 
     public void log(ErrorData errorData) {
-        log(TRACE, errorData, () -> log.trace(createFullLog(errorData), errorData.getThrowable()));
-        log(DEBUG, errorData, () -> log.debug(createFullLog(errorData), errorData.getThrowable()));
-        log(INFO, errorData, () -> log.info(createFullLog(errorData), errorData.getThrowable()));
-        log(WARN, errorData, () -> log.warn(createFullLog(errorData), errorData.getThrowable()));
-        log(ERROR, errorData, () -> log.error(createFullLog(errorData), errorData.getThrowable()));
+        String message = createLogMessage(errorData);
+        log(TRACE, errorData, () -> log.trace(message, errorData.getThrowable()));
+        log(DEBUG, errorData, () -> log.debug(message, errorData.getThrowable()));
+        log(INFO, errorData, () -> log.info(message, errorData.getThrowable()));
+        log(WARN, errorData, () -> log.warn(message, errorData.getThrowable()));
+        log(ERROR, errorData, () -> log.error(message, errorData.getThrowable()));
     }
 
     protected void log(LoggingLevel loggingLevel, ErrorData errorData, Runnable logger) {
@@ -29,7 +30,7 @@ public class ExceptionLogger {
         logger.run();
     }
 
-    protected String createFullLog(ErrorData errorData) {
+    protected String createLogMessage(ErrorData errorData) {
         return "ID: " + errorData.getId() + " | " + errorData.getRequestMethod() + " " + errorData.getRequestUri() + " " + errorData.getResponseStatus() + " | " + errorData.getErrors();
     }
 }

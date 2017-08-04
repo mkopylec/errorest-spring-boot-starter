@@ -13,7 +13,7 @@ public class AccessDeniedErrorDataProvider extends SecurityErrorDataProvider<Acc
     }
 
     @Override
-    protected HttpStatus getResponseHttpStatus() {
+    protected HttpStatus getResponseHttpStatus(AccessDeniedException ex) {
         return FORBIDDEN;
     }
 

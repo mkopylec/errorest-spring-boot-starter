@@ -35,6 +35,6 @@ public class ErrorestAuthenticationEntryPoint implements AuthenticationEntryPoin
     @SuppressWarnings("unchecked")
     protected ErrorData getErrorData(AuthenticationException ex, HttpServletRequest request) {
         ErrorDataProvider provider = providerContext.getErrorDataProvider(ex);
-        return provider.getErrorData(ex, request);
+        return ((SecurityErrorDataProvider) provider).createErrorData(ex, request);
     }
 }

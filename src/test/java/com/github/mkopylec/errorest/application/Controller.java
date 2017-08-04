@@ -90,6 +90,15 @@ public class Controller {
     public void throwAuthenticationException() {
     }
 
+    @GetMapping(path = "/oauth-authentication-error", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+    public void throwOAuth2AuthenticationException() {
+    }
+
+    @PreAuthorize("authenticated")
+    @GetMapping(path = "/oauth-access-denied", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+    public void throwOAuthAccessDeniedException() {
+    }
+
     @GetMapping(path = "/no-error", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
     public void throwNoError() {
     }

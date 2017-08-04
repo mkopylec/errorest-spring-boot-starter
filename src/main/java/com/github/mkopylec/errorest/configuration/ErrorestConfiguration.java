@@ -49,7 +49,7 @@ public class ErrorestConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnMissingClass({"org.springframework.security.access.AccessDeniedException", "org.springframework.security.core.AuthenticationException"})
+    @ConditionalOnMissingClass({"org.springframework.security.access.AccessDeniedException", "org.springframework.security.core.AuthenticationException", "org.springframework.security.oauth2.common.exceptions.OAuth2Exception"})
     public ErrorDataProviderContext errorDataProviderContext() {
         return new ErrorDataProviderContext(errorestProperties);
     }

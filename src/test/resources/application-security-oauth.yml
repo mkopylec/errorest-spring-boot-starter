@@ -1,0 +1,16 @@
+security:
+  oauth2:
+    client:
+      client-id: oauth-client
+      client-secret: password
+    resource:
+      jwt:
+        key-value:
+          -----BEGIN PUBLIC KEY-----
+          MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMBPwRL3OCB7uumc0eBz2t3BPjdliZzo
+          vGcom1mHj0XTC+kgCIvSKFi8OYktgFm5lAoZR2Cuwe6v8XBCHPEBDaUCAwEAAQ==
+          -----END PUBLIC KEY-----
+logging:
+  level:
+    org.springframework.security: trace
+

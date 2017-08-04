@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import static com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder.newErrorData;
 import static com.github.mkopylec.errorest.handling.utils.HttpUtils.getHeadersAsText;
 
-public abstract class SecurityErrorDataProvider<T extends Throwable> extends ErrorDataProvider<T> {
+public abstract class SecurityErrorDataProvider<T extends RuntimeException> extends ErrorDataProvider<T> {
 
     public static final String SECURITY_ERROR_CODE = "SECURITY_ERROR";
 
@@ -23,12 +23,16 @@ public abstract class SecurityErrorDataProvider<T extends Throwable> extends Err
         super(errorestProperties);
     }
 
-    @Override
-    public ErrorData getErrorData(T ex, HttpServletRequest request) {
+    public ErrorData createErrorData(T ex, HttpServletRequest request) {
         return buildErrorData(ex, getHeadersAsText(request))
                 .withRequestMethod(request.getMethod())
                 .withRequestUri(request.getRequestURI())
                 .build();
+    }
+
+    @Override
+    public ErrorData getErrorData(T ex, HttpServletRequest request) {
+        throw ex;
     }
 
     @Override
@@ -47,12 +51,12 @@ public abstract class SecurityErrorDataProvider<T extends Throwable> extends Err
         String description = getErrorDescription(requestHeaders);
         return newErrorData()
                 .withLoggingLevel(loggingLevel)
-                .withResponseStatus(getResponseHttpStatus())
+                .withResponseStatus(getResponseHttpStatus(ex))
                 .withThrowable(ex)
                 .addError(new Error(SECURITY_ERROR_CODE, description));
     }
 
-    protected abstract HttpStatus getResponseHttpStatus();
+    protected abstract HttpStatus getResponseHttpStatus(T ex);
 
     protected abstract String getErrorDescription(String requestHeaders);
 }

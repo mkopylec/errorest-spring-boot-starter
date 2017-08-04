@@ -13,7 +13,7 @@ public class AuthenticationErrorDataProvider extends SecurityErrorDataProvider<A
     }
 
     @Override
-    protected HttpStatus getResponseHttpStatus() {
+    protected HttpStatus getResponseHttpStatus(AuthenticationException ex) {
         return UNAUTHORIZED;
     }
 

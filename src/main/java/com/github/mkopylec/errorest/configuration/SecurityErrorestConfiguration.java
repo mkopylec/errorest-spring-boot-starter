@@ -8,6 +8,7 @@ import com.github.mkopylec.errorest.handling.errordata.security.ErrorsHttpRespon
 import com.github.mkopylec.errorest.response.ErrorsFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,7 @@ public class SecurityErrorestConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    @ConditionalOnMissingClass("org.springframework.security.oauth2.common.exceptions.OAuth2Exception")
     public ErrorDataProviderContext errorDataProviderContext() {
         return new SecurityErrorDataProviderContext(errorestProperties);
     }

@@ -35,6 +35,6 @@ public class ErrorestAccessDeniedHandler implements AccessDeniedHandler {
     @SuppressWarnings("unchecked")
     protected ErrorData getErrorData(AccessDeniedException ex, HttpServletRequest request) {
         ErrorDataProvider provider = providerContext.getErrorDataProvider(ex);
-        return provider.getErrorData(ex, request);
+        return ((SecurityErrorDataProvider) provider).createErrorData(ex, request);
     }
 }
