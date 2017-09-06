@@ -45,6 +45,7 @@ public class ServletFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if (!requestMatcher.matches(request)) {
             filterChain.doFilter(request, response);
+            return;
         }
         String uri = request.getRequestURI();
         if (uri.endsWith("/exception")) {

@@ -36,6 +36,7 @@ public class ErrorsHttpResponseSetter {
         if (responseData != null) {
             response.addHeader(CONTENT_TYPE, responseData.getContentType());
             response.getWriter().write(responseData.getBody());
+            response.getWriter().flush();
         }
     }
 
