@@ -173,7 +173,7 @@ It also defines `getResponseBodyAsErrors()` method which maps ErroREST HTTP resp
 The usage of `ErrorestTemplate` is the same as of normal [`RestTemplate`](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html):
 ```java
     RestOperations client = new ErrorestTemplate();
-    try{
+    try {
         client.getForObject("http://exmaple.com", String.class);
     } catch (ExternalHttpRequestException ex) {
         String detailedMessage = ex.getMessage();
