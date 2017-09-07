@@ -2,7 +2,6 @@ package com.github.mkopylec.errorest.configuration;
 
 import com.github.mkopylec.errorest.logging.LoggingLevel;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import static com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat.FULL;
 import static com.github.mkopylec.errorest.logging.LoggingLevel.WARN;
@@ -20,12 +19,10 @@ public class ErrorestProperties {
     /**
      * Properties responsible for handling validation errors.
      */
-    @NestedConfigurationProperty
     private BeanValidationError beanValidationError = new BeanValidationError();
     /**
      * Properties responsible for handling 4xx HTTP errors.
      */
-    @NestedConfigurationProperty
     private HttpClientError httpClientError = new HttpClientError();
 
     public ResponseBodyFormat getResponseBodyFormat() {
