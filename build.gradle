@@ -84,7 +84,7 @@ uploadArchives {
             pom.project {
                 name 'ErroREST Spring Boot Starter'
                 packaging 'jar'
-                description 'Complete, ready to use error handling for Spring Boot REST services'
+                description 'Complete, ready to use exception handling for Spring Boot REST services'
                 url 'https://github.com/mkopylec/errorest-spring-boot-starter'
                 scm {
                     connection 'scm:git:https://github.com/mkopylec/errorest-spring-boot-starter.git'
