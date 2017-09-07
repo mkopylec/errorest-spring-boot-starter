@@ -27,7 +27,7 @@ dependencies {
 ```
 
 ## HTTP response format
-The starter maps all unhandled exceptions to specific ErroREST HTTP response.
+The starter maps all unhandled exceptions to specific ErroREST HTTP responses.
 
 ### JSON format
 If the incoming HTTP request contains `Accept: application/json` header, the HTTP response will contain `Content-Type: application/json` header.
@@ -67,7 +67,7 @@ ID: <random id> | <http request method> <http request uri> <http response status
 Exceptions are always logged with stack trace.
 
 ## Basic usage
-To start using the starter in a REST service teh service must be a Spring Boot web application:
+To start using the starter in a REST service the service must be a Spring Boot web application:
 ```java
 @SpringBootApplication
 public class Application {
@@ -90,7 +90,7 @@ errorest.response-body-format: WITHOUT_DESCRIPTIONS
 ```
 
 ### Custom exceptions
-Custom exceptions will be automatically mapped to ErroREST HTTP response if they extend `ApplicationException`, for example:
+Custom exceptions will be automatically mapped to ErroREST HTTP responses if they extend `ApplicationException`, for example:
 ```java
 public class SampleApplicationException extends ApplicationException {
 
@@ -104,7 +104,7 @@ public class SampleApplicationException extends ApplicationException {
     }
 }
 ```
-The `SampleApplicationException` from the example will be mapped to ErroREST HTTP response with status 400 (bad request) and body like so:
+The `SampleApplicationException` from the example will be mapped to ErroREST HTTP response with 400 (bad request) status and body like so:
 ```json
 {
     "id":"<random id>",
@@ -116,11 +116,11 @@ The `SampleApplicationException` from the example will be mapped to ErroREST HTT
     ]
 }
 ```
-The exception log will be logged as warning.
+The exception will be logged as warning.
 
 ### Bean Validation exceptions
-The starter is able to map [Bean Validation](http://beanvalidation.org/) exceptions to ErroREST HTTP response with 422 status (unprocessable entity).
-For this kind of exceptions a validation constraint `message` is mapped to an error code and an error message becomes a description of the invalid value.
+The starter is able to map [Bean Validation](http://beanvalidation.org/) exceptions to ErroREST HTTP responses with 422 statuses (unprocessable entity).
+For this kind of exceptions a validation constraint `message` is mapped to an error code and an error description becomes a description of the invalid value.
 For example, if the following validation fails:
 ```java
 public class SampleRequestBody {
@@ -168,7 +168,7 @@ errorest.http-client-error.logging-level: <logging level>
 ### External HTTP request errors
 The starter includes a special [`RestTemplate`](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html) called `ErrorestTemplate` which fully supports ErroREST HTTP responses.
 The `ErrorestTemplate` in case of HTTP error throws `ExternalHttpRequestException` which extends [`HttpStatusCodeException`](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/HttpStatusCodeException.html).
-The `ExternalHttpRequestException` overrides the `getMessage()` method to return much more detailed information about HTTP error than `HttpStatusCodeException`.
+The `ExternalHttpRequestException` overrides the `getMessage()` method to return much more detailed information about HTTP error than [`HttpStatusCodeException`](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/HttpStatusCodeException.html).
 It also defines `getResponseBodyAsErrors()` method which maps ErroREST HTTP response bodies to `Errors` objects.
 If the `ExternalHttpRequestException` will not be handled manually it will be handled automatically by the starter.
 In that case a received ErroREST HTTP response will be proxied up to the client.
