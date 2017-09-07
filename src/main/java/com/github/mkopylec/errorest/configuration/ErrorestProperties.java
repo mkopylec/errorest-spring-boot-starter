@@ -2,15 +2,30 @@ package com.github.mkopylec.errorest.configuration;
 
 import com.github.mkopylec.errorest.logging.LoggingLevel;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import static com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat.FULL;
 import static com.github.mkopylec.errorest.logging.LoggingLevel.WARN;
 
+/**
+ * ErroREST configuration properties.
+ */
 @ConfigurationProperties("errorest")
 public class ErrorestProperties {
 
+    /**
+     * HTTP response body format.
+     */
     private ResponseBodyFormat responseBodyFormat = FULL;
+    /**
+     * Properties responsible for handling validation errors.
+     */
+    @NestedConfigurationProperty
     private BeanValidationError beanValidationError = new BeanValidationError();
+    /**
+     * Properties responsible for handling 4xx HTTP errors.
+     */
+    @NestedConfigurationProperty
     private HttpClientError httpClientError = new HttpClientError();
 
     public ResponseBodyFormat getResponseBodyFormat() {
@@ -43,6 +58,9 @@ public class ErrorestProperties {
 
     public static class BeanValidationError {
 
+        /**
+         * Validation errors logging level.
+         */
         private LoggingLevel loggingLevel = WARN;
 
         public LoggingLevel getLoggingLevel() {
@@ -56,6 +74,9 @@ public class ErrorestProperties {
 
     public static class HttpClientError {
 
+        /**
+         * HTTP 4xx errors logging level.
+         */
         private LoggingLevel loggingLevel = WARN;
 
         public LoggingLevel getLoggingLevel() {
