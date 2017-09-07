@@ -13,7 +13,7 @@ Complete, ready to use exception handling for Spring Boot REST services.
 - support for custom exceptions
 - support for [Bean Validation](http://beanvalidation.org/) exceptions
 - support for [Spring Web](https://docs.spring.io/spring/docs/current/spring-framework-reference/html/spring-web.html) 4xx errors
-- support for handling external HTTP requests errors
+- [RestTemplate](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html) that supports ErroREST HTTP responses
 - support for [Spring Security](https://projects.spring.io/spring-security/) exceptions
 
 ## Installing
@@ -86,11 +86,11 @@ The starter supports the following features to make error handling as easy as po
 By default response body includes error codes and descriptions.
 To hide error descriptions set an appropriate configuration property:
 ```yaml
-errorest.response-body-format: WITHOUT_DESCRIPTIONS
+errorest.response-body-format: without_descriptions
 ```
 
 ### Custom exceptions
-Custom exceptions will be automatically mapped to ErroREST HTTP responses if they extend `ApplicationException`, for example:
+Custom exceptions can be configured how they will be mapped to ErroREST HTTP responses by extending `ApplicationException`, for example:
 ```java
 public class SampleApplicationException extends ApplicationException {
 
@@ -165,11 +165,22 @@ To change the logging level set an appropriate configuration property:
 errorest.http-client-error.logging-level: <logging level>
 ```
 
-### External HTTP request errors
+### RestTemplate
 The starter includes a special [`RestTemplate`](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html) called `ErrorestTemplate` which fully supports ErroREST HTTP responses.
 The `ErrorestTemplate` in case of HTTP error throws `ExternalHttpRequestException` which extends [`HttpStatusCodeException`](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/HttpStatusCodeException.html).
 The `ExternalHttpRequestException` overrides the `getMessage()` method to return much more detailed information about HTTP error than [`HttpStatusCodeException`](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/HttpStatusCodeException.html).
 It also defines `getResponseBodyAsErrors()` method which maps ErroREST HTTP response bodies to `Errors` objects.
+The usage of `ErrorestTemplate` is the same as of normal [`RestTemplate`](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html):
+```java
+    RestOperations client = new ErrorestTemplate();
+    try{
+        client.getForObject("http://exmaple.com", String.class);
+    } catch (ExternalHttpRequestException ex) {
+        String detailedMessage = ex.getMessage();
+        Errors errors = ex.getResponseBodyAsErrors();
+        ...
+    }
+```
 If the `ExternalHttpRequestException` will not be handled manually it will be handled automatically by the starter.
 In that case a received ErroREST HTTP response will be proxied up to the client.
 
