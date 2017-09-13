@@ -16,6 +16,8 @@ import static org.springframework.http.ResponseEntity.status;
 @RestControllerAdvice
 public class ControllerErrorHandler {
 
+    public static final String CONTROLLER_ERROR_HANDLING_ATTRIBUTE = ControllerErrorHandler.class.getName() + ".controllerHandling";
+
     protected final ErrorsFactory errorsFactory;
     protected final ErrorDataProviderContext providerContext;
 
@@ -34,6 +36,7 @@ public class ControllerErrorHandler {
 
     @SuppressWarnings("unchecked")
     protected ErrorData getErrorData(Throwable ex, HttpServletRequest request) {
+        request.setAttribute(CONTROLLER_ERROR_HANDLING_ATTRIBUTE, true);
         ErrorDataProvider provider = providerContext.getErrorDataProvider(ex);
         return provider.getErrorData(ex, request);
     }

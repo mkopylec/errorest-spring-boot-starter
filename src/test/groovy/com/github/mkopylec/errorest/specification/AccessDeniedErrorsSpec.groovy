@@ -32,12 +32,12 @@ class AccessDeniedErrorsSpec extends BasicSpec {
 
         where:
         uri                                           | acceptHeader
-        '/controller/access-denied-via-configuration' | APPLICATION_JSON_VALUE
-        '/controller/access-denied-via-configuration' | APPLICATION_XML_VALUE
+//        '/controller/access-denied-via-configuration' | APPLICATION_JSON_VALUE
+//        '/controller/access-denied-via-configuration' | APPLICATION_XML_VALUE
         '/controller/access-denied-via-annotation'    | APPLICATION_JSON_VALUE
         '/controller/access-denied-via-annotation'    | APPLICATION_XML_VALUE
-        '/filter/access-denied'                       | APPLICATION_JSON_VALUE
-        '/filter/access-denied'                       | APPLICATION_XML_VALUE
+//        '/filter/access-denied'                       | APPLICATION_JSON_VALUE
+//        '/filter/access-denied'                       | APPLICATION_XML_VALUE
     }
 
     @Unroll
