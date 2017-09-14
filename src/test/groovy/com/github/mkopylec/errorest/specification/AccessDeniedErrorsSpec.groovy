@@ -8,6 +8,7 @@ import static com.github.mkopylec.errorest.assertions.Assertions.assertThat
 import static com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat.FULL
 import static com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat.WITHOUT_DESCRIPTIONS
 import static org.springframework.http.HttpHeaders.ACCEPT
+import static org.springframework.http.HttpHeaders.AUTHORIZATION
 import static org.springframework.http.HttpMethod.GET
 import static org.springframework.http.HttpStatus.FORBIDDEN
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE
@@ -19,9 +20,10 @@ class AccessDeniedErrorsSpec extends BasicSpec {
     def "Should get full error from #uri request for 'Accept: #acceptHeader' header"() {
         given:
         responseBodyFormat = FULL
+        def authorization = 'Basic ' + 'user:password'.bytes.encodeBase64().toString()
 
         when:
-        sendRequest GET, uri, [(ACCEPT): acceptHeader]
+        sendRequest GET, uri, [(ACCEPT): acceptHeader, (AUTHORIZATION): authorization]
 
         then:
         def ex = thrown ExternalHttpRequestException
@@ -32,12 +34,12 @@ class AccessDeniedErrorsSpec extends BasicSpec {
 
         where:
         uri                                           | acceptHeader
-//        '/controller/access-denied-via-configuration' | APPLICATION_JSON_VALUE
-//        '/controller/access-denied-via-configuration' | APPLICATION_XML_VALUE
+        '/controller/access-denied-via-configuration' | APPLICATION_JSON_VALUE
+        '/controller/access-denied-via-configuration' | APPLICATION_XML_VALUE
         '/controller/access-denied-via-annotation'    | APPLICATION_JSON_VALUE
         '/controller/access-denied-via-annotation'    | APPLICATION_XML_VALUE
-//        '/filter/access-denied'                       | APPLICATION_JSON_VALUE
-//        '/filter/access-denied'                       | APPLICATION_XML_VALUE
+        '/filter/access-denied'                       | APPLICATION_JSON_VALUE
+        '/filter/access-denied'                       | APPLICATION_XML_VALUE
     }
 
     @Unroll

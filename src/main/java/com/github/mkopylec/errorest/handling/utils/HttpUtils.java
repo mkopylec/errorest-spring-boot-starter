@@ -5,6 +5,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 public class HttpUtils {
 
     public static String getHeadersAsText(HttpServletRequest request) {
@@ -12,7 +14,9 @@ public class HttpUtils {
         Enumeration<String> names = request.getHeaderNames();
         while (names.hasMoreElements()) {
             String name = names.nextElement();
-            headers.put(name, request.getHeader(name));
+            if (!name.equals(AUTHORIZATION)) {
+                headers.put(name, request.getHeader(name));
+            }
         }
         return headers.toString();
     }

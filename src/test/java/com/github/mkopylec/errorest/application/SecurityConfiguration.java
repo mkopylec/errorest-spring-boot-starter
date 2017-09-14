@@ -3,6 +3,7 @@ package com.github.mkopylec.errorest.application;
 import com.github.mkopylec.errorest.handling.errordata.security.ErrorestAccessDeniedHandler;
 import com.github.mkopylec.errorest.handling.errordata.security.ErrorestAuthenticationEntryPoint;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -25,8 +26,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().requireCsrfProtectionMatcher(new AntPathRequestMatcher("/controller/access-denied-via-configuration"))
                 .and()
+                .httpBasic()
+                .and()
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler)
                 .and().authorizeRequests()
-                .antMatchers("/controller/authentication-error").authenticated();
+                .antMatchers("/controller/authentication-error-via-configuration").authenticated();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication().withUser("user").password("password").roles("role");
     }
 }

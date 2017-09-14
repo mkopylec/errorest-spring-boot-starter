@@ -81,13 +81,18 @@ public class Controller {
     public void throwAccessDeniedExceptionViaConfiguration() {
     }
 
-    @PreAuthorize("authenticated")
+    @PreAuthorize("hasRole('admin')")
     @GetMapping(path = "/access-denied-via-annotation", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
     public void throwAccessDeniedExceptionViaAnnotation() {
     }
 
-    @GetMapping(path = "/authentication-error", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
-    public void throwAuthenticationException() {
+    @GetMapping(path = "/authentication-error-via-configuration", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+    public void throwAuthenticationExceptionViaConfiguration() {
+    }
+
+    @PreAuthorize("authenticated")
+    @GetMapping(path = "/authentication-error-via-annotation", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})
+    public void throwAuthenticationExceptionViaAnnotation() {
     }
 
     @GetMapping(path = "/no-error", produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE})

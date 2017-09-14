@@ -31,11 +31,13 @@ class AuthenticationErrorsSpec extends BasicSpec {
                 .hasSingleErrorWithDescriptionPrefix('SECURITY_ERROR', 'Authentication failed for request with headers: {')
 
         where:
-        uri                                | acceptHeader
-        '/controller/authentication-error' | APPLICATION_JSON_VALUE
-        '/controller/authentication-error' | APPLICATION_XML_VALUE
-        '/filter/authentication-error'     | APPLICATION_JSON_VALUE
-        '/filter/authentication-error'     | APPLICATION_XML_VALUE
+        uri                                                  | acceptHeader
+        '/controller/authentication-error-via-configuration' | APPLICATION_JSON_VALUE
+        '/controller/authentication-error-via-configuration' | APPLICATION_XML_VALUE
+        '/controller/authentication-error-via-annotation'    | APPLICATION_JSON_VALUE
+        '/controller/authentication-error-via-annotation'    | APPLICATION_XML_VALUE
+        '/filter/authentication-error'                       | APPLICATION_JSON_VALUE
+        '/filter/authentication-error'                       | APPLICATION_XML_VALUE
     }
 
     @Unroll
@@ -54,10 +56,12 @@ class AuthenticationErrorsSpec extends BasicSpec {
                 .hasSingleErrorWithoutDescription('SECURITY_ERROR')
 
         where:
-        uri                                | acceptHeader
-        '/controller/authentication-error' | APPLICATION_JSON_VALUE
-        '/controller/authentication-error' | APPLICATION_XML_VALUE
-        '/filter/authentication-error'     | APPLICATION_JSON_VALUE
-        '/filter/authentication-error'     | APPLICATION_XML_VALUE
+        uri                                                  | acceptHeader
+        '/controller/authentication-error-via-configuration' | APPLICATION_JSON_VALUE
+        '/controller/authentication-error-via-configuration' | APPLICATION_XML_VALUE
+        '/controller/authentication-error-via-annotation'    | APPLICATION_JSON_VALUE
+        '/controller/authentication-error-via-annotation'    | APPLICATION_XML_VALUE
+        '/filter/authentication-error'                       | APPLICATION_JSON_VALUE
+        '/filter/authentication-error'                       | APPLICATION_XML_VALUE
     }
 }
