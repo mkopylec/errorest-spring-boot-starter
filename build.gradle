@@ -32,7 +32,7 @@ repositories {
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
     compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.8.9'
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
 
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: springBootVersion, optional
     compile group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: springBootVersion, optional
