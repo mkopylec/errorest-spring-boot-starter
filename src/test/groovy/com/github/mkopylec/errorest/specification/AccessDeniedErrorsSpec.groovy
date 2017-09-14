@@ -20,10 +20,9 @@ class AccessDeniedErrorsSpec extends BasicSpec {
     def "Should get full error from #uri request for 'Accept: #acceptHeader' header"() {
         given:
         responseBodyFormat = FULL
-        def authorization = 'Basic ' + 'user:password'.bytes.encodeBase64().toString()
 
         when:
-        sendRequest GET, uri, [(ACCEPT): acceptHeader, (AUTHORIZATION): authorization]
+        sendRequest GET, uri, [(ACCEPT): acceptHeader, (AUTHORIZATION): createAuthorization()]
 
         then:
         def ex = thrown ExternalHttpRequestException
@@ -48,7 +47,7 @@ class AccessDeniedErrorsSpec extends BasicSpec {
         responseBodyFormat = WITHOUT_DESCRIPTIONS
 
         when:
-        sendRequest GET, uri, [(ACCEPT): acceptHeader]
+        sendRequest GET, uri, [(ACCEPT): acceptHeader, (AUTHORIZATION): createAuthorization()]
 
         then:
         def ex = thrown ExternalHttpRequestException
@@ -65,5 +64,10 @@ class AccessDeniedErrorsSpec extends BasicSpec {
         '/controller/access-denied-via-annotation'    | APPLICATION_XML_VALUE
         '/filter/access-denied'                       | APPLICATION_JSON_VALUE
         '/filter/access-denied'                       | APPLICATION_XML_VALUE
+    }
+
+    private static String createAuthorization() {
+        def authorization = 'Basic ' + 'user:password'.bytes.encodeBase64().toString()
+        authorization
     }
 }
