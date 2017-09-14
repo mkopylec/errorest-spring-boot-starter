@@ -8,6 +8,7 @@ import static com.github.mkopylec.errorest.assertions.Assertions.assertThat
 import static com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat.FULL
 import static com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat.WITHOUT_DESCRIPTIONS
 import static org.springframework.http.HttpHeaders.ACCEPT
+import static org.springframework.http.HttpHeaders.AUTHORIZATION
 import static org.springframework.http.HttpMethod.GET
 import static org.springframework.http.HttpStatus.FORBIDDEN
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE
@@ -21,7 +22,7 @@ class AccessDeniedErrorsSpec extends BasicSpec {
         responseBodyFormat = FULL
 
         when:
-        sendRequest GET, uri, [(ACCEPT): acceptHeader]
+        sendRequest GET, uri, [(ACCEPT): acceptHeader, (AUTHORIZATION): createAuthorization()]
 
         then:
         def ex = thrown ExternalHttpRequestException
@@ -46,7 +47,7 @@ class AccessDeniedErrorsSpec extends BasicSpec {
         responseBodyFormat = WITHOUT_DESCRIPTIONS
 
         when:
-        sendRequest GET, uri, [(ACCEPT): acceptHeader]
+        sendRequest GET, uri, [(ACCEPT): acceptHeader, (AUTHORIZATION): createAuthorization()]
 
         then:
         def ex = thrown ExternalHttpRequestException
@@ -63,5 +64,10 @@ class AccessDeniedErrorsSpec extends BasicSpec {
         '/controller/access-denied-via-annotation'    | APPLICATION_XML_VALUE
         '/filter/access-denied'                       | APPLICATION_JSON_VALUE
         '/filter/access-denied'                       | APPLICATION_XML_VALUE
+    }
+
+    private static String createAuthorization() {
+        def authorization = 'Basic ' + 'user:password'.bytes.encodeBase64().toString()
+        authorization
     }
 }

@@ -191,8 +191,7 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-security:1.5.6.RELEASE'
 }
 ```
-The support for [method secured with annotations](https://docs.spring.io/spring-security/site/docs/current/reference/html/jc.html#jc-method) is provided out of the box, without any additional configuration.
-To support the [HTTP Security configuration](https://docs.spring.io/spring-security/site/docs/current/reference/html/jc.html#jc-httpsecurity) `ErrorestAccessDeniedHandler` and `ErrorestAuthenticationEntryPoint` are needed:
+To support the [HTTP Security configuration](https://docs.spring.io/spring-security/site/docs/current/reference/html/jc.html#jc-httpsecurity) and [method secured with annotations](https://docs.spring.io/spring-security/site/docs/current/reference/html/jc.html#jc-method) `ErrorestAccessDeniedHandler` and `ErrorestAuthenticationEntryPoint` are needed:
 ```java
 @Configuration
 @EnableWebSecurity

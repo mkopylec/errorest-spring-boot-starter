@@ -12,6 +12,7 @@ import org.springframework.web.context.request.RequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.github.mkopylec.errorest.handling.ControllerErrorHandler.CONTROLLER_ERROR_HANDLING_ATTRIBUTE;
 import static com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilder.newErrorData;
 import static com.github.mkopylec.errorest.handling.utils.HttpUtils.getHeadersAsText;
 
@@ -25,6 +26,10 @@ public abstract class SecurityErrorDataProvider<T extends Throwable> extends Err
 
     @Override
     public ErrorData getErrorData(T ex, HttpServletRequest request) {
+        if (request.getAttribute(CONTROLLER_ERROR_HANDLING_ATTRIBUTE) != null) {
+            request.removeAttribute(CONTROLLER_ERROR_HANDLING_ATTRIBUTE);
+            throw (RuntimeException) ex;
+        }
         return buildErrorData(ex, getHeadersAsText(request))
                 .withRequestMethod(request.getMethod())
                 .withRequestUri(request.getRequestURI())
