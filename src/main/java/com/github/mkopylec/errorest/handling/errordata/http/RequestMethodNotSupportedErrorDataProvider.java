@@ -24,8 +24,8 @@ public class RequestMethodNotSupportedErrorDataProvider extends HttpClientErrorD
     }
 
     @Override
-    public ErrorData getErrorData(HttpRequestMethodNotSupportedException ex, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
-        return super.getErrorData(ex, METHOD_NOT_ALLOWED, errorAttributes, requestAttributes);
+    public ErrorData getErrorData(HttpRequestMethodNotSupportedException ex, HttpServletRequest request, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
+        return super.getErrorData(ex, request, METHOD_NOT_ALLOWED, errorAttributes, requestAttributes);
     }
 
     @Override

@@ -28,11 +28,10 @@ public class ApplicationErrorDataProvider extends ErrorDataProvider<ApplicationE
     }
 
     @Override
-    public ErrorData getErrorData(ApplicationException ex, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
-        String requestMethod = getRequestMethod(requestAttributes);
+    public ErrorData getErrorData(ApplicationException ex, HttpServletRequest request, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
         String requestUri = getRequestUri(errorAttributes, requestAttributes);
         return buildErrorData(ex)
-                .withRequestMethod(requestMethod)
+                .withRequestMethod(request.getMethod())
                 .withRequestUri(requestUri)
                 .build();
     }

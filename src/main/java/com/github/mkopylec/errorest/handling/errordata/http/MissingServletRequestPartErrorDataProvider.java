@@ -24,8 +24,8 @@ public class MissingServletRequestPartErrorDataProvider extends HttpClientErrorD
     }
 
     @Override
-    public ErrorData getErrorData(MissingServletRequestPartException ex, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
-        return super.getErrorData(ex, BAD_REQUEST, errorAttributes, requestAttributes);
+    public ErrorData getErrorData(MissingServletRequestPartException ex, HttpServletRequest request, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
+        return super.getErrorData(ex, request, BAD_REQUEST, errorAttributes, requestAttributes);
     }
 
     @Override

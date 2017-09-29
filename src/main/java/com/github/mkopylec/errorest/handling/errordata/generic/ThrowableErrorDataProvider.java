@@ -34,11 +34,10 @@ public class ThrowableErrorDataProvider extends ErrorDataProvider<Throwable> {
     }
 
     @Override
-    public ErrorData getErrorData(Throwable ex, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
-        String requestMethod = getRequestMethod(requestAttributes);
+    public ErrorData getErrorData(Throwable ex, HttpServletRequest request, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
         String requestUri = getRequestUri(errorAttributes, requestAttributes);
         return buildErrorData(ex, defaultResponseStatus)
-                .withRequestMethod(requestMethod)
+                .withRequestMethod(request.getMethod())
                 .withRequestUri(requestUri)
                 .withResponseStatus(defaultResponseStatus)
                 .build();

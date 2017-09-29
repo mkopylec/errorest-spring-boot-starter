@@ -24,8 +24,8 @@ public class ServletRequestBindingErrorDataProvider extends HttpClientErrorDataP
     }
 
     @Override
-    public ErrorData getErrorData(ServletRequestBindingException ex, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
-        return super.getErrorData(ex, BAD_REQUEST, errorAttributes, requestAttributes);
+    public ErrorData getErrorData(ServletRequestBindingException ex, HttpServletRequest request, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
+        return super.getErrorData(ex, request, BAD_REQUEST, errorAttributes, requestAttributes);
     }
 
     @Override

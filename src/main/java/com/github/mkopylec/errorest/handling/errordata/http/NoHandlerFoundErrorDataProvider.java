@@ -24,8 +24,8 @@ public class NoHandlerFoundErrorDataProvider extends HttpClientErrorDataProvider
     }
 
     @Override
-    public ErrorData getErrorData(NoHandlerFoundException ex, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
-        return super.getErrorData(ex, NOT_FOUND, errorAttributes, requestAttributes);
+    public ErrorData getErrorData(NoHandlerFoundException ex, HttpServletRequest request, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
+        return super.getErrorData(ex, request, NOT_FOUND, errorAttributes, requestAttributes);
     }
 
     @Override

@@ -28,11 +28,10 @@ public class BindExceptionErrorDataProvider extends BeanValidationErrorDataProvi
     }
 
     @Override
-    public ErrorData getErrorData(BindException ex, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
-        String requestMethod = getRequestMethod(requestAttributes);
+    public ErrorData getErrorData(BindException ex, HttpServletRequest request, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
         String requestUri = getRequestUri(errorAttributes, requestAttributes);
         return buildErrorData(ex.getBindingResult())
-                .withRequestMethod(requestMethod)
+                .withRequestMethod(request.getMethod())
                 .withRequestUri(requestUri)
                 .withThrowable(ex)
                 .build();

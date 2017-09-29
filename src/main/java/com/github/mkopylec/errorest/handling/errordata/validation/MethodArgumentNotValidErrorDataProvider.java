@@ -25,11 +25,10 @@ public class MethodArgumentNotValidErrorDataProvider extends BeanValidationError
     }
 
     @Override
-    public ErrorData getErrorData(MethodArgumentNotValidException ex, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
-        String requestMethod = getRequestMethod(requestAttributes);
+    public ErrorData getErrorData(MethodArgumentNotValidException ex, HttpServletRequest request, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
         String requestUri = getRequestUri(errorAttributes, requestAttributes);
         return buildErrorData(ex.getBindingResult())
-                .withRequestMethod(requestMethod)
+                .withRequestMethod(request.getMethod())
                 .withRequestUri(requestUri)
                 .withThrowable(ex)
                 .build();

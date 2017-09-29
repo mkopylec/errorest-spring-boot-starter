@@ -54,6 +54,6 @@ public class ServletFilterErrorHandler extends AbstractErrorController {
         RequestAttributes requestAttributes = new ServletRequestAttributes(request);
         Throwable ex = errorAttributes.getError(requestAttributes);
         ErrorDataProvider provider = providerContext.getErrorDataProvider(ex);
-        return provider.getErrorData(ex, getStatus(request), errorAttributes, requestAttributes);
+        return provider.getErrorData(ex, request, getStatus(request), errorAttributes, requestAttributes);
     }
 }

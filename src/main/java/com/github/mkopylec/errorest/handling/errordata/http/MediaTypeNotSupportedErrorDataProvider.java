@@ -24,8 +24,8 @@ public class MediaTypeNotSupportedErrorDataProvider extends HttpClientErrorDataP
     }
 
     @Override
-    public ErrorData getErrorData(HttpMediaTypeNotSupportedException ex, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
-        return super.getErrorData(ex, UNSUPPORTED_MEDIA_TYPE, errorAttributes, requestAttributes);
+    public ErrorData getErrorData(HttpMediaTypeNotSupportedException ex, HttpServletRequest request, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
+        return super.getErrorData(ex, request, UNSUPPORTED_MEDIA_TYPE, errorAttributes, requestAttributes);
     }
 
     @Override

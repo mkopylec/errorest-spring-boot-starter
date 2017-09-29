@@ -37,12 +37,11 @@ public abstract class SecurityErrorDataProvider<T extends Throwable> extends Err
     }
 
     @Override
-    public ErrorData getErrorData(T ex, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
-        String requestMethod = getRequestMethod(requestAttributes);
+    public ErrorData getErrorData(T ex, HttpServletRequest request, HttpStatus defaultResponseStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
         String requestUri = getRequestUri(errorAttributes, requestAttributes);
         String requestHeaders = getRequestHeaders(requestAttributes);
         return buildErrorData(ex, requestHeaders)
-                .withRequestMethod(requestMethod)
+                .withRequestMethod(request.getMethod())
                 .withRequestUri(requestUri)
                 .build();
     }

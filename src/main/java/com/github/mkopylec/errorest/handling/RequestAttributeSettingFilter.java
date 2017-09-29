@@ -13,7 +13,6 @@ import static com.github.mkopylec.errorest.handling.utils.HttpUtils.getHeadersAs
 
 public class RequestAttributeSettingFilter extends OncePerRequestFilter implements Ordered {
 
-    public static final String REQUEST_METHOD_ERROR_ATTRIBUTE = RequestAttributeSettingFilter.class.getName() + ".method";
     public static final String REQUEST_HEADERS_ERROR_ATTRIBUTE = RequestAttributeSettingFilter.class.getName() + ".headers";
 
     @Override
@@ -21,7 +20,6 @@ public class RequestAttributeSettingFilter extends OncePerRequestFilter implemen
         try {
             filterChain.doFilter(request, response);
         } catch (Throwable ex) {
-            request.setAttribute(REQUEST_METHOD_ERROR_ATTRIBUTE, request.getMethod());
             request.setAttribute(REQUEST_HEADERS_ERROR_ATTRIBUTE, getHeadersAsText(request));
             throw ex;
         }

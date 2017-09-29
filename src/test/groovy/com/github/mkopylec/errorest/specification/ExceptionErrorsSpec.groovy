@@ -8,7 +8,7 @@ import static com.github.mkopylec.errorest.assertions.Assertions.assertThat
 import static com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat.FULL
 import static com.github.mkopylec.errorest.configuration.ErrorestProperties.ResponseBodyFormat.WITHOUT_DESCRIPTIONS
 import static org.springframework.http.HttpHeaders.ACCEPT
-import static org.springframework.http.HttpMethod.GET
+import static org.springframework.http.HttpMethod.POST
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import static org.springframework.http.MediaType.APPLICATION_XML_VALUE
@@ -21,7 +21,7 @@ class ExceptionErrorsSpec extends BasicSpec {
         responseBodyFormat = FULL
 
         when:
-        sendRequest GET, uri, [(ACCEPT): acceptHeader]
+        sendRequest POST, uri, [(ACCEPT): acceptHeader]
 
         then:
         def ex = thrown ExternalHttpRequestException
@@ -44,7 +44,7 @@ class ExceptionErrorsSpec extends BasicSpec {
         responseBodyFormat = WITHOUT_DESCRIPTIONS
 
         when:
-        sendRequest GET, uri, [(ACCEPT): acceptHeader]
+        sendRequest POST, uri, [(ACCEPT): acceptHeader]
 
         then:
         def ex = thrown ExternalHttpRequestException

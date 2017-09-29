@@ -24,8 +24,8 @@ public class MessageNotReadableErrorDataProvider extends HttpClientErrorDataProv
     }
 
     @Override
-    public ErrorData getErrorData(HttpMessageNotReadableException ex, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
-        return super.getErrorData(ex, BAD_REQUEST, errorAttributes, requestAttributes);
+    public ErrorData getErrorData(HttpMessageNotReadableException ex, HttpServletRequest request, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
+        return super.getErrorData(ex, request, BAD_REQUEST, errorAttributes, requestAttributes);
     }
 
     @Override
