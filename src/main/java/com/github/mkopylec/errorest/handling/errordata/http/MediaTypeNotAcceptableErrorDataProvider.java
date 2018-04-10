@@ -2,10 +2,10 @@ package com.github.mkopylec.errorest.handling.errordata.http;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData;
-import org.springframework.boot.autoconfigure.web.ErrorAttributes;
+import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
-import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,8 +24,8 @@ public class MediaTypeNotAcceptableErrorDataProvider extends HttpClientErrorData
     }
 
     @Override
-    public ErrorData getErrorData(HttpMediaTypeNotAcceptableException ex, HttpServletRequest request, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
-        return super.getErrorData(ex, request, NOT_ACCEPTABLE, errorAttributes, requestAttributes);
+    public ErrorData getErrorData(HttpMediaTypeNotAcceptableException ex, HttpServletRequest request, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, WebRequest webRequest) {
+        return super.getErrorData(ex, request, NOT_ACCEPTABLE, errorAttributes, webRequest);
     }
 
     @Override
