@@ -188,7 +188,7 @@ In that case a received ErroREST HTTP response will be proxied up to the client.
 The starter supports mapping [Spring Security](https://projects.spring.io/spring-security/) exceptions to ErroREST HTTP responses if the following dependency is added:
 ```gradle
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter-security:1.5.6.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-security:2.0.1.RELEASE'
 }
 ```
 To support the [HTTP Security configuration](https://docs.spring.io/spring-security/site/docs/current/reference/html/jc.html#jc-httpsecurity) and [method secured with annotations](https://docs.spring.io/spring-security/site/docs/current/reference/html/jc.html#jc-method) `ErrorestAccessDeniedHandler` and `ErrorestAuthenticationEntryPoint` are needed:
