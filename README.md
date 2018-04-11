@@ -22,7 +22,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    compile 'com.github.mkopylec:errorest-spring-boot-starter:1.0.3'
+    compile 'com.github.mkopylec:errorest-spring-boot-starter:2.0.0'
 }
 ```
 
