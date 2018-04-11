@@ -5,15 +5,15 @@ import com.github.mkopylec.errorest.handling.errordata.ErrorDataProvider;
 import com.github.mkopylec.errorest.handling.errordata.ErrorDataProviderContext;
 import com.github.mkopylec.errorest.response.Errors;
 import com.github.mkopylec.errorest.response.ErrorsFactory;
-import org.springframework.boot.autoconfigure.web.AbstractErrorController;
-import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
+import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -51,9 +51,9 @@ public class ServletFilterErrorHandler extends AbstractErrorController {
 
     @SuppressWarnings("unchecked")
     protected ErrorData getErrorData(HttpServletRequest request) {
-        RequestAttributes requestAttributes = new ServletRequestAttributes(request);
-        Throwable ex = errorAttributes.getError(requestAttributes);
+        WebRequest webRequest = new ServletWebRequest(request);
+        Throwable ex = errorAttributes.getError(webRequest);
         ErrorDataProvider provider = providerContext.getErrorDataProvider(ex);
-        return provider.getErrorData(ex, request, getStatus(request), errorAttributes, requestAttributes);
+        return provider.getErrorData(ex, request, getStatus(request), errorAttributes, webRequest);
     }
 }

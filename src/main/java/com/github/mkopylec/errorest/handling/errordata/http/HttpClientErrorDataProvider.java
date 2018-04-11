@@ -6,9 +6,9 @@ import com.github.mkopylec.errorest.handling.errordata.ErrorData.ErrorDataBuilde
 import com.github.mkopylec.errorest.handling.errordata.ErrorDataProvider;
 import com.github.mkopylec.errorest.logging.LoggingLevel;
 import com.github.mkopylec.errorest.response.Error;
-import org.springframework.boot.autoconfigure.web.ErrorAttributes;
+import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,8 +23,8 @@ public abstract class HttpClientErrorDataProvider<T extends Throwable> extends E
     }
 
     @Override
-    public ErrorData getErrorData(T ex, HttpServletRequest request, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
-        String requestUri = getRequestUri(errorAttributes, requestAttributes);
+    public ErrorData getErrorData(T ex, HttpServletRequest request, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, WebRequest webRequest) {
+        String requestUri = getRequestUri(errorAttributes, webRequest);
         return buildErrorData(ex, responseHttpStatus)
                 .withRequestMethod(request.getMethod())
                 .withRequestUri(requestUri)

@@ -2,10 +2,10 @@ plugins {
     id 'groovy'
     id 'maven-publish'
     id 'jacoco'
-    id 'com.github.kt3k.coveralls' version '2.8.1'
+    id 'com.github.kt3k.coveralls' version '2.8.2'
     id 'maven'
     id 'signing'
-    id 'pl.allegro.tech.build.axion-release' version '1.7.1'
+    id 'pl.allegro.tech.build.axion-release' version '1.9.0'
     id 'io.codearte.nexus-staging' version '0.11.0'
 }
 
@@ -22,7 +22,7 @@ version scmVersion.version
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-ext.springBootVersion = '1.5.7.RELEASE'
+ext.springBootVersion = '2.0.1.RELEASE'
 
 repositories {
     mavenCentral()
@@ -30,15 +30,15 @@ repositories {
 
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
-    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.8.10'
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
+    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.9.5'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
 
     compileOnly group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: springBootVersion
     compileOnly group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: springBootVersion
 
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion
     testCompile group: 'org.spockframework', name: 'spock-spring', version: '1.1-groovy-2.4'
-    testCompile group: 'com.github.tomakehurst', name: 'wiremock', version: '2.8.0'
+    testCompile group: 'com.github.tomakehurst', name: 'wiremock', version: '2.16.0'
 }
 
 configurations {
@@ -130,5 +130,5 @@ nexusStaging {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.2'
+    gradleVersion = '4.6'
 }

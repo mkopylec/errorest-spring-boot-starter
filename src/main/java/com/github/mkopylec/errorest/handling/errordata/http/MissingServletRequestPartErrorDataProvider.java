@@ -2,9 +2,9 @@ package com.github.mkopylec.errorest.handling.errordata.http;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData;
-import org.springframework.boot.autoconfigure.web.ErrorAttributes;
+import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +24,8 @@ public class MissingServletRequestPartErrorDataProvider extends HttpClientErrorD
     }
 
     @Override
-    public ErrorData getErrorData(MissingServletRequestPartException ex, HttpServletRequest request, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
-        return super.getErrorData(ex, request, BAD_REQUEST, errorAttributes, requestAttributes);
+    public ErrorData getErrorData(MissingServletRequestPartException ex, HttpServletRequest request, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, WebRequest webRequest) {
+        return super.getErrorData(ex, request, BAD_REQUEST, errorAttributes, webRequest);
     }
 
     @Override

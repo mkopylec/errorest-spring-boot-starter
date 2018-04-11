@@ -2,9 +2,9 @@ package com.github.mkopylec.errorest.handling.errordata.http;
 
 import com.github.mkopylec.errorest.configuration.ErrorestProperties;
 import com.github.mkopylec.errorest.handling.errordata.ErrorData;
-import org.springframework.boot.autoconfigure.web.ErrorAttributes;
+import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +24,8 @@ public class NoHandlerFoundErrorDataProvider extends HttpClientErrorDataProvider
     }
 
     @Override
-    public ErrorData getErrorData(NoHandlerFoundException ex, HttpServletRequest request, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, RequestAttributes requestAttributes) {
-        return super.getErrorData(ex, request, NOT_FOUND, errorAttributes, requestAttributes);
+    public ErrorData getErrorData(NoHandlerFoundException ex, HttpServletRequest request, HttpStatus responseHttpStatus, ErrorAttributes errorAttributes, WebRequest webRequest) {
+        return super.getErrorData(ex, request, NOT_FOUND, errorAttributes, webRequest);
     }
 
     @Override
